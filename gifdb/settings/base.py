@@ -3,11 +3,17 @@
 import django
 import os
 import dj_database_url
- 
-DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
-SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
-DEBUG = False
+# here() gives us file paths from the root of the system to the directory
+# holding the current file.
+here = lambda * x: os.path.join(os.path.abspath(os.path.dirname(__file__)), *x)
+
+PROJECT_ROOT = here("..")
+# root() gives us file paths from the root of the system to whatever
+# folder(s) we pass it starting at the parent directory of the current file.
+root = lambda * x: os.path.join(os.path.abspath(PROJECT_ROOT), *x)
+
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -49,7 +55,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = os.path.join(SITE_ROOT, 'uploads')
+MEDIA_ROOT = root("..", "uploads")
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -60,7 +66,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = os.path.join(SITE_ROOT, 'static')
+STATIC_ROOT = root("..", "static")
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -68,7 +74,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    os.path.join(SITE_ROOT, 'gifdb', 'assets'),
+    root("assets"),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -108,7 +114,7 @@ ROOT_URLCONF = 'gifdb.urls'
 WSGI_APPLICATION = 'gifdb.wsgi.application'
 
 TEMPLATE_DIRS = (
-    os.path.join(SITE_ROOT, '..', 'templates'),
+    root("templates"),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
