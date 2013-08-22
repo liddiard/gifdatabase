@@ -9,11 +9,11 @@ from taggit.models import TaggedItemBase
 class Gif(models.Model):
     url = models.CharField(max_length=200)
     tags = TaggableManager()
-    date_added = models.DateField(auto_now_add=True)
+    date_added = models.DateTimeField(auto_now_add=True)
     user_added = models.ForeignKey(User)
     nsfw = models.BooleanField()
     
-    def __unicode__():
+    def __unicode__(self):
         return self.url
 
 admin.site.register(Gif)
