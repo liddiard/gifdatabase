@@ -14,6 +14,6 @@ class Gif(models.Model):
     nsfw = models.BooleanField()
     
     def __unicode__(self):
-        return self.url
+        return "%s | %s" % (', '.join(self.tags.names()), self.url)
 
 admin.site.register(Gif)
