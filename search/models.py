@@ -13,6 +13,9 @@ class Gif(models.Model):
     user_added = models.ForeignKey(User)
     nsfw = models.BooleanField()
     
+    class Meta:
+        ordering = ["-date_added"]
+    
     def __unicode__(self):
         return "%s | %s" % (', '.join(self.tags.names()), self.url)
 
