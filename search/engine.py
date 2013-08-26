@@ -33,6 +33,7 @@ def query(query_string):
             else:
                 for word in synonyms:
                     check(item, match_list)
+    match_list.sort(key=lambda x: x.rank, reverse=True)
     return match_list
 
 def commonWord(word):

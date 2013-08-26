@@ -16,6 +16,14 @@ root = lambda * x: os.path.join(os.path.abspath(PROJECT_ROOT), *x)
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+AWS_STORAGE_BUCKET_NAME = os.environ['project-menagerie']
+
+if not DEBUG:
+    AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
+    STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
+    STATIC_URL = S3_URL
+
 ADMINS = (
     ('omniaura', 'omniaura5@gmail.com'),
 )
@@ -135,7 +143,8 @@ DJANGO_APPS = (
 
 THIRD_PARTY_APPS = (
     'south',
-    'taggit'
+    'taggit',
+    'storages'
 )
 
 LOCAL_APPS = (
