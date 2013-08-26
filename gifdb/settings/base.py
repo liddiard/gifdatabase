@@ -16,10 +16,8 @@ root = lambda * x: os.path.join(os.path.abspath(PROJECT_ROOT), *x)
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
-AWS_STORAGE_BUCKET_NAME = os.environ['project-menagerie']
-
 if not DEBUG:
-    AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
+    AWS_STORAGE_BUCKET_NAME = 'project-menagerie'
     AWS_ACCESS_KEY_ID = 'AKIAJ4ZSC5MTHK4L5B6Q' # WARNING: private
     AWS_SECRET_ACCESS_KEY = '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' # WARNING: private
     STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
