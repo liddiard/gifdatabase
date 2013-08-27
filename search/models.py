@@ -10,7 +10,7 @@ class Gif(models.Model):
     filename = models.CharField(max_length=32)
     HOST_CHOICES = (('ig', 'imgur.com'), ('mi', 'minus.com'))
     host = models.CharField(max_length=2, choices=HOST_CHOICES)
-    tags = models.ManyToManyField(TagInstance)
+    tags = models.ManyToManyField('TagInstance')
     date_added = models.DateTimeField(auto_now_add=True)
     user_added = models.ForeignKey('User')
     
@@ -20,7 +20,7 @@ class Gif(models.Model):
     class Meta:
         ordering = ["-date_added"]
 
-class TagInstance(models.model):
+class TagInstance(models.Model):
     tag = models.ForeignKey('Tag')
     gif = models.ForeignKey('Gif')
     ups = models.IntegerField()
@@ -46,4 +46,6 @@ class Tag(models.Model):
     def __unicode__(self):
         return self.name
 
-admin.site.register(Gif, TagInstance, Tag)
+admin.site.register(Tag)
+admin.site.register(TagInstance)
+admin.site.register(Gif)
