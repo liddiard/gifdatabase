@@ -10,9 +10,9 @@ class Gif(models.Model):
     filename = models.CharField(max_length=32)
     HOST_CHOICES = (('ig', 'imgur.com'), ('mi', 'minus.com'))
     host = models.CharField(max_length=2, choices=HOST_CHOICES)
-    tags = models.ManyToManyField('TagInstance')
+    tags = models.ManyToManyField('TagInstance', related_name='+')
     date_added = models.DateTimeField(auto_now_add=True)
-    user_added = models.ForeignKey('User')
+    user_added = models.ForeignKey(User)
     
     def __unicode__(self):
         return "%s on %s-%s" % (', '.join([ti.tag.name for ti in self.tags_set.all()]), self.host, self.filename)
@@ -26,7 +26,7 @@ class TagInstance(models.Model):
     ups = models.IntegerField()
     downs = models.IntegerField()
     date_added = models.DateTimeField(auto_now_add=True)
-    user_added = models.ForeignKey('User')
+    user_added = models.ForeignKey(User)
     
     def rating(self):
         try:
@@ -41,7 +41,7 @@ class TagInstance(models.Model):
 class Tag(models.Model):
     name = models.CharField(max_length=50)
     date_added = models.DateTimeField(auto_now_add=True)
-    user_added = models.ForeignKey('User')
+    user_added = models.ForeignKey(User)
     
     def __unicode__(self):
         return self.name
