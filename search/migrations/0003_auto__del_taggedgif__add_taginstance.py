@@ -8,20 +8,33 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Gif'
-        db.create_table(u'search_gif', (
+        # Deleting model 'TaggedGif'
+        db.delete_table(u'search_taggedgif')
+
+        # Adding model 'TagInstance'
+        db.create_table(u'search_taginstance', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('filename', self.gf('django.db.models.fields.CharField')(max_length=32)),
-            ('host', self.gf('django.db.models.fields.CharField')(max_length=2)),
-            ('date_added', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('user_added', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('tag', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'search_taginstance_items', to=orm['taggit.Tag'])),
+            ('content_object', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'search_taginstance_items', to=orm['search.Gif'])),
+            ('ups', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('downs', self.gf('django.db.models.fields.IntegerField')(default=0)),
         ))
-        db.send_create_signal(u'search', ['Gif'])
+        db.send_create_signal(u'search', ['TagInstance'])
 
 
     def backwards(self, orm):
-        # Deleting model 'Gif'
-        db.delete_table(u'search_gif')
+        # Adding model 'TaggedGif'
+        db.create_table(u'search_taggedgif', (
+            ('downs', self.gf('django.db.models.fields.IntegerField')()),
+            ('tag', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'search_taggedgif_items', to=orm['taggit.Tag'])),
+            ('ups', self.gf('django.db.models.fields.IntegerField')()),
+            ('content_object', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'search_taggedgif_items', to=orm['search.Gif'])),
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+        ))
+        db.send_create_signal(u'search', ['TaggedGif'])
+
+        # Deleting model 'TagInstance'
+        db.delete_table(u'search_taginstance')
 
 
     models = {
@@ -69,20 +82,19 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'user_added': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
+        u'search.taginstance': {
+            'Meta': {'object_name': 'TagInstance'},
+            'content_object': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'search_taginstance_items'", 'to': u"orm['search.Gif']"}),
+            'downs': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'tag': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'search_taginstance_items'", 'to': u"orm['taggit.Tag']"}),
+            'ups': ('django.db.models.fields.IntegerField', [], {'default': '0'})
+        },
         u'taggit.tag': {
             'Meta': {'object_name': 'Tag'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'}),
             'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '100'})
-        },
-        u'taggit.taggeditem': {
-            'Meta': {'object_name': 'TaggedItem'},
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'taggit_taggeditem_tagged_items'", 'to': u"orm['contenttypes.ContentType']"}),
-            'downs': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'object_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True'}),
-            'tag': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'taggit_taggeditem_items'", 'to': u"orm['taggit.Tag']"}),
-            'ups': ('django.db.models.fields.IntegerField', [], {'default': '0'})
         }
     }
 

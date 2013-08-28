@@ -3,18 +3,19 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 
 from taggit.managers import TaggableManager
-from taggit.models import ItemBase, Tag
+from taggit.models import TaggedItemBase, Tag
 
-class TaggedGif(ItemBase):
-    tag = models.ForeignKey(Tag, related_name="%(app_label)s_%(class)s_items")
-    ups = models.IntegerField()
-    downs = models.IntegerField()
+class TagInstance(TaggedItemBase):
+    content_object = models.ForeignKey('Gif', related_name=
+                                       "%(app_label)s_%(class)s_items")
+    ups = models.IntegerField(default=0)
+    downs = models.IntegerField(default=0)
 
 class Gif(models.Model):
     filename = models.CharField(max_length=32)
     HOST_CHOICES = (('ig', 'imgur.com'), ('mi', 'minus.com'))
     host = models.CharField(max_length=2, choices=HOST_CHOICES)
-    tags = TaggableManager(through=TaggedGif)
+    tags = TaggableManager(through=TagInstance)
     date_added = models.DateTimeField(auto_now_add=True)
     user_added = models.ForeignKey(User)
     
@@ -25,4 +26,5 @@ class Gif(models.Model):
         return "[%s-%s]  %s" % (self.host, self.filename,
                             ', '.join(self.tags.names()))
 
+admin.site.register(TagInstance)
 admin.site.register(Gif)
