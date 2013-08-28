@@ -10,6 +10,14 @@ class TagInstance(TaggedItemBase):
                                        "%(app_label)s_%(class)s_items")
     ups = models.IntegerField(default=0)
     downs = models.IntegerField(default=0)
+    
+    def __unicode__(self):
+        data = {'host': self.content_object.host,
+                'filename': self.content_object.filename,
+                'tag': self.tag,
+                'up': self.ups,
+                'down': self.downs}
+        return "[%(host)s-%(filename)s] %(up)s|%(down)s %(tag)s" % data               
 
 class Gif(models.Model):
     filename = models.CharField(max_length=32)
