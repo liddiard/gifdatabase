@@ -2,15 +2,15 @@ from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
 
-# from taggit.managers import TaggableManager
-# from taggit.models import TaggedItemBase
+from taggit.managers import TaggableManager
+from taggit.models import GenericTaggedItemBase
 
 # Create your models here.
 class Gif(models.Model):
     filename = models.CharField(max_length=32)
     HOST_CHOICES = (('ig', 'imgur.com'), ('mi', 'minus.com'))
     host = models.CharField(max_length=2, choices=HOST_CHOICES)
-    tags = models.ManyToManyField('TagInstance', related_name='+')
+    tags = TaggableManager()
     date_added = models.DateTimeField(auto_now_add=True)
     user_added = models.ForeignKey(User)
     
@@ -20,7 +20,7 @@ class Gif(models.Model):
     class Meta:
         ordering = ["-date_added"]
 
-class TagInstance(models.Model):
+class TagInstance(GenericTaggedItemBase):
     tag = models.ForeignKey('Tag')
     gif = models.ForeignKey('Gif')
     ups = models.IntegerField()

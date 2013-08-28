@@ -143,7 +143,8 @@ DJANGO_APPS = (
 
 THIRD_PARTY_APPS = (
     'south',
-    'storages'
+    'storages',
+    'taggit'
 )
 
 LOCAL_APPS = (
