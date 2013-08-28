@@ -3,14 +3,18 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 
 from taggit.managers import TaggableManager
-from taggit.models import TaggedItemBase
+from taggit.models import ItemBase, Tag
 
-# Create your models here.
+class TaggedGif(ItemBase):
+    tag = models.ForeignKey(Tag, related_name="%(app_label)s_%(class)s_items")
+    ups = models.IntegerField()
+    downs = models.IntegerField()
+
 class Gif(models.Model):
     filename = models.CharField(max_length=32)
     HOST_CHOICES = (('ig', 'imgur.com'), ('mi', 'minus.com'))
     host = models.CharField(max_length=2, choices=HOST_CHOICES)
-    tags = TaggableManager()
+    tags = TaggableManager(through=TaggedGif)
     date_added = models.DateTimeField(auto_now_add=True)
     user_added = models.ForeignKey(User)
     
