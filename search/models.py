@@ -9,8 +9,8 @@ class TagInstance(TaggedItemBase):
     content_object = models.ForeignKey('Gif', related_name=
                                        "%(app_label)s_%(class)s_items",
                                        verbose_name="on")
-    ups = models.IntegerField(default=0)
-    downs = models.IntegerField(default=0)
+    ups = models.PositiveIntegerField(default=0)
+    downs = models.PositiveIntegerField(default=0)
     
     def score(self):
         try:
