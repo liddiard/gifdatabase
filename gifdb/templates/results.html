@@ -1,6 +1,6 @@
 {% block content %}
     <h2>Gifs</h2>
         {% for result in results %}
-            <img src="{{ result.gif.url }}"/>
+            <img src="http://i.imgur.com/{{ result.gif.filename }}.gif"/>
         {% endfor %}
 {% endblock %}

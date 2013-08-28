@@ -18,7 +18,7 @@ class Gif(models.Model):
         ordering = ["-date_added"]
     
     def __unicode__(self):
-        return "%s on %s-%s" % (', '.join(self.tags.names()),
-                                self.host, self.filename)
+        return "[%s-%s]  %s" % (self.host, self.filename,
+                            ', '.join(self.tags.names()))
 
 admin.site.register(Gif)
