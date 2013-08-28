@@ -32,7 +32,7 @@ def query(query_string):
                 check(word, match_list)
             else:
                 for word in synonyms:
-                    check(item, match_list)
+                    check(word, match_list)
     match_list.sort(key=lambda x: x.rank, reverse=True)
     return match_list
 
