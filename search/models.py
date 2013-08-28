@@ -7,11 +7,12 @@ from taggit.models import TaggedItemBase
 
 # Create your models here.
 class Gif(models.Model):
-    url = models.CharField(max_length=200)
+    filename = models.CharField(max_length=32)
+    HOST_CHOICES = (('ig', 'imgur.com'), ('mi', 'minus.com'))
+    host = models.CharField(max_length=2, choices=HOST_CHOICES)
     tags = TaggableManager()
     date_added = models.DateTimeField(auto_now_add=True)
     user_added = models.ForeignKey(User)
-    nsfw = models.BooleanField()
     
     class Meta:
         ordering = ["-date_added"]
