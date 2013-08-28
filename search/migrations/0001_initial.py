@@ -11,10 +11,10 @@ class Migration(SchemaMigration):
         # Adding model 'Gif'
         db.create_table(u'search_gif', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('url', self.gf('django.db.models.fields.CharField')(max_length=200)),
-            ('date_added', self.gf('django.db.models.fields.DateField')(auto_now_add=True, blank=True)),
+            ('filename', self.gf('django.db.models.fields.CharField')(max_length=32)),
+            ('host', self.gf('django.db.models.fields.CharField')(max_length=2)),
+            ('date_added', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('user_added', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('nsfw', self.gf('django.db.models.fields.BooleanField')(default=False)),
         ))
         db.send_create_signal(u'search', ['Gif'])
 
@@ -62,11 +62,11 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
         u'search.gif': {
-            'Meta': {'object_name': 'Gif'},
-            'date_added': ('django.db.models.fields.DateField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'Meta': {'ordering': "['-date_added']", 'object_name': 'Gif'},
+            'date_added': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'filename': ('django.db.models.fields.CharField', [], {'max_length': '32'}),
+            'host': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'nsfw': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'url': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'user_added': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
         u'taggit.tag': {
