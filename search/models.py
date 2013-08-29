@@ -7,6 +7,8 @@ from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase, Tag
 from taggit.forms import TagWidget
 
+DEFAULT_USER_ID = 1
+
 class TagInstance(TaggedItemBase):
     content_object = models.ForeignKey('Gif', related_name=
                                        "%(app_label)s_%(class)s_items",
@@ -14,7 +16,7 @@ class TagInstance(TaggedItemBase):
     ups = models.PositiveIntegerField(default=0)
     downs = models.PositiveIntegerField(default=0)
     date_added = models.DateTimeField(auto_now_add=True)
-    user_added = models.ForeignKey(User, default=1)
+    user_added = models.ForeignKey(User, default=DEFAULT_USER_ID)
     
     def score(self):
         try:
@@ -53,7 +55,7 @@ class TagInstanceAdmin(admin.ModelAdmin):
     list_display = ('isVerified', 'tag', 'ups', 'downs', 'content_object',
                     'user_added', 'date_added')
     list_display_links = ('tag',)
-    readonly_fields = ('user_added', 'date_added', 'tag', 'content_object')
+    readonly_fields = ('date_added', 'tag', 'content_object')
     fields = (('tag', 'content_object'), ('ups', 'downs'),
               ('user_added', 'date_added'))
     
