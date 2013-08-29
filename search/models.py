@@ -53,8 +53,14 @@ class TagInstanceAdmin(admin.ModelAdmin):
     list_display = ('isVerified', 'tag', 'ups', 'downs', 'content_object',
                     'user_added', 'date_added')
     list_display_links = ('tag',)
-    readonly_fields = (('user_added', 'date_added'))
-    fields = (('tag', 'content_object'), ('ups', 'downs'))
+    readonly_fields = ('user_added', 'date_added', 'tag', 'content_object')
+    fields = (('tag', 'content_object'), ('ups', 'downs'),
+              ('user_added', 'date_added'))
+    
+    #def get_readonly_fields(self, request, obj = None):
+    #    if obj: #In edit mode
+    #        return ('user_added',) + self.readonly_fields
+    #    return self.readonly_fields
 
 class Gif(models.Model):
     filename = models.CharField(max_length=32)
