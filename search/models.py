@@ -69,15 +69,18 @@ class Gif(models.Model):
     
     def listTags(self):
         return ', '.join(self.tags.names())
-    
     listTags.short_description = "tags"
     
-    class Meta:
-        ordering = ["-date_added"]
+    def getHostDomain(self):
+        domain_list = {'ig': 'i.imgur.com', 'mi': 'minus.com'}
+        return domain_list.get(self.host)
     
     def __unicode__(self):
         return "[%s-%s]  %s" % (self.host, self.filename,
                             ', '.join(self.tags.names()))
+    
+    class Meta:
+        ordering = ["-date_added"]
 
 class GifAdmin(admin.ModelAdmin):
     fields = (('host', 'filename'), 'tags', ('user_added','date_added'))
