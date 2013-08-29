@@ -85,7 +85,8 @@ class Gif(models.Model):
 class GifAdmin(admin.ModelAdmin):
     fields = (('host', 'filename'), 'tags', ('user_added','date_added'))
     readonly_fields = ('date_added',)
-    list_display = ('filename', 'listTags', 'user_added', 'date_added', 'host')
+    list_display = ('host', 'filename', 'listTags', 'user_added', 'date_added')
+    list_display_links = ('filename',)
     formfield_overrides = {
         TaggableManager: {'widget': TagWidget(attrs={'size':'100'})},
     }
