@@ -38,6 +38,8 @@ class TagInstance(TaggedItemBase):
             return True
         else:
             return False
+    isVerified.boolean = True
+    isVerified.short_description = "v"
     
     def __unicode__(self):
         data = {'host': self.content_object.host,
@@ -48,8 +50,8 @@ class TagInstance(TaggedItemBase):
         return "%(up)s|%(down)s %(tag)s [%(host)s-%(filename)s]" % data
 
 class TagInstanceAdmin(admin.ModelAdmin):
-    list_display = ('tag', 'ups', 'downs', 'content_object', 'user_added',
-                    'date_added')
+    list_display = ('isVerified', 'tag', 'ups', 'downs', 'content_object',
+                    'user_added', 'date_added')
     list_display_links = ('tag',)
     readonly_fields = (('user_added', 'date_added'))
     fields = (('tag', 'content_object'), ('ups', 'downs'))
