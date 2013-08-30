@@ -34,11 +34,12 @@ def saveThumb(img, filename, size=THUMB_SIZE):
     f.close()
     return filename+'.jpg'
 
-def imgurExists(img):
+def imgurDoesNotExist(img):
+    '''checks if an image is equal to the imgur "does not exist" image'''
     error_img = imgFromUrl("http://i.imgur.com/removed.png")
     try: # if the images are the same dimensions, we'll compare them
         diff = ImageChops.difference(img, error_img).getbbox()
-        return diff is not None
+        return diff is None
     except ValueError: # otherwise we get an error because the dimensions are
                        # different, so we know the input is NOT the DNE image
-        return True
+        return False
