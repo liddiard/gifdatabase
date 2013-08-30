@@ -7,10 +7,12 @@ from django.core.files.storage import default_storage as storage
 THUMB_SIZE = 200,200
 
 def imgFromUrl(url):
-    # should throw IOError if there's a problem
-    file = cStringIO.StringIO(urllib.urlopen(url).read())
-    img = Image.open(file)
-    return img
+    try:
+        file = cStringIO.StringIO(urllib.urlopen(url).read())
+        img = Image.open(file)
+        return img
+    except IOError:
+        return -1 # url is not a valid image or not accessible
 
 def isAnimatedGif(img):
     try:
