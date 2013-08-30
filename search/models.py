@@ -78,8 +78,14 @@ class Gif(models.Model):
         domain_list = {'ig': 'i.imgur.com', 'mi': 'minus.com'}
         return domain_list.get(self.host)
     
+    def getUrl(self):
+        domain = self.getHostDomain()
+        return "http://%s/%s.gif" % (domain, self.filename)
+    
     def getThumb(self):
-        return S3_URL + THUMB_DIR + "%s-%s" % (self.host, self.filename)
+        thumb_url = {'s3': S3_URL, 'thumb': THUMB_DIR,
+                     'host': self.host, 'file': self.filename}
+        return "%(s3)s/%(thumb)s/%(host)s-%(file)s.jpg" % thumb_url
     
     def __unicode__(self):
         return "[%s-%s]  %s" % (self.host, self.filename,
@@ -92,7 +98,7 @@ class Gif(models.Model):
     
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
         if self.filename != self.__original_filename:
-            img = imgFromUrl(self.filename)
+            img = imgFromUrl(self.getUrl())
             fl = "%s-%s" % (self.host, self.filename)
             saveThumb(img, fl)
         super(Gif, self).save(force_insert, force_update, *args, **kwargs)
