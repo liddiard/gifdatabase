@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.forms import TextInput
-from search.image import imgFromUrl, saveThumb
+from search.image import THUMB_DIR, imgFromUrl, saveThumb, deleteThumb
 from gifdb.settings.base import S3_URL
 
 from taggit.managers import TaggableManager
@@ -10,7 +10,6 @@ from taggit.models import TaggedItemBase, Tag
 from taggit.forms import TagWidget
 
 DEFAULT_USER_ID = 1
-THUMB_DIR = "thumb"
 
 class TagInstance(TaggedItemBase):
     content_object = models.ForeignKey('Gif', related_name=
@@ -87,6 +86,11 @@ class Gif(models.Model):
                      'host': self.host, 'file': self.filename}
         return "%(s3)s/%(thumb)s/%(host)s-%(file)s.jpg" % thumb_url
     
+    def adminThumb(self):
+        return u'<img src="%s"/>' % self.getThumbUrl()
+    adminThumb.short_description = "Thumbnail"
+    adminThumb.allow_tags = True
+    
     def __unicode__(self):
         return "[%s-%s]  %s" % (self.host, self.filename,
                             ', '.join(self.tags.names()))
@@ -99,8 +103,11 @@ class Gif(models.Model):
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
         if self.filename != self.__original_filename:
             img = imgFromUrl(self.getUrl())
-            fl = "%s-%s" % (self.host, self.filename)
-            saveThumb(img, fl)
+            old_thumb_filename = "%s-%s" % (self.host,
+                                            self.__original_filename)
+            new_thumb_filename = "%s-%s" % (self.host, self.filename)
+            saveThumb(img, new_thumb_filename)
+            deleteThumb(old_thumb_filename)
         super(Gif, self).save(force_insert, force_update, *args, **kwargs)
         self.__original_filename = self.filename
     
@@ -108,12 +115,19 @@ class Gif(models.Model):
         ordering = ["-date_added"]
 
 class GifAdmin(admin.ModelAdmin):
-    fields = (('host', 'filename'), 'tags', ('user_added','date_added'))
-    readonly_fields = ('date_added',)
-    list_display = ('host', 'filename', 'listTags', 'user_added', 'date_added')
-    list_display_links = ('filename',)
+    def displayGif(self, obj):
+        return u'<img src="%s"/>' % obj.getUrl()
+    displayGif.short_description = ''
+    displayGif.allow_tags = True
+    
+    fields = (('host', 'filename'), ('displayGif', 'tags'),
+              ('user_added','date_added'))
+    readonly_fields = ('date_added', 'displayGif')
+    list_display = ('adminThumb', 'filename', 'host', 'listTags', 'user_added',
+                    'date_added')
+    list_display_links = ('filename', 'adminThumb')
     formfield_overrides = {
-        TaggableManager: {'widget': TagWidget(attrs={'size':'100'})},
+        TaggableManager: {'widget': TagWidget(attrs={'size':'400'})},
     }
 
 admin.site.register(Gif, GifAdmin)

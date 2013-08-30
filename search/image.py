@@ -4,6 +4,7 @@ from PIL import Image, ImageOps, ImageChops
 
 from django.core.files.storage import default_storage as storage
 
+THUMB_DIR = "thumb"
 THUMB_SIZE = 200,200
 
 def imgFromUrl(url):
@@ -29,12 +30,19 @@ def saveThumb(img, filename, size=THUMB_SIZE):
     width, height = img.size
     img = img.convert('RGB')
     img = ImageOps.fit(img, THUMB_SIZE, Image.ANTIALIAS, 0)
-    
     # save to S3
-    f = storage.open('thumb/%s.jpg' % filename, 'w')
+    f = storage.open('%s/%s.jpg' % (THUMB_DIR, filename), 'w')
     img.save(f, 'JPEG')
     f.close()
     return filename+'.jpg'
+
+def deleteThumb(filename):
+    path = '%s/%s.jpg' % (THUMB_DIR, filename)
+    if storage.exists(path):
+        storage.delete(path)
+        return True
+    else:
+        return False
 
 def imgurDoesNotExist(img):
     '''checks if an image is equal to the imgur "does not exist" image'''
