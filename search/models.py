@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.forms import TextInput
-from search.image import generateThumb
+from search.image import saveThumb
 
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase, Tag
