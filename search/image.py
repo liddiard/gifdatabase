@@ -3,9 +3,6 @@ import urllib, cStringIO
 from PIL import Image, ImageOps, ImageChops
 
 from django.core.files.storage import default_storage as storage
-#from django.core.files.base import ContentFile
-#from django.core.cache import cache
-#from models import MyStorage
 
 THUMB_SIZE = 200,200
 
@@ -39,8 +36,9 @@ def saveThumb(img, filename, size=THUMB_SIZE):
 
 def imgurExists(img):
     error_img = imgFromUrl("http://i.imgur.com/removed.png")
-    try:
+    try: # if the images are the same dimensions, compare them
         diff = ImageChops.difference(img, error_img).getbbox()
         return diff is not None
-    except ValueError:
+    except ValueError: # otherwise we get an error because the dimensions are
+                       # different, so we know the input is NOT the DNE image
         return True
