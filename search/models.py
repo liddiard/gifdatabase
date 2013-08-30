@@ -2,8 +2,8 @@ from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.forms import TextInput
-from search.image import saveThumb
-from settings.base import AWS_URL
+from search.image import imgFromUrl, saveThumb
+from gifdb.settings.base import S3_URL
 
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase, Tag
@@ -84,6 +84,19 @@ class Gif(models.Model):
     def __unicode__(self):
         return "[%s-%s]  %s" % (self.host, self.filename,
                             ', '.join(self.tags.names()))
+    
+    __original_filename = None
+    def __init__(self, *args, **kwargs):
+        super(Gif, self).__init__(*args, **kwargs)
+        self.__original_filename = self.filename
+    
+    def save(self, force_insert=False, force_update=False, *args, **kwargs):
+        if self.filename != self.__original_filename:
+            img = imgFromUrl(self.filename)
+            fl = "%s-%s" % (self.host, self.filename)
+            saveThumb(img, fl)
+        super(Gif, self).save(force_insert, force_update, *args, **kwargs)
+        self.__original_filename = self.filename
     
     class Meta:
         ordering = ["-date_added"]
