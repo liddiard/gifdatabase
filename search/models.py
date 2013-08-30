@@ -82,7 +82,7 @@ class Gif(models.Model):
         domain = self.getHostDomain()
         return "http://%s/%s.gif" % (domain, self.filename)
     
-    def getThumb(self):
+    def getThumbUrl(self):
         thumb_url = {'s3': S3_URL, 'thumb': THUMB_DIR,
                      'host': self.host, 'file': self.filename}
         return "%(s3)s/%(thumb)s/%(host)s-%(file)s.jpg" % thumb_url

@@ -1,8 +1,8 @@
 {% block content %}
     <h2>Gifs</h2>
         {% for result in results %}
-            <a href="http://{{ result.gif.getHostDomain }}/{{ result.gif.filename }}.gif">
-                <img src="{{ result.gif.getThumb }}"/>
+            <a href="{{ result.gif.getUrl }}">
+                <img src="{{ result.gif.getThumbUrl }}"/>
             </a>
         {% endfor %}
 {% endblock %}

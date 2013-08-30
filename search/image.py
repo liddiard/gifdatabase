@@ -1,6 +1,6 @@
 import os
 import urllib, cStringIO
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, ImageChops
 
 from django.core.files.storage import default_storage as storage
 #from django.core.files.base import ContentFile
@@ -35,4 +35,12 @@ def saveThumb(img, filename, size=THUMB_SIZE):
     f = storage.open('thumb/%s.jpg' % filename, 'w')
     img.save(f, 'JPEG')
     f.close()
-    return True
+    return filename+'.jpg'
+
+def imgurExists(img):
+    error_img = imgFromUrl("http://i.imgur.com/removed.png")
+    try:
+        diff = ImageChops.difference(img, error_img).getbbox()
+        return diff is not None
+    except ValueError:
+        return True
