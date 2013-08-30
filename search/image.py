@@ -5,16 +5,24 @@ from django.template import Library
 
 THUMB_SIZE = 200,200
 
-def generateThumb(url, size=THUMB_SIZE):
-    '''must be passed a valid image url'''
+def imgFromUrl(url):
+    # should throw IOError if there's a problem
     file = cStringIO.StringIO(urllib.urlopen(url).read())
     img = Image.open(file)
-    width, height = img.size
-    if img.mode != 'RGB': # could probably be skipped for this implementation
-                          # because all gifs are indexed, not RGB
-        img = img.convert('RGB')
-    img = ImageOps.fit(img, THUMB_SIZE, Image.ANTIALIAS, 0)
-    img.save('thumb.thumb', 'bmp')
+    return img
 
-def checkValidAnimatedGif(url):
-    pass
+def isAnimatedGif(img):
+    try:
+        img.seek(1)
+    except EOFError:
+        is_animated = False
+    else:
+        is_animated = True
+    return is_animated
+
+def generateThumb(img, size=THUMB_SIZE):
+    '''must be passed a valid image url'''
+    width, height = img.size
+    img = img.convert('RGB')
+    img = ImageOps.fit(img, THUMB_SIZE, Image.ANTIALIAS, 0)
+    img.save('thumb.thumb', 'jpg')
