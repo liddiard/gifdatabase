@@ -36,7 +36,7 @@ def saveThumb(img, filename, size=THUMB_SIZE):
 
 def imgurExists(img):
     error_img = imgFromUrl("http://i.imgur.com/removed.png")
-    try: # if the images are the same dimensions, compare them
+    try: # if the images are the same dimensions, we'll compare them
         diff = ImageChops.difference(img, error_img).getbbox()
         return diff is not None
     except ValueError: # otherwise we get an error because the dimensions are
