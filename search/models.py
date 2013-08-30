@@ -3,12 +3,14 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.forms import TextInput
 from search.image import saveThumb
+from settings.base import AWS_URL
 
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase, Tag
 from taggit.forms import TagWidget
 
 DEFAULT_USER_ID = 1
+THUMB_DIR = "thumb"
 
 class TagInstance(TaggedItemBase):
     content_object = models.ForeignKey('Gif', related_name=
@@ -75,6 +77,9 @@ class Gif(models.Model):
     def getHostDomain(self):
         domain_list = {'ig': 'i.imgur.com', 'mi': 'minus.com'}
         return domain_list.get(self.host)
+    
+    def getThumb(self):
+        return S3_URL + THUMB_DIR + "%s-%s" % (self.host, self.filename)
     
     def __unicode__(self):
         return "[%s-%s]  %s" % (self.host, self.filename,
