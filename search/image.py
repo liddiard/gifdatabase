@@ -25,4 +25,4 @@ def generateThumb(img, size=THUMB_SIZE):
     width, height = img.size
     img = img.convert('RGB')
     img = ImageOps.fit(img, THUMB_SIZE, Image.ANTIALIAS, 0)
-    img.save('thumb.thumb', 'jpg')
+    img.save('thumb.thumb', 'JPEG')
