@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
-from django.forms import TextInput
-from search.image import THUMB_DIR, imgFromUrl, saveThumb, deleteThumb
+from django.core.exceptions import ValidationError
+from search import image
 from gifdb.settings.base import S3_URL
 
 from taggit.managers import TaggableManager
@@ -74,7 +74,7 @@ class Gif(models.Model):
         return "http://%s/%s.gif" % (domain, self.filename)
     
     def getThumbUrl(self):
-        thumb_url = {'s3': S3_URL, 'thumb': THUMB_DIR,
+        thumb_url = {'s3': S3_URL, 'thumb': image.THUMB_DIR,
                      'host': self.host, 'file': self.filename}
         return "%(s3)s/%(thumb)s/%(host)s-%(file)s.jpg" % thumb_url
     
@@ -82,6 +82,13 @@ class Gif(models.Model):
         return u'<img src="%s"/>' % self.getThumbUrl()
     adminThumb.short_description = "Thumbnail"
     adminThumb.allow_tags = True
+    
+    def clean(self):
+        if not image.imgFromUrl(self.getUrl()):
+            raise ValidationError('''URL is not a valid image or not
+                                  accessible.''')
+        if image.imgurDoesNotExist(image.imgFromUrl(self.getUrl())):
+            raise ValidationError("Image does not exist.")
     
     def __unicode__(self):
         return "[%s-%s]  %s" % (self.host, self.filename,
@@ -96,12 +103,12 @@ class Gif(models.Model):
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
         if (self.filename != self.__original_filename or
             self.host != self.__original_host):
-            img = imgFromUrl(self.getUrl())
+            img = image.imgFromUrl(self.getUrl())
             old_thumb_filename = "%s-%s" % (self.__original_host,
                                             self.__original_filename)
             new_thumb_filename = "%s-%s" % (self.host, self.filename)
-            saveThumb(img, new_thumb_filename)
-            deleteThumb(old_thumb_filename)
+            image.saveThumb(img, new_thumb_filename)
+            image.deleteThumb(old_thumb_filename)
         super(Gif, self).save(force_insert, force_update, *args, **kwargs)
         self.__original_filename = self.filename
     
@@ -113,6 +120,7 @@ class Flag(models.Model):
     #FLAGGED_CHOICES = (('in', 'inappropriate content'),)
     #reason = models.CharField(choices=FLAGGED_CHOICES, max_length=2)
     message = models.CharField(max_length=500)
+admin.site.register(Flag)
 
 class SubstitutionProposal(models.Model):
     current_gif = models.ForeignKey('Gif')
@@ -120,16 +128,19 @@ class SubstitutionProposal(models.Model):
     host = models.CharField(max_length=2, choices=HOST_CHOICES)
     date_proposed = models.DateTimeField(auto_now_add=True)
     user_proposed = models.ForeignKey(User)
+admin.site.register(SubstitutionProposal)
 
 class TagVote(models.Model):
     user = models.ForeignKey(User)
     tag = models.ForeignKey('TagInstance')
     up = models.BooleanField()
+admin.site.register(TagVote)
 
 class UserFavorite(models.Model):
     user = models.ForeignKey(User)
     gif = models.ForeignKey('Gif')
     date_favorited = models.DateTimeField(auto_now_add=True)
+admin.site.register(UserFavorite)
 
 class GifAdmin(admin.ModelAdmin):
     def displayGif(self, obj):
@@ -146,6 +157,7 @@ class GifAdmin(admin.ModelAdmin):
     formfield_overrides = {
         TaggableManager: {'widget': TagWidget(attrs={'size':'400'})},
     }
+admin.site.register(Gif, GifAdmin)
 
 class TagInstanceAdmin(admin.ModelAdmin):
     list_display = ('isVerified', 'tag', 'ups', 'downs', 'content_object',
@@ -154,6 +166,4 @@ class TagInstanceAdmin(admin.ModelAdmin):
     fields = (('tag', 'content_object'), ('ups', 'downs'),
               ('user_added', 'date_added'))
     readonly_fields = ('date_added', 'tag', 'content_object')
-
-admin.site.register(Gif, GifAdmin)
 admin.site.register(TagInstance, TagInstanceAdmin)

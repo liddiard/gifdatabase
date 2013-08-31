@@ -1,4 +1,5 @@
 import os
+from django.core.exceptions import ValidationError
 import urllib, cStringIO
 from PIL import Image, ImageOps, ImageChops
 
@@ -13,13 +14,7 @@ def imgFromUrl(url):
         img = Image.open(file)
         return img
     except IOError:
-        return -1 # url is not a valid image or not accessible
-        '''
-        TODO: this should be replaced with an "invalid" placeholder image.
-        Ideally, we should never get to this point because of validation, but
-        when adding invalid thumb, current implementation causes AttributeError:
-        int object has no attribute 'size'
-        '''
+        return None
 
 def isAnimatedGif(img):
     try:
