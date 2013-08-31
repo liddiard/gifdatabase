@@ -1,8 +1,10 @@
+{% extends "base.html" %}
+
 {% block content %}
     <h2>Gifs</h2>
         {% for result in results %}
             <a href="{{ result.gif.getUrl }}">
-                <img src="{{ result.gif.getThumbUrl }}"/>
+                <img src="{{ result.gif.getThumbUrl }}" class="colorup" effect="light" speed="500"/>
             </a>
         {% endfor %}
 {% endblock %}
