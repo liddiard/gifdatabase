@@ -129,6 +129,7 @@ class TagVote(models.Model):
 class UserFavorite(models.Model):
     user = models.ForeignKey(User)
     gif = models.ForeignKey('Gif')
+    date_favorited = models.DateTimeField(auto_now_add=True)
 
 class GifAdmin(admin.ModelAdmin):
     def displayGif(self, obj):
