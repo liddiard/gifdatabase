@@ -1,11 +1,6 @@
 Django==1.5.2
-Pillow==2.1.0
 South==0.8.2
 argparse==1.2.1
-boto==2.10.0
-dj-database-url==0.2.2
-django-admin-bootstrapped==0.4.3
-django-storages==1.1.8
 django-taggit==0.10
 psycopg2==2.5.1
 wsgiref==0.1.2
