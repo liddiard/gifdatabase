@@ -16,7 +16,7 @@ def imgFromUrl(url):
     except IOError:
         return None
 
-def isAnimatedGif(img):
+def isAnimated(img):
     try:
         img.seek(1)
     except EOFError:

@@ -84,11 +84,14 @@ class Gif(models.Model):
     adminThumb.allow_tags = True
     
     def clean(self):
-        if not image.imgFromUrl(self.getUrl()):
+        image = image.imgFromUrl(self.getUrl())
+        if not image:
             raise ValidationError('''URL is not a valid image or not
                                   accessible.''')
-        if image.imgurDoesNotExist(image.imgFromUrl(self.getUrl())):
+        if image.imgurDoesNotExist(image):
             raise ValidationError("Image does not exist.")
+        if not image.isAnimated(image):
+            raise ValidationError("Image is not an animated GIF.")
     
     def __unicode__(self):
         return "[%s-%s]  %s" % (self.host, self.filename,
