@@ -98,12 +98,14 @@ class Gif(models.Model):
     __original_filename = None
     def __init__(self, *args, **kwargs):
         super(Gif, self).__init__(*args, **kwargs)
+        self.__original_host = self.host
         self.__original_filename = self.filename
     
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
-        if self.filename != self.__original_filename:
+        if (self.filename != self.__original_filename or
+            self.host != self.__original_host):
             img = imgFromUrl(self.getUrl())
-            old_thumb_filename = "%s-%s" % (self.host,
+            old_thumb_filename = "%s-%s" % (self.__original_host,
                                             self.__original_filename)
             new_thumb_filename = "%s-%s" % (self.host, self.filename)
             saveThumb(img, new_thumb_filename)

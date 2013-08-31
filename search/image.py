@@ -14,6 +14,12 @@ def imgFromUrl(url):
         return img
     except IOError:
         return -1 # url is not a valid image or not accessible
+        '''
+        TODO: this should be replaced with an "invalid" placeholder image.
+        Ideally, we should never get to this point because of validation, but
+        when adding invalid thumb, current implementation causes AttributeError:
+        int object has no attribute 'size'
+        '''
 
 def isAnimatedGif(img):
     try:
