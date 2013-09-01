@@ -7,6 +7,13 @@
     <script src="{{ S3_URL }}/js/colorup/colorup.min.js"></script>
 </head>
 <body>
+    <header>
+        <form method="post" action="login/">{% csrf_token %}
+            <input type="text" name="username"/>
+            <input type="password" name="password"/>
+            <input type="submit"/>
+        </form>
+    </header>
 {% block content %}
 {% endblock %}
 </body>
