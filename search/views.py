@@ -4,7 +4,7 @@ from search import engine
 from gifdb.settings.base import S3_URL
 
 class SearchForm(TemplateView):
-    template_name = "index.html"
+    template_name = "front.html"
 
 def SearchResults(request):
     query = request.GET['q']
