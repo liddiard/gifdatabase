@@ -12,6 +12,10 @@ from taggit.forms import TagWidget
 DEFAULT_USER_ID = 1
 HOST_CHOICES = (('ig', 'imgur'), ('mi', 'minus'))
 
+class UserScore(models.Model): 
+    user = models.OneToOneField(User, primary_key=True)
+    score = models.IntegerField(default=0)
+
 class TagInstance(TaggedItemBase):
     content_object = models.ForeignKey('Gif', related_name=
                                        "%(app_label)s_%(class)s_items",
