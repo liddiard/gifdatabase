@@ -1,20 +1,25 @@
-from django.views.generic.base import TemplateView
 from django.shortcuts import render_to_response
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
+from django.template import RequestContext
+from django.core.context_processors import csrf
 from search import engine
 from gifdb.settings.base import S3_URL
 
-class SearchForm(TemplateView):
-    template_name = "front.html"
+def frontPage(request):
+    return render_to_response('front.html', context_instance=RequestContext(request))
 
-def login(request):
+def doLogin(request):
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(username=username, password=password)
     if user is not None:
-        render_to_response("Welcome to the cool kids club.")
+        if user.is_active:
+            login(request, user)
+            return render_to_response("Logged in!")
+        else:
+            return render_to_response("Disabled account.")
     else:
-        render_to_response("Whatcha think you're doin round these parts, son?")
+        return render_to_response("Whatcha think you're doin round these parts, son?")
 
 def searchResults(request):
     query = request.GET['q']
