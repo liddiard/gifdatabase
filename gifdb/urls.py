@@ -15,7 +15,11 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^$', frontPage, name="main"),
-    url(r'^login/$', login),
-    url(r'^results/$', searchResults),
+    url(r'^login/$', login, name="login"),
+    url(r'^logout/$', logout, name="logout"),
+    url(r'^results/$', searchResults, name="search_results"),
+    url(r'^user/(?P<username>\w+)/$', profile, name="profile"),
+    url(r'^user/(?P<username>\w+)/starred/$', profileStarred,
+        name="profile_starred"),
     url(r'^admin/', include(admin.site.urls)),
 )
