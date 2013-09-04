@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.contrib.auth.forms import AuthenticationForm
 from search import engine
 from gifdb.settings.base import S3_URL
-from search.models import User, UserFavorite
+from search.models import User, UserFavorite, Gif, TagInstance
 
 def frontPage(request):
     return render_to_response('front.html', {'S3_URL': S3_URL},
@@ -37,14 +37,21 @@ def logout(request):
 
 def profile(request, username):
     user_profile = get_object_or_404(User, username=username)
-    starred_recent = UserFavorite.objects.filter(user=user_profile)\
-                                                 .order_by('-date_favorited')[:5]
-    added_recent = None
-    tagged_recent = None
+    starred_recent = UserFavorite.objects\
+                                         .filter(user=user_profile)\
+                                         .order_by('-date_favorited')[:5]
+    added_recent = Gif.objects.filter(user_added=user_profile)\
+                              .order_by('-date_added')[:5]
+    tagged_recent = TagInstance.objects.filter(user_added=user_profile)\
+                                       .order_by('date_added')[:5]
     
-    return render_to_response('profile.html',
-                              {'username': user_profile, 
-                               'starred_recent': starred_recent,'S3_URL': S3_URL},
+    template_vars = {'username': user_profile, 
+                     'starred_recent': starred_recent,
+                     'added_recent': added_recent,
+                     'tagged_recent': tagged_recent,
+                     'S3_URL': S3_URL}
+    
+    return render_to_response('profile.html', template_vars,
                               context_instance=RequestContext(request))
 
 def profileStarred(request, username):
