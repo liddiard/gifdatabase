@@ -26,7 +26,7 @@ class Gif(models.Model):
     tags = TaggableManager(through='TagInstance')
     date_added = models.DateTimeField(auto_now_add=True)
     user_added = models.ForeignKey(User)
-    stars = models.PositiveIntegerField()
+    stars = models.PositiveIntegerField(default=0)
     
     def listTags(self):
         return ', '.join(self.tags.names())
@@ -81,6 +81,10 @@ class Gif(models.Model):
             image.deleteThumb(old_thumb_filename)
         super(Gif, self).save(force_insert, force_update, *args, **kwargs)
         self.__original_filename = self.filename
+    
+    @classmethod
+    def create(cls, filename, host, tags, date_added, user_added, stars):
+        pass # TODO: add a point to the user_added
     
     class Meta:
         ordering = ["-date_added"]
