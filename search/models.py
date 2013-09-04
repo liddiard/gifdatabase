@@ -16,52 +16,14 @@ class UserScore(models.Model):
     user = models.OneToOneField(User, primary_key=True)
     score = models.IntegerField(default=0)
 
-class TagInstance(TaggedItemBase):
-    content_object = models.ForeignKey('Gif', related_name=
-                                       "%(app_label)s_%(class)s_items",
-                                       verbose_name="on")
-    ups = models.PositiveIntegerField(default=0)
-    downs = models.PositiveIntegerField(default=0)
-    date_added = models.DateTimeField(auto_now_add=True)
-    user_added = models.ForeignKey(User, default=DEFAULT_USER_ID)
-    
-    def score(self):
-        try:
-            total = self.ups + self.downs
-            return round(self.ups / float(total), 2)
-        except ZeroDivisionError:
-            return 0.5
-    
-    def isBadTag(self):
-        threshold = 0.4
-        if self.score(self) < threshold:
-            return True
-        else:
-            return False
-    
-    def isVerified(self):
-        threshold = 0.6
-        min_votes = 2
-        total_votes = self.ups + self.downs
-        if self.score >= threshold and total_votes >= min_votes:
-            return True
-        else:
-            return False
-    isVerified.boolean = True
-    isVerified.short_description = "v"
-    
-    def __unicode__(self):
-        data = {'host': self.content_object.host,
-                'filename': self.content_object.filename,
-                'tag': self.tag,
-                'up': self.ups,
-                'down': self.downs}
-        return "%(up)s|%(down)s %(tag)s [%(host)s-%(filename)s]" % data
+class UserScoreAdmin(admin.ModelAdmin):
+    list_display = ('user', 'score')
+admin.site.register(UserScore, UserScoreAdmin)
 
 class Gif(models.Model):
     filename = models.CharField(max_length=32)
     host = models.CharField(max_length=2, choices=HOST_CHOICES)
-    tags = TaggableManager(through=TagInstance)
+    tags = TaggableManager(through='TagInstance')
     date_added = models.DateTimeField(auto_now_add=True)
     user_added = models.ForeignKey(User)
     
@@ -122,33 +84,6 @@ class Gif(models.Model):
     class Meta:
         ordering = ["-date_added"]
 
-class Flag(models.Model):
-    gif = models.ForeignKey('Gif')
-    #FLAGGED_CHOICES = (('in', 'inappropriate content'),)
-    #reason = models.CharField(choices=FLAGGED_CHOICES, max_length=2)
-    message = models.CharField(max_length=500)
-admin.site.register(Flag)
-
-class SubstitutionProposal(models.Model):
-    current_gif = models.ForeignKey('Gif')
-    proposed_gif = models.CharField(max_length=32)
-    host = models.CharField(max_length=2, choices=HOST_CHOICES)
-    date_proposed = models.DateTimeField(auto_now_add=True)
-    user_proposed = models.ForeignKey(User)
-admin.site.register(SubstitutionProposal)
-
-class TagVote(models.Model):
-    user = models.ForeignKey(User)
-    tag = models.ForeignKey('TagInstance')
-    up = models.BooleanField()
-admin.site.register(TagVote)
-
-class UserFavorite(models.Model):
-    user = models.ForeignKey(User)
-    gif = models.ForeignKey('Gif')
-    date_favorited = models.DateTimeField(auto_now_add=True)
-admin.site.register(UserFavorite)
-
 class GifAdmin(admin.ModelAdmin):
     def displayGif(self, obj):
         return u'<img src="%s"/>' % obj.getUrl()
@@ -166,6 +101,49 @@ class GifAdmin(admin.ModelAdmin):
     }
 admin.site.register(Gif, GifAdmin)
 
+class TagInstance(TaggedItemBase):
+    content_object = models.ForeignKey('Gif', related_name=
+                                       "%(app_label)s_%(class)s_items",
+                                       verbose_name="on")
+    ups = models.PositiveIntegerField(default=0)
+    downs = models.PositiveIntegerField(default=0)
+    date_added = models.DateTimeField(auto_now_add=True)
+    user_added = models.ForeignKey(User, default=DEFAULT_USER_ID)
+    
+    def score(self):
+        try:
+            total = self.ups + self.downs
+            return round(self.ups / float(total), 2)
+        except ZeroDivisionError:
+            return 0.5
+    
+    def isBadTag(self):
+        threshold = 0.4
+        if self.score(self) < threshold:
+            return True
+        else:
+            return False
+    
+    def isVerified(self):
+        threshold = 0.6
+        min_votes = 2
+        total_votes = self.ups + self.downs
+        if self.score >= threshold and total_votes >= min_votes:
+            return True
+        else:
+            return False
+    isVerified.boolean = True
+    isVerified.short_description = "v"
+    
+        
+    def __unicode__(self):
+        data = {'host': self.content_object.host,
+                'filename': self.content_object.filename,
+                'tag': self.tag,
+                'up': self.ups,
+                'down': self.downs}
+        return "%(up)s|%(down)s %(tag)s [%(host)s-%(filename)s]" % data
+
 class TagInstanceAdmin(admin.ModelAdmin):
     list_display = ('isVerified', 'tag', 'ups', 'downs', 'content_object',
                     'user_added', 'date_added')
@@ -174,3 +152,43 @@ class TagInstanceAdmin(admin.ModelAdmin):
               ('user_added', 'date_added'))
     readonly_fields = ('date_added', 'tag', 'content_object')
 admin.site.register(TagInstance, TagInstanceAdmin)
+
+class Flag(models.Model):
+    gif = models.ForeignKey('Gif')
+    #FLAGGED_CHOICES = (('in', 'inappropriate content'),)
+    #reason = models.CharField(choices=FLAGGED_CHOICES, max_length=2)
+    message = models.CharField(max_length=500)
+admin.site.register(Flag)
+
+class SubstitutionProposal(models.Model):
+    current_gif = models.ForeignKey('Gif')
+    proposed_gif = models.CharField(max_length=32)
+    host = models.CharField(max_length=2, choices=HOST_CHOICES)
+    date_proposed = models.DateTimeField(auto_now_add=True)
+    user_proposed = models.ForeignKey(User)
+
+class SubstitutionProposalAdmin(admin.ModelAdmin):
+    list_display = ('current_gif', 'proposed_gif', 'user_proposed',
+                    'date_proposed')
+admin.site.register(SubstitutionProposal, SubstitutionProposalAdmin)
+
+class TagVote(models.Model):
+    user = models.ForeignKey(User)
+    tag = models.ForeignKey('TagInstance')
+    up = models.BooleanField()
+
+class TagVoteAdmin(admin.ModelAdmin):
+    list_display = ('up', 'tag', 'user')
+admin.site.register(TagVote, TagVoteAdmin)
+
+class UserFavorite(models.Model):
+    user = models.ForeignKey(User)
+    gif = models.ForeignKey('Gif')
+    date_favorited = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ["-date_favorited"]
+
+class UserFavoriteAdmin(admin.ModelAdmin):
+    list_display = ('user', 'gif', 'date_favorited')
+admin.site.register(UserFavorite, UserFavoriteAdmin)
