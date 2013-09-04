@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.contrib.auth.forms import AuthenticationForm
 from search import engine
 from gifdb.settings.base import S3_URL
-from search.models import User, UserFavorite, Gif, TagInstance
+from search.models import User, UserFavorite, Gif, TagInstance, UserScore
 
 def frontPage(request):
     return render_to_response('front.html', {'S3_URL': S3_URL},
@@ -37,6 +37,7 @@ def logout(request):
 
 def profile(request, username):
     user_profile = get_object_or_404(User, username=username)
+    user_score = UserScore.objects.get(user=user_profile).score
     starred_recent = UserFavorite.objects\
                                          .filter(user=user_profile)\
                                          .order_by('-date_favorited')[:5]
@@ -49,6 +50,7 @@ def profile(request, username):
                      'starred_recent': starred_recent,
                      'added_recent': added_recent,
                      'tagged_recent': tagged_recent,
+                     'score': user_score,
                      'S3_URL': S3_URL}
     
     return render_to_response('profile.html', template_vars,

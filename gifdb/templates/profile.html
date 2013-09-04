@@ -4,15 +4,15 @@
 <h1>{{ username }}</h1>
 <h2>{{ score }}</h2>
 
-{% for fav in starred_recent %}
-    <a href="{{ fav.gif.getUrl }}">
-        <img src="{{ fav.gif.getThumbUrl }}" class="colorup thumb" effect="light" speed="500"/>
-    </a>
-{% endfor %}
-
 {% for gif in added_recent %}
     <a href="{{ gif.getUrl }}">
         <img src="{{ gif.getThumbUrl }}" class="colorup thumb" effect="light" speed="500"/>
+    </a>
+{% endfor %}
+
+{% for fav in starred_recent %}
+    <a href="{{ fav.gif.getUrl }}">
+        <img src="{{ fav.gif.getThumbUrl }}" class="colorup thumb" effect="light" speed="500"/>
     </a>
 {% endfor %}
 
