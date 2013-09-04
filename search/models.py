@@ -26,6 +26,7 @@ class Gif(models.Model):
     tags = TaggableManager(through='TagInstance')
     date_added = models.DateTimeField(auto_now_add=True)
     user_added = models.ForeignKey(User)
+    stars = models.PositiveIntegerField()
     
     def listTags(self):
         return ', '.join(self.tags.names())
@@ -91,8 +92,8 @@ class GifAdmin(admin.ModelAdmin):
     displayGif.allow_tags = True
     
     fields = (('host', 'filename'), ('displayGif', 'tags'),
-              ('user_added','date_added'))
-    readonly_fields = ('date_added', 'displayGif')
+              ('user_added','date_added'), ('stars',))
+    readonly_fields = ('date_added', 'displayGif', 'stars')
     list_display = ('adminThumb', 'filename', 'host', 'listTags', 'user_added',
                     'date_added')
     list_display_links = ('filename', 'adminThumb')
