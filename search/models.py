@@ -79,12 +79,16 @@ class Gif(models.Model):
             new_thumb_filename = "%s-%s" % (self.host, self.filename)
             image.saveThumb(img, new_thumb_filename)
             image.deleteThumb(old_thumb_filename)
+        is_new = self.pk is None
+        if is_new:
+            u_score = UserScore.objects.get(user=self.user_added)
+            if u_score is None:
+                raise ValidationError
+            u_score.score += 1
+            u_score.save()
         super(Gif, self).save(force_insert, force_update, *args, **kwargs)
+        self.__original_host = self.host
         self.__original_filename = self.filename
-    
-    @classmethod
-    def create(cls, filename, host, tags, date_added, user_added, stars):
-        pass # TODO: add a point to the user_added
     
     class Meta:
         ordering = ["-date_added"]
