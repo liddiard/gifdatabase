@@ -15,6 +15,9 @@ HOST_CHOICES = (('ig', 'imgur'), ('mi', 'minus'))
 class UserScore(models.Model): 
     user = models.OneToOneField(User, primary_key=True)
     score = models.IntegerField(default=0)
+    
+    def __unicode__(self):
+        return "%s (%s)" % (self.user, self.score)
 
 class UserScoreAdmin(admin.ModelAdmin):
     list_display = ('user', 'score')
@@ -82,13 +85,17 @@ class Gif(models.Model):
         is_new = self.pk is None
         if is_new: # only increase user's score if gif is created, not updated
             u_score = UserScore.objects.get(user=self.user_added)
-            if u_score is None:
-                raise ValidationError
             u_score.score += 1
             u_score.save()
         super(Gif, self).save(force_insert, force_update, *args, **kwargs)
         self.__original_host = self.host
         self.__original_filename = self.filename
+    
+    def delete(self):
+        u_score = UserScore.objects.get(user=self.user_added)
+        u_score.score -= 1
+        u_score.save()
+        super(Gif, self).delete()
     
     class Meta:
         ordering = ["-date_added"]
@@ -167,6 +174,9 @@ class Flag(models.Model):
     #FLAGGED_CHOICES = (('in', 'inappropriate content'),)
     #reason = models.CharField(choices=FLAGGED_CHOICES, max_length=2)
     message = models.CharField(max_length=500)
+    
+    def __unicode__(self):
+        return self.gif
 admin.site.register(Flag)
 
 class SubstitutionProposal(models.Model):
@@ -175,6 +185,9 @@ class SubstitutionProposal(models.Model):
     host = models.CharField(max_length=2, choices=HOST_CHOICES)
     date_proposed = models.DateTimeField(auto_now_add=True)
     user_proposed = models.ForeignKey(User)
+    
+    def __unicode__(self):
+        return "%s > %s" % (self.current_gif, self.proposed_gif)
 
 class SubstitutionProposalAdmin(admin.ModelAdmin):
     list_display = ('current_gif', 'proposed_gif', 'user_proposed',
@@ -185,6 +198,13 @@ class TagVote(models.Model):
     user = models.ForeignKey(User)
     tag = models.ForeignKey('TagInstance')
     up = models.BooleanField()
+    
+    def __unicode__(self):
+        if self.up:
+            vote = "up"
+        else:
+            vote = "down"
+        return "%s: %s on %s" % (self.user, vote, self.tag.name)
 
 class TagVoteAdmin(admin.ModelAdmin):
     list_display = ('up', 'tag', 'user')
@@ -194,6 +214,9 @@ class UserFavorite(models.Model):
     user = models.ForeignKey(User)
     gif = models.ForeignKey('Gif')
     date_favorited = models.DateTimeField(auto_now_add=True)
+    
+    def __unicode__(self):
+        return "%s: %s" % (self.user, self.gif)
     
     class Meta:
         ordering = ["-date_favorited"]
