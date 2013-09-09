@@ -80,7 +80,7 @@ class Gif(models.Model):
             image.saveThumb(img, new_thumb_filename)
             image.deleteThumb(old_thumb_filename)
         is_new = self.pk is None
-        if is_new:
+        if is_new: # only increase user's score if gif is created, not updated
             u_score = UserScore.objects.get(user=self.user_added)
             if u_score is None:
                 raise ValidationError
