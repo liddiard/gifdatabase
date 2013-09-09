@@ -20,6 +20,7 @@ class Result(object):
 def query(query_string):
     # create an empty match list
     match_list = []
+    query_string = query_string.lower()
     # split the query into a list of individual words
     query_words = query_string.split(' ')
     query_words = removeSynonyms(query_words)
@@ -68,6 +69,7 @@ def tagSEO(gif):
     seo = []
     tags = gif.tags.names()
     for tag in tags:
+        tag = tag.lower()
         words = tag.split(' ')
         for word in words:
             if commonWord(word):
