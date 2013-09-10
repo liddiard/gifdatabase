@@ -93,7 +93,7 @@ class Gif(models.Model):
     
     def delete(self):
         u_score = UserScore.objects.get(user=self.user_added)
-        u_score.score -= 1
+        u_score.score -= 2
         u_score.save()
         super(Gif, self).delete()
     
