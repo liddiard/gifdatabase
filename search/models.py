@@ -12,6 +12,11 @@ from taggit.forms import TagWidget
 DEFAULT_USER_ID = 1
 HOST_CHOICES = (('ig', 'imgur'), ('mi', 'minus'))
 
+def modifyUserScore(delta):
+    u_score = UserScore.objects.get(user=self.user_added)
+    u_score.score += delta
+    u_score.save()
+
 class UserScore(models.Model): 
     user = models.OneToOneField(User, primary_key=True)
     score = models.IntegerField(default=0)
@@ -84,17 +89,13 @@ class Gif(models.Model):
             image.deleteThumb(old_thumb_filename)
         is_new = self.pk is None
         if is_new: # only increase user's score if gif is created, not updated
-            u_score = UserScore.objects.get(user=self.user_added)
-            u_score.score += 1
-            u_score.save()
+            modifyUserScore(1)
         super(Gif, self).save(force_insert, force_update, *args, **kwargs)
         self.__original_host = self.host
         self.__original_filename = self.filename
     
     def delete(self):
-        u_score = UserScore.objects.get(user=self.user_added)
-        u_score.score -= 2
-        u_score.save()
+        modifyUserScore(-2)
         super(Gif, self).delete()
     
     class Meta:
@@ -214,6 +215,20 @@ class UserFavorite(models.Model):
     user = models.ForeignKey(User)
     gif = models.ForeignKey('Gif')
     date_favorited = models.DateTimeField(auto_now_add=True)
+    
+    def save(self, force_insert=False, force_update=False, *args, **kwargs):
+        if self.pk is None:
+            g_favorite = self.gif
+            g_favorite.stars += 1
+            g_favorite.save()
+        super(UserFavorite, self).save(force_insert, force_update, *args,
+                                       **kwargs)
+    
+    def delete(self): # TODO: fix
+        g_favorite = self.gif
+        g_favorite.stars -= 1
+        g_favorite.save()
+        super(UserFavorite, self).delete()
     
     def __unicode__(self):
         return "%s: %s" % (self.user, self.gif)
