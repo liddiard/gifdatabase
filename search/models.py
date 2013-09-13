@@ -224,7 +224,7 @@ class UserFavorite(models.Model):
         super(UserFavorite, self).save(force_insert, force_update, *args,
                                        **kwargs)
     
-    def delete(self): # TODO: fix
+    def delete(self):
         g_favorite = self.gif
         g_favorite.stars -= 1
         g_favorite.save()
