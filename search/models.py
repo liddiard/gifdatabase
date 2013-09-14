@@ -12,8 +12,8 @@ from taggit.forms import TagWidget
 DEFAULT_USER_ID = 1
 HOST_CHOICES = (('ig', 'imgur'), ('mi', 'minus'))
 
-def modifyUserScore(self, delta):
-    u_score = UserScore.objects.get(user=self.user_added)
+def modifyUserScore(userObject, delta):
+    u_score = UserScore.objects.get(user=userObject)
     u_score.score += delta
     u_score.save()
 
@@ -73,6 +73,7 @@ class Gif(models.Model):
                             ', '.join(self.tags.names()))
     
     __original_filename = None
+    __original_host = None
     def __init__(self, *args, **kwargs):
         super(Gif, self).__init__(*args, **kwargs)
         self.__original_host = self.host
@@ -89,13 +90,13 @@ class Gif(models.Model):
             image.deleteThumb(old_thumb_filename)
         is_new = self.pk is None
         if is_new: # only increase user's score if gif is created, not updated
-            modifyUserScore(self, 1)
+            modifyUserScore(self.user_added, 1)
         super(Gif, self).save(force_insert, force_update, *args, **kwargs)
         self.__original_host = self.host
         self.__original_filename = self.filename
     
     def delete(self):
-        modifyUserScore(self, -2)
+        modifyUserScore(self.user_added, -2)
         super(Gif, self).delete()
     
     class Meta:
@@ -134,9 +135,9 @@ class TagInstance(TaggedItemBase):
         except ZeroDivisionError:
             return 0.5
     
-    def isBadTag(self):
+    def isBad(self):
         threshold = 0.4
-        if self.score(self) < threshold:
+        if self.score() < threshold:
             return True
         else:
             return False
@@ -145,14 +146,13 @@ class TagInstance(TaggedItemBase):
         threshold = 0.6
         min_votes = 2
         total_votes = self.ups + self.downs
-        if self.score >= threshold and total_votes >= min_votes:
+        if self.score() >= threshold and total_votes >= min_votes:
             return True
         else:
             return False
     isVerified.boolean = True
     isVerified.short_description = "v"
     
-        
     def __unicode__(self):
         data = {'host': self.content_object.host,
                 'filename': self.content_object.filename,
@@ -160,6 +160,34 @@ class TagInstance(TaggedItemBase):
                 'up': self.ups,
                 'down': self.downs}
         return "%(up)s|%(down)s %(tag)s [%(host)s-%(filename)s]" % data
+    
+    __original_isBad = None
+    __original_isVerified = None
+    def __init__(self, *args, **kwargs):
+        super(TagInstance, self).__init__(*args, **kwargs)
+        self.__original_isBad = self.isBad()
+        self.__original_isVerified = self.isVerified()
+    
+    def save(self, force_insert=False, force_update=False, *args, **kwargs):
+        isBad_before = self.__original_isBad
+        isVerified_before = self.__original_isVerified
+        isBad_after = self.isBad()
+        isVerified_after = self.isVerified()
+        is_new = self.pk is None
+        
+        if is_new:
+            pass 
+        else:
+            if not isVerified_before and isVerified_after:
+                modifyUserScore(self.user_added, 1)
+            elif isVerified_before and not isVerified_after:
+                modifyUserScore(self.user_added, -1)
+            if isBad_before and not isBad_after:
+                modifyUserScore(self.user_added, 1)
+            elif not isBad_before and isBad_after:
+                modifyUserScore(self.user_added, -1)
+        super(TagInstance, self).save(force_insert, force_update, *args,
+                                      **kwargs)
 
 class TagInstanceAdmin(admin.ModelAdmin):
     list_display = ('isVerified', 'tag', 'ups', 'downs', 'content_object',
