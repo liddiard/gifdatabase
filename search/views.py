@@ -2,7 +2,8 @@ from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.contrib.auth import (authenticate, login as django_login,
                                  logout as django_logout)
 from django.template import RequestContext
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm # currently unused
+from django.utils.datastructures import MultiValueDictKeyError
 from search import engine
 from gifdb.settings.base import S3_URL
 from search.models import User, UserFavorite, Gif, TagInstance, UserScore
@@ -19,13 +20,16 @@ def searchResults(request):
                               context_instance=RequestContext(request))
 
 def login(request):
-    username = request.POST['username']
-    password = request.POST['password']
+    try:
+        username = request.POST['username']
+        password = request.POST['password']
+    except MultiValueDictKeyError:
+        return redirect('main')
     user = authenticate(username=username, password=password)
     if user is not None:
         if user.is_active:
             django_login(request, user)
-            return redirect('main')
+            return redirect(request.META['HTTP_REFERER'])
         else:
             return render_to_response("Disabled account.")
     else:
@@ -33,7 +37,10 @@ def login(request):
 
 def logout(request):
     django_logout(request)
-    return redirect('main')
+    try:
+        return redirect(request.META['HTTP_REFERER'])
+    except KeyError:
+        return redirect('main')
 
 def profile(request, username):
     user_profile = get_object_or_404(User, username=username)
