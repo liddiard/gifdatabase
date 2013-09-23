@@ -117,6 +117,7 @@ class GifAdmin(admin.ModelAdmin):
     formfield_overrides = {
         TaggableManager: {'widget': TagWidget(attrs={'size':'400'})},
     }
+    date_hierarchy = 'date_added'
 admin.site.register(Gif, GifAdmin)
 
 class TagInstance(TaggedItemBase):
@@ -196,6 +197,7 @@ class TagInstanceAdmin(admin.ModelAdmin):
     fields = (('tag', 'content_object'), ('ups', 'downs'),
               ('user_added', 'date_added'))
     readonly_fields = ('date_added', 'tag', 'content_object')
+    date_hierarchy = 'date_added'
 admin.site.register(TagInstance, TagInstanceAdmin)
 
 class Flag(models.Model):
@@ -203,9 +205,13 @@ class Flag(models.Model):
     #FLAGGED_CHOICES = (('in', 'inappropriate content'),)
     #reason = models.CharField(choices=FLAGGED_CHOICES, max_length=2)
     message = models.CharField(max_length=500)
+    date_flagged = models.DateTimeField(auto_now_add=True)
     
     def __unicode__(self):
         return self.gif
+
+class FlagAdmin(models.Model):
+    readonly_fields = ('date_flagged',)
 admin.site.register(Flag)
 
 class SubstitutionProposal(models.Model):
@@ -214,13 +220,25 @@ class SubstitutionProposal(models.Model):
     host = models.CharField(max_length=2, choices=HOST_CHOICES)
     date_proposed = models.DateTimeField(auto_now_add=True)
     user_proposed = models.ForeignKey(User)
+    accepted = models.BooleanField(default=False)
+    accepted.short_description = 'A'
     
     def __unicode__(self):
         return "%s > %s" % (self.current_gif, self.proposed_gif)
 
 class SubstitutionProposalAdmin(admin.ModelAdmin):
-    list_display = ('current_gif', 'proposed_gif', 'user_proposed',
+    list_display = ('accepted', 'current_gif', 'proposed_gif', 'user_proposed',
                     'date_proposed')
+    list_filter = ('accepted',)
+    actions = ('accept_substitution_proposal',)
+    
+    def accept_substitution_proposal(self):
+        self.accepted = True
+        old = self.current_gif
+        old.filename = self.proposed_gif
+        old.host = self.host
+        old.save()
+        modifyUserScore(self.user_proposed, 1)
 admin.site.register(SubstitutionProposal, SubstitutionProposalAdmin)
 
 class TagVote(models.Model):
