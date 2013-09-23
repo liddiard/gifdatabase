@@ -231,15 +231,18 @@ class SubstitutionProposalAdmin(admin.ModelAdmin):
     list_display = ('accepted', 'current_gif', 'proposed_gif', 'user_proposed',
                     'date_proposed')
     list_filter = ('accepted',)
+    readonly_fields = ('accepted',)
     actions = ('accept_substitution_proposal',)
     
-    def accept_substitution_proposal(self):
-        self.accepted = True
-        old = self.current_gif
-        old.filename = self.proposed_gif
-        old.host = self.host
-        old.save()
-        modifyUserScore(self.user_proposed, 1)
+    def accept_substitution_proposal(modeladmin, request, queryset):
+        for proposal in queryset:
+            proposal.accepted = True
+            old = proposal.current_gif
+            old.filename = proposal.proposed_gif
+            old.host = proposal.host
+            proposal.save()
+            old.save()
+            modifyUserScore(proposal.user_proposed, 1)
 admin.site.register(SubstitutionProposal, SubstitutionProposalAdmin)
 
 class TagVote(models.Model):
