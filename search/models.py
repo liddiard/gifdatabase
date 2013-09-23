@@ -208,11 +208,12 @@ class Flag(models.Model):
     date_flagged = models.DateTimeField(auto_now_add=True)
     
     def __unicode__(self):
-        return self.gif
+        return unicode(self.gif)
 
-class FlagAdmin(models.Model):
+class FlagAdmin(admin.ModelAdmin):
+    list_display = ('gif', 'message', 'date_flagged')
     readonly_fields = ('date_flagged',)
-admin.site.register(Flag)
+admin.site.register(Flag, FlagAdmin)
 
 class SubstitutionProposal(models.Model):
     current_gif = models.ForeignKey('Gif')
