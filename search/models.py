@@ -10,7 +10,7 @@ from taggit.models import TaggedItemBase, Tag
 from taggit.forms import TagWidget
 
 DEFAULT_USER_ID = 1
-HOST_CHOICES = (('ig', 'imgur'), ('mi', 'minus'))
+HOST_CHOICES = (('ig', 'imgur'),)
 
 def modifyUserScore(userObject, delta):
     u_score = UserScore.objects.get(user=userObject)
@@ -29,8 +29,8 @@ class UserScoreAdmin(admin.ModelAdmin):
 admin.site.register(UserScore, UserScoreAdmin)
 
 class Gif(models.Model):
-    filename = models.CharField(max_length=32)
-    host = models.CharField(max_length=2, choices=HOST_CHOICES)
+    filename = models.CharField(max_length=32, unique=True)
+    host = models.CharField(max_length=2, choices=HOST_CHOICES, default='imgur')
     tags = TaggableManager(through='TagInstance')
     date_added = models.DateTimeField(auto_now_add=True)
     user_added = models.ForeignKey(User)
