@@ -222,7 +222,7 @@ class SubstitutionProposal(models.Model):
     date_proposed = models.DateTimeField(auto_now_add=True)
     user_proposed = models.ForeignKey(User)
     accepted = models.BooleanField(default=False)
-    accepted.short_description = 'A'
+    accepted.verbose_name = 'A'
     
     def __unicode__(self):
         return "%s > %s" % (self.current_gif, self.proposed_gif)
