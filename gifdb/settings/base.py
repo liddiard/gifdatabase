@@ -114,6 +114,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'corsheaders.middleware.CorsMiddleware' # TODO: remove if unneeded
 )
 
 ROOT_URLCONF = 'gifdb.urls'
@@ -146,6 +147,7 @@ THIRD_PARTY_APPS = (
     'taggit',
     'storages',
     'django_admin_bootstrapped',
+    'corsheaders'
 )
 
 LOCAL_APPS = (
@@ -170,6 +172,8 @@ USER_CONTEXT_PROCESSORS = (
 
 TEMPLATE_CONTEXT_PROCESSORS = (DJANGO_CONTEXT_PROCESSORS + 
                                USER_CONTEXT_PROCESSORS)
+
+CORS_ORIGIN_ALLOW_ALL = True # TODO: remove if unneeded
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
