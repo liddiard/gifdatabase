@@ -114,7 +114,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'corsheaders.middleware.CorsMiddleware' # TODO: remove if unneeded
+    'corsheaders.middleware.CorsMiddleware' # TODO: remove if unneeded
 )
 
 ROOT_URLCONF = 'gifdb.urls'
