@@ -1,0 +1,21 @@
+body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: black;
+    color: white;
+}
+
+img {
+    border: 0;
+}
+
+a {
+    border: 0;
+}
+
+.thumb {
+    margin: 0;
+    display: block;
+    float: left;
+}

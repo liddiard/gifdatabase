@@ -4,7 +4,7 @@
     <h2>Gifs</h2>
         {% for result in results %}
             <a href="{{ result.gif.getUrl }}">
-                <img crossorigin="" src="{{ result.gif.getThumbUrl }}" class="colorup thumb" effect="light" speed="500"/>
+                <img crossorigin="anonymous" class="thumb" src="{{ result.gif.getThumbUrl }}"/>
             </a>
         {% endfor %}
 {% endblock %}

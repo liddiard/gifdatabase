@@ -19,6 +19,7 @@ TEMPLATE_DEBUG = DEBUG
 AWS_STORAGE_BUCKET_NAME = 'project-menagerie'
 AWS_ACCESS_KEY_ID = 'AKIAJ4ZSC5MTHK4L5B6Q' # WARNING: private
 AWS_SECRET_ACCESS_KEY = '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' # WARNING: private
+AWS_PRELOAD_METADATA = True
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 S3_URL = 'http://%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME

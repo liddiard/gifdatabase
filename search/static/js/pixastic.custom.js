@@ -56,6 +56,7 @@ var Pixastic = (function() {
 			if (actions.length) {
 				if (el.tagName.toLowerCase() == "img") {
 					var dataImg = new Image();
+                    dataImg.crossOrigin = "anonymous"; //user-added
 					dataImg.src = el.src;
 					if (dataImg.complete) {
 						for (var a=0;a<actions.length;a++) {
@@ -381,8 +382,8 @@ var Pixastic = (function() {
 		process : function(img, actionName, options, callback) {
 			if (img.tagName.toLowerCase() == "img") {
 				var dataImg = new Image();
+				dataImg.crossOrigin = "anonymous"; //user-added
 				dataImg.src = img.src;
-                dataImg.crossOrigin = "anonymous"; //user-added
 				if (dataImg.complete) {
 					var res = Pixastic.applyAction(img, dataImg, actionName, options);
 					if (callback) callback(res);
@@ -434,6 +435,33 @@ var Pixastic = (function() {
 
 
 })();
+/*
+ * Pixastic Lib - jQuery plugin
+ * Copyright (c) 2008 Jacob Seidelin, jseidelin@nihilogic.dk, http://blog.nihilogic.dk/
+ * License: [http://www.pixastic.com/lib/license.txt]
+ */
+
+if (typeof jQuery != "undefined" && jQuery && jQuery.fn) {
+	jQuery.fn.pixastic = function(action, options) {
+		var newElements = [];
+		this.each(
+			function () {
+				if (this.tagName.toLowerCase() == "img" && !this.complete) {
+					return;
+				}
+				var res = Pixastic.process(this, action, options);
+				if (res) {
+					newElements.push(res);
+				}
+			}
+		);
+		if (newElements.length > 0)
+			return jQuery(newElements);
+		else
+			return this;
+	};
+
+};
 /*
  * Pixastic Lib - Brightness/Contrast filter - v0.1.1
  * Copyright (c) 2008 Jacob Seidelin, jseidelin@nihilogic.dk, http://blog.nihilogic.dk/
