@@ -11,10 +11,12 @@
 		$(document).ready(function(){
 			$('.thumb').hover(
 				function(){
+					console.log("in");
 					Pixastic.process(this, "brightness", {brightness: 30});
 				},
 				function(){
-					;
+					console.log("out");
+					Pixastic.revert(this);
 				}
 			);
 		});
