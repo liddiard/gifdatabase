@@ -4,23 +4,8 @@
     <title>Project Menagerie</title>
     <link rel="stylesheet" type="text/css" href="{{ S3_URL }}/css/main.css">
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="{{ S3_URL }}/js/pixastic.custom.js"></script>
 </head>
 <body>
-	<script>
-		$(document).ready(function(){
-			$('.thumb').hover(
-				function(){
-					console.log("in");
-					Pixastic.process(this, "brightness", {brightness: 30});
-				},
-				function(){
-					console.log("out");
-					Pixastic.revert(this);
-				}
-			);
-		});
-	</script>
     <header>
         {% if not user.username %}
         <form method="post" action="{% url 'login' %}" id="login">{% csrf_token %}
