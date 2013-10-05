@@ -4,6 +4,8 @@ import urllib, cStringIO
 from PIL import Image, ImageOps, ImageChops
 
 from django.core.files.storage import default_storage as storage
+import boto
+from gifdb.settings.base import AWS_STORAGE_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 
 THUMB_DIR = "thumb"
 THUMB_SIZE = 200,200
@@ -32,9 +34,13 @@ def saveThumb(img, filename, size=THUMB_SIZE):
     img = img.convert('RGB')
     img = ImageOps.fit(img, THUMB_SIZE, Image.ANTIALIAS, 0)
     # save to S3
-    f = storage.open('%s/%s.jpg' % (THUMB_DIR, filename), 'w')
-    img.save(f, 'JPEG')
-    f.close()
+    img_data = cStringIO.StringIO()
+    img.save(img_data, 'JPEG')
+    conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+    b = conn.get_bucket(AWS_STORAGE_BUCKET_NAME)
+    k = b.new_key('%s/%s.jpg' % (THUMB_DIR, filename))
+    k.set_acl('public-read')
+    k.set_contents_from_string(img_data.getvalue(), {'Content-Type': 'image/jpeg'})
     return filename+'.jpg'
 
 def deleteThumb(filename):
