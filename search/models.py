@@ -48,6 +48,9 @@ class Gif(models.Model):
         domain = self.getHostDomain()
         return "http://%s/%s.gif" % (domain, self.filename)
     
+    def getThumbFilename(self):
+        return "%s-%s" % (self.host, self.filename)
+
     def getThumbUrl(self):
         thumb_url = {'s3': S3_URL, 'thumb': image.THUMB_DIR,
                      'host': self.host, 'file': self.filename}
@@ -85,7 +88,7 @@ class Gif(models.Model):
             img = image.imgFromUrl(self.getUrl())
             old_thumb_filename = "%s-%s" % (self.__original_host,
                                             self.__original_filename)
-            new_thumb_filename = "%s-%s" % (self.host, self.filename)
+            new_thumb_filename = self.getThumbFilename()
             image.saveThumb(img, new_thumb_filename)
             image.deleteThumb(old_thumb_filename)
         is_new = self.pk is None
@@ -97,6 +100,7 @@ class Gif(models.Model):
     
     def delete(self):
         modifyUserScore(self.user_added, -2)
+        image.deleteThumb(self.getThumbFilename())
         super(Gif, self).delete()
     
     class Meta:

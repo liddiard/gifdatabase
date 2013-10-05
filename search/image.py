@@ -39,8 +39,8 @@ def saveThumb(img, filename, size=THUMB_SIZE):
     conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
     b = conn.get_bucket(AWS_STORAGE_BUCKET_NAME)
     k = b.new_key('%s/%s.jpg' % (THUMB_DIR, filename))
-    k.set_acl('public-read')
     k.set_contents_from_string(img_data.getvalue(), {'Content-Type': 'image/jpeg'})
+    k.set_acl('public-read')
     return filename+'.jpg'
 
 def deleteThumb(filename):
