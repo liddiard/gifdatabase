@@ -3,8 +3,8 @@
 {% block content %}
     <h2>Gifs</h2>
         {% for result in results %}
-            <a href="{{ result.gif.getUrl }}">
-                <img onload="$(this).fadeIn();" class="thumb" src="{{ result.gif.getThumbUrl }}" />
+            <a href="{{ result.gif.getUrl }}" rel="lightbox-results" title="{{ result.gif.tags.names  }}">
+                <img class="thumb" src="{{ result.gif.getThumbUrl }}" />
             </a>
         {% endfor %}
 {% endblock %}
