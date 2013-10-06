@@ -3,7 +3,11 @@
 {% block content %}
     <h2>Gifs</h2>
         {% for result in results %}
-            <a href="{{ result.gif.getUrl }}" rel="lightbox-results" title="{{ result.gif.tags.names  }}">
+            <a href="{{ result.gif.getUrl }}" rel="lightbox-results" title="
+					 {% for tag in result.gif.tags.names  %}
+					     &lt;span class='tag'&gt;{{ tag }}&lt;/span&gt;
+					 {% endfor %}
+					">
                 <img class="thumb" src="{{ result.gif.getThumbUrl }}" />
             </a>
         {% endfor %}

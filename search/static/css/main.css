@@ -24,3 +24,7 @@ a {
     .thumb:hover {
         opacity: 1;
     }
+
+.tag {
+	border: 1px solid red;
+}
