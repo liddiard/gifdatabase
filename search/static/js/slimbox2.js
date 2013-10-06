@@ -99,7 +99,7 @@
 	*/
 	$.fn.slimbox = function(_options, linkMapper, linksFilter) {
 		linkMapper = linkMapper || function(el) {
-			return [el.href, el.title];
+			return [el.href, el.getAttribute("data-tags")];
 		};
 
 		linksFilter = linksFilter || function() {
