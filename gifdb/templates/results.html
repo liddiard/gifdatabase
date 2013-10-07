@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Gifs</h2>
+    <div class="thumbs-list">
         {% for result in results %}
             <a href="{{ result.gif.getUrl }}" rel="lightbox-results" data-tags="
 					 {% for tag in result.gif.tags.names  %}
@@ -11,4 +11,5 @@
                 <img class="thumb" src="{{ result.gif.getThumbUrl }}" />
             </a>
         {% endfor %}
+	</div>
 {% endblock %}
