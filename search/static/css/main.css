@@ -41,3 +41,30 @@ a {
 	border-radius: 2px;
 }
 
+	.tag .btn {
+		opacity: 0.8;
+	}
+
+		.tag .btn:hover {
+			opacity: 1;
+		}
+
+.tag-confirm {
+	border: 1px solid #4c4;
+	background-color: rgba(0,255,0, 0.15);
+}
+
+.tag-confirmed {
+	border: 1px solid #0f0;
+	background-color: rgba(0,255,0, 0.25);
+}
+
+.tag-deny {
+	border: 1px solid #c44;
+	background-color: rgba(255,0,0, 0.15);
+}
+
+.tag-denied {
+	border: 1px solid #f00;
+	background-color: rgba(255,0,0, 0.25);
+}
