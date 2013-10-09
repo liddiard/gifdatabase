@@ -75,9 +75,8 @@
 }
 
 #lbCaption, #lbNumber {
-	margin-right: 71px;
+	/* margin-right: 71px; not sure why this is here... */
 }
 
 #lbCaption {
-	font-weight: bold;
 }

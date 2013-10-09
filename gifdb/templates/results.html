@@ -5,7 +5,7 @@
         {% for result in results %}
             <a href="{{ result.gif.getUrl }}" rel="lightbox-results" data-tags="
 					 {% for tag in result.gif.tags.names  %}
-					     &lt;span class='tag'&gt;{{ tag }}&lt;/span&gt;
+					     &lt;span class='tag'&gt;{{ tag }}&lt;img class='btn confirm'/&gt;&lt;img class='btn deny'/&gt;&lt;/span&gt;
 					 {% endfor %}
 					">
                 <img class="thumb" src="{{ result.gif.getThumbUrl }}" />
