@@ -39,7 +39,7 @@ a {
 	padding-right: 33px;
 	margin-bottom: 0.25em;
 	white-space: pre;
-	border: 1px solid #444;
+	border: 1px solid rgba(255,255,255, 0.25);
 	border-radius: 2px;
 	font-size: 1.3em;
 }
