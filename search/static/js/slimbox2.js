@@ -4,6 +4,8 @@
 	MIT-style license.
 */
 
+CAPTION_WIDTH = 220; //this makes me cry a little
+
 (function($) {
 
 	// Global variables, accessible to Slimbox only
@@ -60,8 +62,8 @@
 			resizeEasing: "swing",			// "swing" is jQuery's default easing
 			initialWidth: 250,			// Initial width of the box (in pixels)
 			initialHeight: 250,			// Initial height of the box (in pixels)
-			imageFadeDuration: 1,			// Duration of the image fade-in animation (in milliseconds)
-			captionAnimationDuration: 1,		// Duration of the caption animation (in milliseconds)
+			imageFadeDuration: 0,			// Duration of the image fade-in animation (in milliseconds)
+			captionAnimationDuration: 0,		// Duration of the caption animation (in milliseconds)
 			counterText: "gif {x} of {y}",	// Translate or change as you wish, or set it to false to disable counter text for image groups
 			closeKeys: [27, 88, 67],		// Array of keycodes to close Slimbox, default: Esc (27), 'x' (88), 'c' (67)
 			previousKeys: [37, 80],			// Array of keycodes to navigate to the previous image, default: Left arrow (37), 'p' (80)
@@ -210,7 +212,6 @@
 			$(center).animate({width: centerWidth, marginLeft: -centerWidth/2}, options.resizeDuration, options.resizeEasing);
 		}
 		$(center).queue(function() {
-            var CAPTION_WIDTH = 220;
 			$(bottomContainer).css({width: CAPTION_WIDTH, top: top, marginLeft: centerWidth/2, visibility: "hidden", display: ""});
 			$(image).css({display: "none", visibility: "", opacity: ""}).fadeIn(options.imageFadeDuration, animateCaption);
 		});
