@@ -210,7 +210,7 @@
 			$(center).animate({width: centerWidth, marginLeft: -centerWidth/2}, options.resizeDuration, options.resizeEasing);
 		}
 		$(center).queue(function() {
-            var CAPTION_WIDTH = 240;
+            var CAPTION_WIDTH = 220;
 			$(bottomContainer).css({width: CAPTION_WIDTH, top: top, marginLeft: centerWidth/2, visibility: "hidden", display: ""});
 			$(image).css({display: "none", visibility: "", opacity: ""}).fadeIn(options.imageFadeDuration, animateCaption);
 		});
