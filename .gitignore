@@ -1,3 +1,4 @@
 *.pyc
-gifdb/settings/local.py
 *.kate-swp
+*.swp
+gifdb/settings/local.py

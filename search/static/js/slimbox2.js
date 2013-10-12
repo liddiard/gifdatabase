@@ -210,7 +210,7 @@
 			$(center).animate({width: centerWidth, marginLeft: -centerWidth/2}, options.resizeDuration, options.resizeEasing);
 		}
 		$(center).queue(function() {
-			$(bottomContainer).css({width: centerWidth, top: top + centerHeight, marginLeft: -centerWidth/2, visibility: "hidden", display: ""});
+			$(bottomContainer).css({width: centerWidth, top: top, marginLeft: centerWidth/2, visibility: "hidden", display: ""});
 			$(image).css({display: "none", visibility: "", opacity: ""}).fadeIn(options.imageFadeDuration, animateCaption);
 		});
 	}
