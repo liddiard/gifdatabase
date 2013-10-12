@@ -210,7 +210,8 @@
 			$(center).animate({width: centerWidth, marginLeft: -centerWidth/2}, options.resizeDuration, options.resizeEasing);
 		}
 		$(center).queue(function() {
-			$(bottomContainer).css({width: centerWidth, top: top, marginLeft: centerWidth/2, visibility: "hidden", display: ""});
+            var CAPTION_WIDTH = 240;
+			$(bottomContainer).css({width: CAPTION_WIDTH, top: top, marginLeft: centerWidth/2, visibility: "hidden", display: ""});
 			$(image).css({display: "none", visibility: "", opacity: ""}).fadeIn(options.imageFadeDuration, animateCaption);
 		});
 	}
