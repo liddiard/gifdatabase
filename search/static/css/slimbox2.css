@@ -65,7 +65,7 @@
 }
 
 #lbCloseLink {
-	display: block;
+	display: none; /* TODO: remove from DOM */
 	float: right;
 	width: 66px;
 	height: 22px;
