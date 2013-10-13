@@ -41,7 +41,7 @@ a {
 	white-space: pre;
 	border: 1px solid rgba(255,255,255, 0.25);
 	border-radius: 2px;
-	font-size: 1.3em;
+	font-size: 1.5em;
 }
 
 	.tag .btn {
@@ -58,7 +58,7 @@ a {
 
 	.tag .confirm {
 		content: url('../img/tag-confirm.png');
-		margin: 2px 0 2px 1px;
+		padding: 2px 0 2px 1px;
 	}
 
 	.tag .deny {
