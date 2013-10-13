@@ -11,7 +11,8 @@ from taggit.models import TaggedItemBase, Tag
 from taggit.forms import TagWidget
 
 DEFAULT_USER_ID = 1
-HOST_CHOICES = (('ig', 'imgur'),)
+HOST_CHOICES = (('ig', 'imgur'),) # keys are ideally 2 letters,
+                                  # cannot start with a number
 
 def modifyUserScore(userObject, delta):
     u_score = UserScore.objects.get(user=userObject)
@@ -45,7 +46,7 @@ class Gif(models.Model):
         return izip(self.tags.slugs(), self.tags.names())
     
     def getHostDomain(self):
-        domain_list = {'ig': 'i.imgur.com', 'mi': 'minus.com'}
+        domain_list = {'ig': 'i.imgur.com'}
         return domain_list.get(self.host)
     
     def getUrl(self):
