@@ -14,9 +14,9 @@ def frontPage(request):
 
 def searchResults(request):
     query = request.GET['q']
-    queryset = engine.query(query)
+    results = engine.query(query)
     return render_to_response('results.html',
-                              {'results': queryset, 'S3_URL': S3_URL},
+                              {'results': results, 'S3_URL': S3_URL},
                               context_instance=RequestContext(request))
 
 def login(request):
