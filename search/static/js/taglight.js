@@ -225,25 +225,31 @@ CAPTION_WIDTH = 220; //this makes me cry a little
 		bottomContainer.style.visibility = "";
         
         /* bind stuff that happens with tags */
-        $('.tag > .confirm').hover(
-            function(){
-                $(this).parent().addClass('tag-confirm');},
-            function(){
-                $(this).parent().removeClass('tag-confirm');}
-        );
-        $('.tag > .deny').hover(
-            function(){
-                $(this).parent().addClass('tag-deny');},
-            function(){
-                $(this).parent().removeClass('tag-deny');}
-        );
+        function toggleClassOnHover(selector, cls) {
+            $(selector).hover(
+                function(){
+                    $(this).parent().addClass(cls);},
+                function(){
+                    $(this).parent().removeClass(cls);}
+            );
+        }
 
-        $('.tag > .confirm').click(function(){
-            $(this).parent().toggleClass('tag-confirmed');
-        });
-        $('.tag > .deny').click(function(){
-            $(this).parent().toggleClass('tag-denied');
-        });
+        toggleClassOnHover('.tag > .confirm', 'tag-confirm');
+        toggleClassOnHover('.tag > .deny', 'tag-deny');
+
+        function vote(instance, up) {
+            var tag = instance.parent();
+            var confirmed = "tag-confirmed";
+            var denied = "tag-denied";
+            if (!up && tag.hasClass(confirmed))
+                tag.removeClass(confirmed);
+            if (up && tag.hasClass(denied))
+                tag.removeClass(denied);
+            up ? tag.toggleClass(confirmed) : tag.toggleClass(denied);
+        }
+
+        $('.tag > .confirm').click(function(){return vote($(this), true);});
+        $('.tag > .deny').click(function(){return vote($(this), false);});
 	}
 
 	function stop() {
