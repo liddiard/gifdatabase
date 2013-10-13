@@ -1,3 +1,4 @@
+from itertools import izip
 from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
@@ -39,6 +40,9 @@ class Gif(models.Model):
     def listTags(self):
         return ', '.join(self.tags.names())
     listTags.short_description = "tags"
+
+    def zipSlugsTags(self):
+        return izip(self.tags.slugs(), self.tags.names())
     
     def getHostDomain(self):
         domain_list = {'ig': 'i.imgur.com', 'mi': 'minus.com'}
