@@ -6,6 +6,7 @@
 */
 
 CAPTION_WIDTH = 220; //this makes me cry a little
+votes = {};
 
 (function($) {
 
@@ -219,12 +220,23 @@ CAPTION_WIDTH = 220; //this makes me cry a little
 	}
 
 	function animateCaption() {
+        /* have we already voted on this tag during this page load? color tags accordingly. */
+        $('.tag').each(function(){
+            var id = $(this).attr('id');
+            var vote = votes[id];
+            if (vote != undefined)
+                if (vote)
+                    $(this).addClass("tag-confirmed");
+                else
+                    $(this).addClass("tag-denied");
+        });
+
 		if (prevImage >= 0) $(prevLink).show();
 		if (nextImage >= 0) $(nextLink).show();
 		$(bottom).css("marginTop", -bottom.offsetHeight).animate({marginTop: 0}, options.captionAnimationDuration);
 		bottomContainer.style.visibility = "";
-        
-        /* bind stuff that happens with tags */
+       
+        /* tag voting */
         function toggleClassOnHover(selector, cls) {
             $(selector).hover(
                 function(){
@@ -241,6 +253,7 @@ CAPTION_WIDTH = 220; //this makes me cry a little
             var tag = instance.parent();
             var confirmed = "tag-confirmed";
             var denied = "tag-denied";
+            votes[tag.attr('id')] = up;
             if (!up && tag.hasClass(confirmed))
                 tag.removeClass(confirmed);
             if (up && tag.hasClass(denied))
