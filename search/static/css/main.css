@@ -68,21 +68,21 @@ a {
 	}
 
 .tag-confirm {
-	border: 1px solid #4c4;
-	background-color: rgba(0,255,0, 0.15);
+	border: 1px solid rgba(0,255,0, 0.5);
+	background-color: rgba(0,255,0, 0.1);
+}
+
+.tag-deny {
+	border: 1px solid rgba(255,0,0, 0.5);
+	background-color: rgba(255,0,0, 0.1);
 }
 
 .tag-confirmed {
 	border: 1px solid #0f0;
-	background-color: rgba(0,255,0, 0.25);
-}
-
-.tag-deny {
-	border: 1px solid #c44;
-	background-color: rgba(255,0,0, 0.15);
+	background-color: rgba(0,255,0, 0.2);
 }
 
 .tag-denied {
 	border: 1px solid #f00;
-	background-color: rgba(255,0,0, 0.25);
+	background-color: rgba(255,0,0, 0.2);
 }

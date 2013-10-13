@@ -1,5 +1,6 @@
 /*!
-	Slimbox v2.05 - The ultimate lightweight Lightbox clone for jQuery
+	Taglight - an extension of:
+    Slimbox v2.05 - The ultimate lightweight Lightbox clone for jQuery
 	(c) 2007-2013 Christophe Beyls <http://www.digitalia.be>
 	MIT-style license.
 */
@@ -222,6 +223,27 @@ CAPTION_WIDTH = 220; //this makes me cry a little
 		if (nextImage >= 0) $(nextLink).show();
 		$(bottom).css("marginTop", -bottom.offsetHeight).animate({marginTop: 0}, options.captionAnimationDuration);
 		bottomContainer.style.visibility = "";
+        
+        /* bind stuff that happens with tags */
+        $('.tag > .confirm').hover(
+            function(){
+                $(this).parent().addClass('tag-confirm');},
+            function(){
+                $(this).parent().removeClass('tag-confirm');}
+        );
+        $('.tag > .deny').hover(
+            function(){
+                $(this).parent().addClass('tag-deny');},
+            function(){
+                $(this).parent().removeClass('tag-deny');}
+        );
+
+        $('.tag > .confirm').click(function(){
+            $(this).parent().toggleClass('tag-confirmed');
+        });
+        $('.tag > .deny').click(function(){
+            $(this).parent().toggleClass('tag-denied');
+        });
 	}
 
 	function stop() {
