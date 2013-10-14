@@ -249,16 +249,39 @@ votes = {};
         toggleClassOnHover('.tag > .confirm', 'tag-confirm');
         toggleClassOnHover('.tag > .deny', 'tag-deny');
 
+        function ajaxTagVote(gif, tag, up) {
+            $.ajax({
+                type: "POST",
+                url: "/vote/",
+                data: {
+                    csrfmiddlewaretoken: getCookie('csrftoken'); 
+                    gif: gif, //filename
+                    tag: tag, //slug
+                    up: up //boolean
+                },
+                success: function(data) {
+                    console.log(data);
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    alert("Please report this error: "+errorThrown+xhr.status+xhr.responseText);
+                }
+            }); 
+        }
+
         function vote(instance, up) {
             var tag = instance.parent();
-            var confirmed = "tag-confirmed";
-            var denied = "tag-denied";
+            var cls_confirmed = "tag-confirmed";
+            var cls_denied = "tag-denied";
+            var has_confirmed = tag.hasClass(confirmed);
+            var has_denied = tag.hasClass(denied);
+            if (up && is_confirmed || !up && has_denied)
+                return // don't do anything because nothing's changed
             votes[tag.attr('id')] = up;
-            if (!up && tag.hasClass(confirmed))
-                tag.removeClass(confirmed);
-            if (up && tag.hasClass(denied))
-                tag.removeClass(denied);
-            up ? tag.toggleClass(confirmed) : tag.toggleClass(denied);
+            if (!up && has_confirmed)
+                tag.removeClass(cls_confirmed);
+            else if (up && has_denied)
+                tag.removeClass(cls_denied);
+            up ? tag.toggleClass(cls_confirmed) : tag.toggleClass(cls_denied);
         }
 
         $('.tag > .confirm').click(function(){return vote($(this), true);});
