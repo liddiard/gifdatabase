@@ -268,19 +268,28 @@ votes = {};
             }); 
         }
 
+        function splitTagId(id) {
+            var re = /([^_]+)_(\S+)/;
+            return id.match(re); // index 0 is everything, indexes 1 and 2 are filename and slug, respectively
+        }
+
         function vote(instance, up) {
             var tag = instance.parent();
+            var tag_id = tag.attr('id');
             var cls_confirmed = "tag-confirmed";
             var cls_denied = "tag-denied";
-            var has_confirmed = tag.hasClass(confirmed);
-            var has_denied = tag.hasClass(denied);
-            if (up && is_confirmed || !up && has_denied)
-                return // don't do anything because nothing's changed
-            votes[tag.attr('id')] = up;
-            if (!up && has_confirmed)
+            var is_confirmed = votes[tag_id];
+            if (is_confirmed !== undefined) {
+                if (up && is_confirmed || !up && !is_confirmed)
+                    return; // don't do anything because nothing's changed
+            }
+            votes[tag_id] = up;
+            if (!up && is_confirmed)
                 tag.removeClass(cls_confirmed);
-            else if (up && has_denied)
+            else if (up && is_denied)
                 tag.removeClass(cls_denied);
+            var tag_id_split = splitTagId(tag_id);
+            ajaxTagVote(tag_id_split[1], tag_id_split[2], up);
             up ? tag.toggleClass(cls_confirmed) : tag.toggleClass(cls_denied);
         }
 
