@@ -254,7 +254,7 @@ votes = {};
                 type: "POST",
                 url: "/vote/",
                 data: {
-                    csrfmiddlewaretoken: getCookie('csrftoken'); 
+                    csrfmiddlewaretoken: getCookie('csrftoken'), 
                     gif: gif, //filename
                     tag: tag, //slug
                     up: up //boolean
@@ -282,12 +282,13 @@ votes = {};
             if (is_confirmed !== undefined) {
                 if (up && is_confirmed || !up && !is_confirmed)
                     return; // don't do anything because nothing's changed
+                // at this point, is_confirmed is either true or false
+                if (!up && is_confirmed)
+                    tag.removeClass(cls_confirmed);
+                else if (up && !is_confirmed)
+                    tag.removeClass(cls_denied);
             }
             votes[tag_id] = up;
-            if (!up && is_confirmed)
-                tag.removeClass(cls_confirmed);
-            else if (up && is_denied)
-                tag.removeClass(cls_denied);
             var tag_id_split = splitTagId(tag_id);
             ajaxTagVote(tag_id_split[1], tag_id_split[2], up);
             up ? tag.toggleClass(cls_confirmed) : tag.toggleClass(cls_denied);
