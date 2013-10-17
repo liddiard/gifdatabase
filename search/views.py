@@ -76,6 +76,7 @@ def ajaxTagVote(request):
             set = request.POST['set']
         except KeyError:
             return HttpResponse('Error') # incorrect post
-        return HttpResponse("tag id: %s | set: %s" % (tag, set))
+        user = request.user
+        return HttpResponse("user: %s | tag id: %s | set: %s" % (user, tag, set))
     else:
         raise Http404

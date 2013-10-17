@@ -222,7 +222,7 @@ votes = {};
 	function animateCaption() {
         /* have we already voted on this tag during this page load? color tags accordingly. */
         $('.tag').each(function(){
-            var id = $(this).attr('id');
+            var id = $(this).attr('data-tag');
             var vote = votes[id];
             if (vote != undefined)
                 if (vote)
