@@ -72,11 +72,10 @@ def logout(request):
 def ajaxTagVote(request):
     if request.is_ajax():
         try:
-            gif = request.POST['gif']
             tag = request.POST['tag']
-            up = request.POST['up']
+            set = request.POST['set']
         except KeyError:
             return HttpResponse('Error') # incorrect post
-        return HttpResponse("gif: %s, tag: %s, up: %s" % (gif, tag, up))
+        return HttpResponse("tag id: %s | set: %s" % (tag, set))
     else:
         raise Http404

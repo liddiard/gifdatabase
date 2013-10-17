@@ -249,15 +249,14 @@ votes = {};
         toggleClassOnHover('.tag > .confirm', 'tag-confirm');
         toggleClassOnHover('.tag > .deny', 'tag-deny');
 
-        function ajaxTagVote(gif, tag, up) {
+        function ajaxTagVote(tag, set) {
             $.ajax({
                 type: "POST",
-                url: "/vote/",
+                url: "/api/vote/",
                 data: {
                     csrfmiddlewaretoken: getCookie('csrftoken'), 
-                    gif: gif, //filename
-                    tag: tag, //slug
-                    up: up //boolean
+                    tag: tag, // tag.id
+                    set: set // -1 for downvote, 0 for no vote, 1 for upvote
                 },
                 success: function(data) {
                     console.log(data);
@@ -268,30 +267,47 @@ votes = {};
             }); 
         }
 
-        function splitTagId(id) {
-            var re = /([^_]+)_(\S+)/;
-            return id.match(re); // index 0 is everything, indexes 1 and 2 are filename and slug, respectively
-        }
-
         function vote(instance, up) {
+            function unset(tag, id, cls) {
+                ajaxTagVote(id, 0);
+                delete votes[tag_id];
+                tag.removeClass(cls);
+            }
             var tag = instance.parent();
-            var tag_id = tag.attr('id');
+            var tag_id = tag.attr('data-tag');
             var cls_confirmed = "tag-confirmed";
             var cls_denied = "tag-denied";
             var is_confirmed = votes[tag_id];
-            if (is_confirmed !== undefined) {
-                if (up && is_confirmed || !up && !is_confirmed)
-                    return; // don't do anything because nothing's changed
-                // at this point, is_confirmed is either true or false
-                if (!up && is_confirmed)
+            if (is_confirmed === undefined) { // currently neither confirmed nor denied
+                if (up) {
+                    ajaxTagVote(tag_id, 1);
+                    tag.addClass(cls_confirmed);
+                } else {
+                    ajaxTagVote(tag_id, -1);
+                    tag.addClass(cls_denied);
+                }
+                votes[tag_id] = up;
+            } 
+            else if (is_confirmed) { // currently confirmed
+                if (up) {
+                    unset(tag, tag_id, cls_confirmed);
+                } else {
+                    ajaxTagVote(tag_id, -1);
                     tag.removeClass(cls_confirmed);
-                else if (up && !is_confirmed)
-                    tag.removeClass(cls_denied);
+                    tag.addClass(cls_denied);
+                    votes[tag_id] = up;
+                }
             }
-            votes[tag_id] = up;
-            var tag_id_split = splitTagId(tag_id);
-            ajaxTagVote(tag_id_split[1], tag_id_split[2], up);
-            up ? tag.toggleClass(cls_confirmed) : tag.toggleClass(cls_denied);
+            else { // currently denied
+                if (up) {
+                    ajaxTagVote(tag_id, 1);
+                    tag.removeClass(cls_denied);
+                    tag.addClass(cls_confirmed);
+                    votes[tag_id] = up;
+                } else {
+                    unset(tag, tag_id, cls_denied);
+                }
+            }
         }
 
         $('.tag > .confirm').click(function(){return vote($(this), true);});
