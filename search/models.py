@@ -264,10 +264,11 @@ class TagVote(models.Model):
             vote = "up"
         else:
             vote = "down"
-        return "%s: %s on %s" % (self.user, vote, self.tag.name)
+        return "%s: %s on \"%s\"" % (self.user, vote, self.tag.tag)
 
 class TagVoteAdmin(admin.ModelAdmin):
-    list_display = ('up', 'tag', 'user')
+    list_display = ('user', 'tag', 'up')
+    list_filter = ('user', 'tag')
 admin.site.register(TagVote, TagVoteAdmin)
 
 class UserFavorite(models.Model):

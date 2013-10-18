@@ -9,7 +9,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 
 from search import engine
 from gifdb.settings.base import S3_URL
-from search.models import User, UserFavorite, Gif, TagInstance, UserScore
+from search.models import User, UserFavorite, Gif, TagInstance, UserScore, TagVote
 
 def frontPage(request):
     return render_to_response('front.html', {'S3_URL': S3_URL},
@@ -70,17 +70,39 @@ def logout(request):
         return redirect('main')
 
 def ajaxTagVote(request):
+    def safeVote(user, tag, up):
+        try: # TODO: enforce m2m uniqueness on model validation as well
+            tv = TagVote.objects.filter(user=user).get(tag=tag)
+            tv.up = up
+        except TagVote.DoesNotExist:
+            tv = TagVote(user=user, tag=tag, up=up)
+        finally:
+            tv.save()
     if request.is_ajax():
         if request.user.is_authenticated():
+            user = request.user
             try:
                 tag_id = request.POST['tag']
                 set = request.POST['set']
             except KeyError:
-                return HttpResponse("KeyError: necessary keys not found") # incorrect post
+                return HttpResponse("KeyError: necessary keys not found")
             try:
                 tag = TagInstance.objects.get(pk=tag_id)
             except TagInstance.DoesNotExist:
-                return HttpResponse("DoesNotExist: tag id %s was not found" % tag_id)
+                return HttpResponse("DoesNotExist: tag with id %s was not found"
+                                    % tag_id)
+            set = int(set)
+            if set > 0:
+                safeVote(user, tag, True)
+            elif set < 0:
+                safeVote(user, tag, False)
+            else:
+                try:
+                    tv = TagVote.objects.filter(user=user).filter(tag=tag)
+                    tv.delete()
+                except TagVote.DoesNotExist:
+                    return HttpResponse("DoesNotExist: could not unset TagVote \
+                                         because TagVote doesn't exist")
             return HttpResponse("user: %s | tag id: %s | tag name: %s | set: %s" % (request.user, tag.pk, tag.tag, set))
         else:
             return HttpResponse("AuthenticationError: user is not authenticated")
