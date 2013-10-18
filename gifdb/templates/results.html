@@ -4,8 +4,8 @@
     <div class="thumbs-list">
         {% for result in results %}
             <a href="{{ result.gif.getUrl }}" rel="lightbox-results" data-tags="
-					 {% for id, tag in result.gif.idsTags %}
-					     &lt;span class='tag' data-tag='{{ id }}'&gt;{{ tag }}&lt;img class='btn confirm'/&gt;&lt;img class='btn deny'/&gt;&lt;/span&gt;
+					 {% for pk, tag in result.gif.pksTags %}
+					     &lt;span class='tag' data-tag='{{ pk }}'&gt;{{ tag }}&lt;img class='btn confirm'/&gt;&lt;img class='btn deny'/&gt;&lt;/span&gt;
 					 {% endfor %}
 					">
                 <img class="thumb" src="{{ result.gif.getThumbUrl }}" />

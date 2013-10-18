@@ -71,12 +71,18 @@ def logout(request):
 
 def ajaxTagVote(request):
     if request.is_ajax():
-        try:
-            tag = request.POST['tag']
-            set = request.POST['set']
-        except KeyError:
-            return HttpResponse('Error') # incorrect post
-        user = request.user
-        return HttpResponse("user: %s | tag id: %s | set: %s" % (user, tag, set))
+        if request.user.is_authenticated():
+            try:
+                tag_id = request.POST['tag']
+                set = request.POST['set']
+            except KeyError:
+                return HttpResponse("KeyError: necessary keys not found") # incorrect post
+            try:
+                tag = TagInstance.objects.get(pk=tag_id)
+            except TagInstance.DoesNotExist:
+                return HttpResponse("DoesNotExist: tag id %s was not found" % tag_id)
+            return HttpResponse("user: %s | tag id: %s | tag name: %s | set: %s" % (request.user, tag.pk, tag.tag, set))
+        else:
+            return HttpResponse("AuthenticationError: user is not authenticated")
     else:
         raise Http404

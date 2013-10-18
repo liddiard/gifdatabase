@@ -42,8 +42,8 @@ class Gif(models.Model):
         return ', '.join(self.tags.names())
     listTags.short_description = "tags"
 
-    def idsTags(self):
-        return [(tag.id, tag.name) for tag in self.tags.all()]
+    def pksTags(self):
+        return [(tag.pk, tag.tag) for tag in TagInstance.objects.filter(content_object_id=self.id)]
     
     def getHostDomain(self):
         domain_list = {'ig': 'i.imgur.com'}
