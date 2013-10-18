@@ -220,22 +220,48 @@ votes = {};
 	}
 
 	function animateCaption() {
-        /* have we already voted on this tag during this page load? color tags accordingly. */
-        function ajaxGetTags() {
-            $('.tag').each(function(){
+        
+        function ajaxPost(params, endpoint, callback_success) {
+            params.csrfmiddlewaretoken = getCookie('csrftoken');
+            $.ajax({
+                type: "POST",
+                url: endpoint,
+                data: params,
+                success: callback_success,
+                error: function(xhr, textStatus, errorThrown) {
+                    alert("Please report this error: "+errorThrown+xhr.status+xhr.responseText);
+                }
+            }); 
+        }
 
+        /* have we already voted on this tag during this page load? color tags accordingly. */
+        function ajaxGetTagVotes() {
+            $('.tag').each(function(){
+                var tag_id = $(this).attr('data-tag');
+                ajaxPost({tag: tag_id}, "/api/get-tagvote/", ajaxInterpretTagVote);
             });
         }
 
-        $('.tag').each(function(){
-            var id = $(this).attr('data-tag');
-            var vote = votes[id];
-            if (vote != undefined)
-                if (vote)
-                    $(this).addClass("tag-confirmed");
+        function ajaxInterpretTagVote(tagvote) {
+            console.log(tagvote);
+            tag = tagvote.split('|')[0]
+            v = tagvote.split('|')[1]
+            elem = $('.tag[data-tag='+tag+']');
+            if (v !== "0") {
+                if (v === "1") {
+                    votes[tag] = true;
+                    elem.addClass("tag-confirmed");
+                }
+                else if (v === "-1") {
+                    votes[tag] = false;
+                    elem.addClass("tag-denied");
+                }
                 else
-                    $(this).addClass("tag-denied");
-        });
+                    console.error("GetTagVoteError: server did not return a valid TagVote");
+            }
+        }
+
+        ajaxGetTagVotes();
 
 		if (prevImage >= 0) $(prevLink).show();
 		if (nextImage >= 0) $(nextLink).show();
@@ -255,26 +281,13 @@ votes = {};
         toggleClassOnHover('.tag > .confirm', 'tag-confirm');
         toggleClassOnHover('.tag > .deny', 'tag-deny');
 
-        function ajaxPost(params, url) {
-            params.csrfmiddlewaretoken = getCookie('csrftoken');
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: params,
-                success: function(data) {
-                    console.log(data);
-                },
-                error: function(xhr, textStatus, errorThrown) {
-                    alert("Please report this error: "+errorThrown+xhr.status+xhr.responseText);
-                }
-            }); 
-        }
-
         function ajaxTagVote(tag, set) {
             return ajaxPost({
                 tag: tag, // tag.id
                 set: set // -1 for downvote, 0 for no vote, 1 for upvote
-            }, "/api/vote");
+            }, "/api/vote/",
+            function(data) {console.log(data);}
+            );
         }
 
         function vote(instance, up) {
@@ -320,8 +333,8 @@ votes = {};
             }
         }
 
-        $('.tag > .confirm').click(function(){return vote($(this), true);});
-        $('.tag > .deny').click(function(){return vote($(this), false);});
+        $('.tag > .confirm').click(function(){vote($(this), true);});
+        $('.tag > .deny').click(function(){vote($(this), false);});
 	}
 
 	function stop() {

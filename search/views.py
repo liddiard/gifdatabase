@@ -108,3 +108,24 @@ def ajaxTagVote(request):
             return HttpResponse("AuthenticationError: user is not authenticated")
     else:
         raise Http404
+
+def ajaxGetTagVote(request):
+    if request.is_ajax():
+        if request.user.is_authenticated():
+            user = request.user
+            try:
+                tag_id = request.POST['tag']
+            except KeyError:
+                return HttpResponse("KeyError: necessary keys not found")
+            try:
+                tv = TagVote.objects.filter(user=user).get(tag=tag_id)
+            except TagVote.DoesNotExist:
+                return HttpResponse("%s|0" % tag_id)
+            if tv.up:
+                return HttpResponse("%s|1" % tag_id)
+            else:
+                return HttpResponse("%s|-1" % tag_id)
+        else:
+            return HttpResponse("AuthenticationError: user is not authenticated")
+    else:
+        raise Http404
