@@ -243,9 +243,9 @@ votes = {};
         }
 
         function ajaxInterpretTagVote(tagvote) {
-            console.log(tagvote);
-            tag = tagvote.split('|')[0]
-            v = tagvote.split('|')[1]
+            data = tagvote.split('|');
+            tag = data[0];
+            v = data[1];
             elem = $('.tag[data-tag='+tag+']');
             if (v !== "0") {
                 if (v === "1") {
