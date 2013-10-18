@@ -226,6 +226,7 @@ votes = {};
 
             });
         }
+
         $('.tag').each(function(){
             var id = $(this).attr('data-tag');
             var vote = votes[id];
@@ -254,11 +255,11 @@ votes = {};
         toggleClassOnHover('.tag > .confirm', 'tag-confirm');
         toggleClassOnHover('.tag > .deny', 'tag-deny');
 
-        function ajaxPost(params) {
+        function ajaxPost(params, url) {
             params.csrfmiddlewaretoken = getCookie('csrftoken');
             $.ajax({
                 type: "POST",
-                url: "/api/vote/",
+                url: url,
                 data: params,
                 success: function(data) {
                     console.log(data);
@@ -273,7 +274,7 @@ votes = {};
             return ajaxPost({
                 tag: tag, // tag.id
                 set: set // -1 for downvote, 0 for no vote, 1 for upvote
-            });
+            }, "/api/vote");
         }
 
         function vote(instance, up) {
