@@ -221,6 +221,11 @@ votes = {};
 
 	function animateCaption() {
         /* have we already voted on this tag during this page load? color tags accordingly. */
+        function ajaxGetTags() {
+            $('.tag').each(function(){
+
+            });
+        }
         $('.tag').each(function(){
             var id = $(this).attr('data-tag');
             var vote = votes[id];
@@ -249,15 +254,12 @@ votes = {};
         toggleClassOnHover('.tag > .confirm', 'tag-confirm');
         toggleClassOnHover('.tag > .deny', 'tag-deny');
 
-        function ajaxTagVote(tag, set) {
+        function ajaxPost(params) {
+            params.csrfmiddlewaretoken = getCookie('csrftoken');
             $.ajax({
                 type: "POST",
                 url: "/api/vote/",
-                data: {
-                    csrfmiddlewaretoken: getCookie('csrftoken'), 
-                    tag: tag, // tag.id
-                    set: set // -1 for downvote, 0 for no vote, 1 for upvote
-                },
+                data: params,
                 success: function(data) {
                     console.log(data);
                 },
@@ -265,6 +267,13 @@ votes = {};
                     alert("Please report this error: "+errorThrown+xhr.status+xhr.responseText);
                 }
             }); 
+        }
+
+        function ajaxTagVote(tag, set) {
+            return ajaxPost({
+                tag: tag, // tag.id
+                set: set // -1 for downvote, 0 for no vote, 1 for upvote
+            });
         }
 
         function vote(instance, up) {
