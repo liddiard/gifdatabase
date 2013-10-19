@@ -7,7 +7,7 @@ from search import image
 from gifdb.settings.base import S3_URL
 
 from taggit.managers import TaggableManager
-from taggit.models import TaggedItemBase, Tag
+from taggit.models import TaggedItemBase
 from taggit.forms import TagWidget
 
 DEFAULT_USER_ID = 1
