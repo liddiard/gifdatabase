@@ -7,6 +7,7 @@
 					 {% for pk, tag in result.gif.pksTags %}
 					     &lt;span class='tag' data-tag='{{ pk }}'&gt;{{ tag }}&lt;img class='btn confirm'/&gt;&lt;img class='btn deny'/&gt;&lt;/span&gt;
 					 {% endfor %}
+                     &lt;input class='tag-add' data-gif='{{ result.gif.pk }}'/&gt;
 					">
                 <img class="thumb" src="{{ result.gif.getThumbUrl }}" />
             </a>

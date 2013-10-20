@@ -333,6 +333,8 @@ votes = {};
             }
         }
 
+        $('.tag-add').tagsInput().focus();
+
         $('.tag > .confirm').click(function(){vote($(this), true);});
         $('.tag > .deny').click(function(){vote($(this), false);});
 	}
