@@ -10,6 +10,10 @@
 					">
                 <img class="thumb" src="{{ result.gif.getThumbUrl }}" />
             </a>
+            {{ result.form }}
         {% endfor %}
 	</div>
+    <script>
+        $('#id_tags').tagsInput();
+    </script>
 {% endblock %}

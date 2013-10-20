@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.forms import ModelForm
 from search import image
 from gifdb.settings.base import S3_URL
 
@@ -299,3 +300,8 @@ class UserFavorite(models.Model):
 class UserFavoriteAdmin(admin.ModelAdmin):
     list_display = ('user', 'gif', 'date_favorited')
 admin.site.register(UserFavorite, UserFavoriteAdmin)
+
+class TagForm(ModelForm):
+    class Meta:
+        model = Gif
+        fields = ['tags']

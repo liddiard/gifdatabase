@@ -9,7 +9,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 
 from search import engine
 from gifdb.settings.base import S3_URL
-from search.models import User, UserFavorite, Gif, TagInstance, UserScore, TagVote
+from search.models import User, UserFavorite, Gif, TagInstance, UserScore, TagVote, TagForm
 
 def frontPage(request):
     return render_to_response('front.html', {'S3_URL': S3_URL},
@@ -18,6 +18,8 @@ def frontPage(request):
 def searchResults(request):
     query = request.GET['q']
     results = engine.query(query)
+    for result in results:
+        result.form = TagForm(instance=result.gif)
     return render_to_response('results.html',
                               {'results': results, 'S3_URL': S3_URL},
                               context_instance=RequestContext(request))
