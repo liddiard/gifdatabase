@@ -1,0 +1,90 @@
+.tag {
+	position: relative;
+	display: inline-block;
+	color: white;
+	background-color: rgba(0,0,0, 0.5);
+	padding: 0.25em;
+	padding-right: 33px;
+	margin-bottom: 0.25em;
+	white-space: pre;
+	border: 1px solid rgba(255,255,255, 0.25);
+	border-radius: 2px;
+	font-size: 1.5em;
+}
+
+	.tag .btn {
+		position: absolute;
+		bottom: 0; top: 0;
+		margin: auto;
+		cursor: pointer;
+		opacity: 0.8;
+	}
+
+		.tag .btn:hover {
+			opacity: 1;
+		}
+
+	.tag .confirm {
+		content: url('../img/tag-confirm.png');
+		padding: 2px 0 2px 1px;
+	}
+
+	.tag .deny {
+		content: url('../img/tag-deny.png');
+		margin-left: 16px;
+		padding: 2px 2px 2px 0;
+	}
+
+.tag-confirm {
+	border: 1px solid rgba(0,255,0, 0.5);
+	background-color: rgba(0,255,0, 0.1);
+}
+
+.tag-deny {
+	border: 1px solid rgba(255,0,0, 0.5);
+	background-color: rgba(255,0,0, 0.1);
+}
+
+.tag-confirmed {
+	border: 1px solid #0f0;
+	background-color: rgba(0,255,0, 0.2);
+}
+
+.tag-denied {
+	border: 1px solid #f00;
+	background-color: rgba(255,0,0, 0.2);
+}
+
+.tag-add {
+    background-color: rgba(0,0,0, 0.5);
+    color: white;
+    border: 1px solid rgba(255,255,255, 0.25);
+    border-radius: 2px;
+    font-size: 1.5em;
+    padding: 0.25em;
+    margin: 0;
+    width: 220px;
+}
+
+div.tagsinput {
+}
+
+div.tagsinput span.tag {
+    border: 1px solid rgba(0,0,255, 0.5);
+    background: rgba(0,0,255, 0.1);
+}
+
+div.tagsinput span.tag a {
+    content: url('../img/tag-deny.png');
+    margin-left: 16px;
+    padding: 2px 2px 2px 0;
+}
+
+div.tagsinput div {
+}
+ 
+.tags_clear {
+}
+
+.not_valid {
+}
