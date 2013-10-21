@@ -69,4 +69,5 @@
 .user-added {
     border: 1px solid rgba(0,0,255, 0.5);
     background: rgba(0,0,255, 0.1);
+    padding-right: 0.25em;
 }

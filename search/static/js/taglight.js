@@ -321,18 +321,28 @@ votes = {};
         }
 
         function tagAdd(elem) {
-            elem.keypress(function(event) {
-                if (event.which == 13) { // ENTER key
-                    event.preventDefault();
-                    var content = elem.val();
-                    elem.val('');
-                    var new_tag = $('<span/>', {
-                        text: content,
-                        class: 'user-added tag'
-                    });
-                    new_tag.insertBefore(elem);
+            elem.keydown(function(event) {
+                if (event.which == 9) {
+                    createTag();
                 }
             });
+
+            elem.keypress(function(event) {
+                if (event.which == 13 || event.which == 44) { // tab, enter, and comma, respectively
+                    createTag();
+                }
+            });
+
+            function createTag() {
+                event.preventDefault();
+                var content = elem.val();
+                elem.val('');
+                var new_tag = $('<span/>', {
+                    text: content,
+                    class: 'user-added tag'
+                });
+                new_tag.insertBefore(elem);
+            }
         }
 
         var tag_add = $('.tag-add');
