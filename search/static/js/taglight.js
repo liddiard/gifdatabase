@@ -6,7 +6,7 @@
 */
 
 CAPTION_WIDTH = 220; //this makes me cry a little
-votes = {};
+votes = tags = {};
 
 (function($) {
 
