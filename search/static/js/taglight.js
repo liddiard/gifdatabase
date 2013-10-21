@@ -342,6 +342,10 @@ votes = {};
                     class: 'user-added tag'
                 });
                 new_tag.insertBefore(elem);
+                $('<img/>', {
+                    class: 'btn erase'
+                }).appendTo(new_tag);
+                toggleClassOnHover('.tag > .erase', 'tag-deny');
             }
         }
 

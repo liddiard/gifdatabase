@@ -1,15 +1,22 @@
 .tag {
 	position: relative;
-	display: inline-block;
+	display: block;
+    float: left;
+    margin: 0 0.25em 0.25em 0;
 	color: white;
 	background-color: rgba(0,0,0, 0.5);
 	padding: 0.25em;
-	padding-right: 33px;
-	margin-bottom: 0.25em;
+	padding-right: 42px;
 	white-space: pre;
 	border: 1px solid rgba(255,255,255, 0.25);
 	border-radius: 2px;
 	font-size: 1.5em;
+}
+
+.user-added {
+    border: 1px solid rgba(0,0,255, 0.5);
+    background: rgba(0,0,255, 0.1);
+    padding-right: 27px;
 }
 
 	.tag .btn {
@@ -31,9 +38,14 @@
 
 	.tag .deny {
 		content: url('../img/tag-deny.png');
-		margin-left: 16px;
+		margin-left: 20px;
 		padding: 2px 2px 2px 0;
 	}
+
+    .tag .erase {
+        content: url('../img/tag-erase.png');
+        padding: 2px 2px 2px 3px;
+    }
 
 .tag-confirm {
 	border: 1px solid rgba(0,255,0, 0.5);
@@ -66,8 +78,3 @@
     width: 220px;
 }
 
-.user-added {
-    border: 1px solid rgba(0,0,255, 0.5);
-    background: rgba(0,0,255, 0.1);
-    padding-right: 0.25em;
-}
