@@ -221,20 +221,7 @@ votes = {};
 
 	function animateCaption() {
         
-        function ajaxPost(params, endpoint, callback_success) {
-            params.csrfmiddlewaretoken = getCookie('csrftoken');
-            $.ajax({
-                type: "POST",
-                url: endpoint,
-                data: params,
-                success: callback_success,
-                error: function(xhr, textStatus, errorThrown) {
-                    alert("Please report this error: "+errorThrown+xhr.status+xhr.responseText);
-                }
-            }); 
-        }
-
-        /* have we already voted on this tag during this page load? color tags accordingly. */
+        /* have we already voted on this tag? color tags accordingly. */
         function ajaxGetTagVotes() {
             $('.tag').each(function(){
                 var tag_id = $(this).attr('data-tag');
@@ -333,7 +320,24 @@ votes = {};
             }
         }
 
-        $('.tag-add').tagsInput().focus();
+        function tagAdd(elem) {
+            elem.keypress(function(event) {
+                if (event.which == 13) { // ENTER key
+                    event.preventDefault();
+                    var content = elem.val();
+                    elem.val('');
+                    var new_tag = $('<span/>', {
+                        text: content,
+                        class: 'user-added tag'
+                    });
+                    new_tag.insertBefore(elem);
+                }
+            });
+        }
+
+        var tag_add = $('.tag-add');
+        tag_add.focus();
+        tagAdd(tag_add);
 
         $('.tag > .confirm').click(function(){vote($(this), true);});
         $('.tag > .deny').click(function(){vote($(this), false);});

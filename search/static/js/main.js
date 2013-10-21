@@ -17,3 +17,16 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+function ajaxPost(params, endpoint, callback_success) {
+    params.csrfmiddlewaretoken = getCookie('csrftoken');
+    $.ajax({
+        type: "POST",
+        url: endpoint,
+        data: params,
+        success: callback_success,
+        error: function(xhr, textStatus, errorThrown) {
+            alert("Please report this error: "+errorThrown+xhr.status+xhr.responseText);
+        }
+    }); 
+}

@@ -66,25 +66,7 @@
     width: 220px;
 }
 
-div.tagsinput {
-}
-
-div.tagsinput span.tag {
+.user-added {
     border: 1px solid rgba(0,0,255, 0.5);
     background: rgba(0,0,255, 0.1);
-}
-
-div.tagsinput span.tag a {
-    content: url('../img/tag-deny.png');
-    margin-left: 16px;
-    padding: 2px 2px 2px 0;
-}
-
-div.tagsinput div {
-}
- 
-.tags_clear {
-}
-
-.not_valid {
 }
