@@ -336,6 +336,10 @@ votes = {};
             function createTag() {
                 event.preventDefault();
                 var content = elem.val();
+                if (!validateTag(content)) {
+                    elem.select();
+                    return;
+                }
                 elem.val('');
                 var new_tag = $('<span/>', {
                     text: content,
@@ -346,6 +350,10 @@ votes = {};
                     class: 'btn erase'
                 }).appendTo(new_tag);
                 toggleClassOnHover('.tag > .erase', 'tag-deny');
+            }
+
+            function validateTag(input) {
+                return /^[a-zA-Z0-9\.\s'-]+$/.test(input);
             }
         }
 
