@@ -16,7 +16,7 @@
 .user-added {
     border: 1px solid rgba(0,0,255, 0.5);
     background: rgba(0,0,255, 0.1);
-    padding-right: 27px;
+    padding-right: 28px;
 }
 
 	.tag .btn {
@@ -44,7 +44,7 @@
 
     .tag .erase {
         content: url('../img/tag-erase.png');
-        padding: 2px 2px 2px 3px;
+        padding: 2px 2px 2px 4px;
     }
 
 .tag-confirm {
