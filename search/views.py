@@ -129,3 +129,6 @@ def ajaxGetTagVote(request):
             return HttpResponse("AuthenticationError: user is not authenticated")
     else:
         raise Http404
+
+def ajaxAddTag(request):
+    pass

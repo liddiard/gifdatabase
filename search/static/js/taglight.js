@@ -225,7 +225,7 @@ votes = {};
         function ajaxGetTagVotes() {
             $('.tag').each(function(){
                 var tag_id = $(this).attr('data-tag');
-                ajaxPost({tag: tag_id}, "/api/get-tagvote/", ajaxInterpretTagVote);
+                ajaxPost({tag: tag_id}, "/api/tagvote-get/", ajaxInterpretTagVote);
             });
         }
 
@@ -348,6 +348,10 @@ votes = {};
         var tag_add = $('.tag-add');
         tag_add.focus();
         tagAdd(tag_add);
+
+        function ajaxTagAdd(gif_id, tag) {
+            ajaxPost({gif: gif_id, tag: tag}, "/api/tag-add/", function(){;});
+        }
 
         $('.tag > .confirm').click(function(){vote($(this), true);});
         $('.tag > .deny').click(function(){vote($(this), false);});
