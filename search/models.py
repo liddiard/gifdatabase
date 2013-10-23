@@ -259,6 +259,24 @@ class TagVote(models.Model):
     tag = models.ForeignKey('TagInstance')
     up = models.BooleanField()
     
+    def save(self, force_insert=False, force_update=False, *args, **kwargs):
+        is_new = self.pk is None
+        super(TagVote, self).save(force_insert, force_update, *args, **kwargs)
+        if is_new:
+            if self.up:
+                self.tag.ups += 1
+            else:
+                self.tag.downs += 1
+            self.tag.save()
+
+    def delete(self):
+        if self.up:
+            self.tag.ups -= 1
+        else:
+            self.tag.downs -= 1
+        self.tag.save()
+        super(UserFavorite, self).delete()
+
     def __unicode__(self):
         if self.up:
             vote = "up"
@@ -277,7 +295,8 @@ class UserFavorite(models.Model):
     date_favorited = models.DateTimeField(auto_now_add=True)
     
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
-        if self.pk is None:
+        is_new = self.pk is None
+        if is_new:
             g_favorite = self.gif
             g_favorite.stars += 1
             g_favorite.save()
