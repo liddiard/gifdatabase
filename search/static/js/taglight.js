@@ -269,7 +269,7 @@ votes = tags = {};
         toggleClassOnHover('.tag > .deny', 'tag-deny');
 
         function ajaxTagVote(tag, set) {
-            return ajaxPost({
+            ajaxPost({
                 tag: tag, // tag.id
                 set: set // -1 for downvote, 0 for no vote, 1 for upvote
             }, "/api/vote/",
@@ -340,6 +340,8 @@ votes = tags = {};
                     elem.select();
                     return;
                 }
+                var gif_id = elem.attr('data-gif');
+                ajaxTagAdd(gif_id, content);
                 elem.val('');
                 var new_tag = $('<span/>', {
                     text: content,
@@ -362,7 +364,35 @@ votes = tags = {};
         tagAdd(tag_add);
 
         function ajaxTagAdd(gif_id, tag) {
-            ajaxPost({gif: gif_id, tag: tag}, "/api/tag-add/", function(){;});
+            ajaxPost({gif: gif_id,
+                      tag: tag
+                     }, "/api/tag-add/",
+                     function(data) {
+                         console.log(data);
+                         var comp = data.split('|');
+                         if (comp[0] === "ok") {
+                             var tag = $('.tag-add').parent().find('.tag').last()
+                             tag.attr('data-tag', comp[1]); // TODO: this is disgusting. find a better way to do this.
+                             bindTagErase(tag.find('.erase'));
+                         }
+                     }
+            );
+        }
+
+        function bindTagErase(elem) {
+            elem.click(function() {
+                tag = elem.parent();
+                tag_id = tag.attr('data-tag');
+                ajaxTagErase(tag_id);
+                tag.remove();
+            });
+        }
+
+        function ajaxTagErase(tag_id) {
+            ajaxPost({tag: tag_id},
+                     "/api/tag-erase/",
+                     function(data) {console.log(data);}
+                    );
         }
 
         $('.tag > .confirm').click(function(){vote($(this), true);});

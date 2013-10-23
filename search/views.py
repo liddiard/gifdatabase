@@ -7,6 +7,8 @@ from django.template import RequestContext
 from django.contrib.auth.forms import AuthenticationForm # currently unused
 from django.utils.datastructures import MultiValueDictKeyError
 
+from taggit.models import Tag
+
 from search import engine
 from gifdb.settings.base import S3_URL
 from search.models import User, UserFavorite, Gif, TagInstance, UserScore, TagVote 
@@ -131,4 +133,47 @@ def ajaxGetTagVote(request):
         raise Http404
 
 def ajaxAddTag(request):
-    pass
+    if request.is_ajax():
+        if request.user.is_authenticated():
+            user = request.user
+            try:
+                gif_id = request.POST['gif']
+                tag_name = request.POST['tag']
+            except KeyError:
+                return HttpResponse("KeyError: necessary keys not found")
+            try:
+                gif = Gif.objects.get(pk=gif_id)
+            except Gif.DoesNotExist:
+                return HttpResponse("DoesNotExist: could not add tag to gif\
+                                     because gif matching id doesn't exist")
+            t = Tag.objects.get_or_create(name=tag_name)[0]
+            ti = TagInstance.objects.get_or_create(tag=t, content_object=gif, user_added=user)[0]
+            return HttpResponse("ok|%s" % ti.pk)
+        else:
+            return HttpResponse("AuthenticationError: user is not authenticated")
+    else:
+        raise Http404
+
+def ajaxEraseTag(request):
+    if request.is_ajax():
+        if request.user.is_authenticated():
+            user = request.user
+            try:
+                tag_id = request.POST['tag']
+            except KeyError:
+                return HttpResponse("KeyError: necessary keys not found")
+            try:
+                ti = TagInstance.objects.get(pk=tag_id)
+            except TagInstance.DoesNotExist:
+                return HttpResponse("DoesNotExist: could not delete tag\
+                                     because tag matching id doesn't exist")
+            if ti.user_added == user:
+                ti.delete()
+                return HttpResponse("Deleted tag")
+            else:
+                return HttpResponse("AccessError: the requesting user does\
+                                     not have permission to delete this tag")
+        else:
+            return HttpResponse("AuthenticationError: user is not authenticated")
+    else:
+        raise Http404
