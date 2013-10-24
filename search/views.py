@@ -13,6 +13,8 @@ from search import engine
 from gifdb.settings.base import S3_URL
 from search.models import User, UserFavorite, Gif, TagInstance, UserScore, TagVote 
 
+TAG_MAX_LENGTH = 32
+
 def frontPage(request):
     return render_to_response('front.html', {'S3_URL': S3_URL},
                               context_instance=RequestContext(request))
@@ -144,6 +146,10 @@ def ajaxAddTag(request):
                 tag_name = request.POST['tag']
             except KeyError:
                 return HttpResponse("KeyError: necessary keys not found")
+            if len(tag_name) > TAG_MAX_LENGTH:
+                return HttpResponse("ValidationError: tag length is greater "
+                                    "than max allowed length of %s chars" %
+                                    TAG_MAX_LENGTH)
             try:
                 gif = Gif.objects.get(pk=gif_id)
             except Gif.DoesNotExist:

@@ -23,9 +23,9 @@ a {
     margin: 0;
     display: block;
     float: left;
-    opacity: 0.9;
+    -webkit-transition: -webkit-filter 0.2s;
 }
 
     .thumb:hover {
-        opacity: 1;
+        -webkit-filter: brightness(1.15);
     }

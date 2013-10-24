@@ -336,7 +336,7 @@ votes = tags = {};
             function createTag() {
                 event.preventDefault();
                 var content = elem.val();
-                if (!validateTag(content)) {
+                if (!validateTag(content) || content.length > 32) {
                     elem.select();
                     return;
                 }
