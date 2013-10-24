@@ -100,7 +100,7 @@ def ajaxTagVote(request):
                 safeVote(user, tag, False)
             else:
                 try:
-                    tv = TagVote.objects.filter(user=user).filter(tag=tag)
+                    tv = TagVote.objects.filter(user=user).get(tag=tag)
                     tv.delete()
                 except TagVote.DoesNotExist:
                     return HttpResponse("DoesNotExist: could not unset TagVote \

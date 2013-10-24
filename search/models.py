@@ -258,6 +258,11 @@ class TagVote(models.Model):
     user = models.ForeignKey(User)
     tag = models.ForeignKey('TagInstance')
     up = models.BooleanField()
+
+    __original_up = None
+    def __init__(self, *args, **kwargs):
+        super(TagVote, self).__init__(*args, **kwargs)
+        self.__original_up = self.up
     
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
         is_new = self.pk is None
@@ -268,14 +273,26 @@ class TagVote(models.Model):
             else:
                 self.tag.downs += 1
             self.tag.save()
+        elif self.up != self.__original_up:
+            if self.up:
+                self.tag.downs -= 1
+                self.tag.ups += 1
+            else:
+                self.tag.downs += 1
+                self.tag.ups -= 1
+            self.tag.save()
+        self.__original_up = self.up
 
     def delete(self):
+        print "entered custom delete method"
         if self.up:
+            print "decreasing tag ups"
             self.tag.ups -= 1
         else:
+            print "decreasing tag downs"
             self.tag.downs -= 1
         self.tag.save()
-        super(UserFavorite, self).delete()
+        super(TagVote, self).delete()
 
     def __unicode__(self):
         if self.up:
