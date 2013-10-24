@@ -1,3 +1,8 @@
+#Colors
+- primary: `#0cf`
+- black: `#000`
+- white: `#fff`
+
 #Model Interactions
 - Gif created: User += 1
 - Gif deleted: User -= 2
