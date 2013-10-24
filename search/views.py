@@ -23,6 +23,8 @@ def frontPage(request):
 def searchResults(request):
     query = request.GET['q']
     results = engine.query(query)
+    for result in results:
+        result.gif.added_by_user = (result.gif.user_added == request.user)
     return render_to_response('results.html',
                               {'results': results, 'S3_URL': S3_URL},
                               context_instance=RequestContext(request))

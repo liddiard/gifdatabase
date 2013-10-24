@@ -373,19 +373,17 @@ votes = tags = {};
                          if (comp[0] === "ok") {
                              var tag = $('.tag-add').parent().find('.tag').last()
                              tag.attr('data-tag', comp[1]); // TODO: this is disgusting. find a better way to do this.
-                             bindTagErase(tag.find('.erase'));
+                             tag.find('.erase').click(function(){tagErase($(this));});
                          }
                      }
             );
         }
 
-        function bindTagErase(elem) {
-            elem.click(function() {
-                tag = elem.parent();
-                tag_id = tag.attr('data-tag');
-                ajaxTagErase(tag_id);
-                tag.remove();
-            });
+        function tagErase(elem) {
+            var tag = elem.parent();
+            var tag_id = tag.attr('data-tag');
+            ajaxTagErase(tag_id);
+            tag.remove();
         }
 
         function ajaxTagErase(tag_id) {
@@ -397,6 +395,7 @@ votes = tags = {};
 
         $('.tag > .confirm').click(function(){vote($(this), true);});
         $('.tag > .deny').click(function(){vote($(this), false);});
+        $('.tag > .erase').click(function(){tagErase($(this));});
 	}
 
 	function stop() {

@@ -5,7 +5,11 @@
         {% for result in results %}
             <a href="{{ result.gif.getUrl }}" rel="lightbox-results" data-tags="
 					 {% for pk, tag in result.gif.pksTags %}
-					     &lt;span class='tag' data-tag='{{ pk }}'&gt;{{ tag }}&lt;img class='btn confirm'/&gt;&lt;img class='btn deny'/&gt;&lt;/span&gt;
+                        {% if result.gif.added_by_user %}
+                            &lt;span class='user-added tag' data-tag='{{ pk }}'&gt;{{ tag }}&lt;img class='btn erase'/&gt;&lt;/span&gt;
+                        {% else %}
+					        &lt;span class='tag' data-tag='{{ pk }}'&gt;{{ tag }}&lt;img class='btn confirm'/&gt;&lt;img class='btn deny'/&gt;&lt;/span&gt;
+                        {% endif %}
 					 {% endfor %}
                      &lt;input class='tag-add' data-gif='{{ result.gif.pk }}'/&gt;
 					">
