@@ -93,6 +93,9 @@ def ajaxTagVote(request):
             except TagInstance.DoesNotExist:
                 return HttpResponse("DoesNotExist: tag with id %s was not found"
                                     % tag_id)
+            if user == tag.user_added:
+                return HttpResponse("AccessError: user cannot vote on a tag "
+                                    "they created themself")
             set = int(set)
             if set > 0:
                 safeVote(user, tag, True)
@@ -103,8 +106,8 @@ def ajaxTagVote(request):
                     tv = TagVote.objects.filter(user=user).get(tag=tag)
                     tv.delete()
                 except TagVote.DoesNotExist:
-                    return HttpResponse("DoesNotExist: could not unset TagVote \
-                                         because TagVote doesn't exist")
+                    return HttpResponse("DoesNotExist: could not unset TagVote "
+                                        "because TagVote doesn't exist")
             return HttpResponse("user: %s | tag id: %s | tag name: %s | set: %s" % (request.user, tag.pk, tag.tag, set))
         else:
             return HttpResponse("AuthenticationError: user is not authenticated")
@@ -144,8 +147,8 @@ def ajaxAddTag(request):
             try:
                 gif = Gif.objects.get(pk=gif_id)
             except Gif.DoesNotExist:
-                return HttpResponse("DoesNotExist: could not add tag to gif\
-                                     because gif matching id doesn't exist")
+                return HttpResponse("DoesNotExist: could not add tag to gif "
+                                    "because gif matching id doesn't exist")
             t = Tag.objects.get_or_create(name=tag_name)[0]
             ti = TagInstance.objects.get_or_create(tag=t, content_object=gif, user_added=user)[0]
             return HttpResponse("ok|%s" % ti.pk)
@@ -165,14 +168,14 @@ def ajaxEraseTag(request):
             try:
                 ti = TagInstance.objects.get(pk=tag_id)
             except TagInstance.DoesNotExist:
-                return HttpResponse("DoesNotExist: could not delete tag\
-                                     because tag matching id doesn't exist")
+                return HttpResponse("DoesNotExist: could not delete tag "
+                                    "because tag matching id doesn't exist")
             if ti.user_added == user:
                 ti.delete()
                 return HttpResponse("Deleted tag")
             else:
-                return HttpResponse("AccessError: the requesting user does\
-                                     not have permission to delete this tag")
+                return HttpResponse("AccessError: the requesting user does "
+                                    "not have permission to delete this tag")
         else:
             return HttpResponse("AuthenticationError: user is not authenticated")
     else:

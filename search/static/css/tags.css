@@ -73,13 +73,15 @@
 }
 
 .tag-add {
+    display: block;
+    clear: both;
     background-color: rgba(0,0,0, 0.5);
     color: white;
     border: 1px solid rgba(255,255,255, 0.25);
     border-radius: 2px;
     font-size: 1.6em;
-    padding: 0.25em;
+    padding: 0.1em 0.25em;
     margin: 0;
-    width: 220px;
+    width: 100px;
 }
 
