@@ -114,8 +114,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware' # TODO: remove if unneeded
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 )
 
 ROOT_URLCONF = 'gifdb.urls'
@@ -146,9 +145,7 @@ DJANGO_APPS = (
 THIRD_PARTY_APPS = (
     'south',
     'taggit',
-    'storages',
-    'django_admin_bootstrapped',
-    'corsheaders'
+    'storages'
 )
 
 LOCAL_APPS = (
