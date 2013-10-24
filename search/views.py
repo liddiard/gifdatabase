@@ -1,3 +1,4 @@
+import re
 from django.http import HttpResponseRedirect, HttpResponse
 from django.http import Http404
 from django.shortcuts import render_to_response, redirect, get_object_or_404
@@ -146,6 +147,10 @@ def ajaxAddTag(request):
                 tag_name = request.POST['tag']
             except KeyError:
                 return HttpResponse("KeyError: necessary keys not found")
+            pattern = re.compile("^[a-zA-Z0-9\. '-]+$")
+            if not pattern.match(tag_name):
+                return HttpResponse("ValidationError: tag contains invalid "
+                                    "characters")
             if len(tag_name) > TAG_MAX_LENGTH:
                 return HttpResponse("ValidationError: tag length is greater "
                                     "than max allowed length of %s chars" %

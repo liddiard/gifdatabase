@@ -355,7 +355,7 @@ votes = tags = {};
             }
 
             function validateTag(input) {
-                return /^[a-zA-Z0-9\.\s'-]+$/.test(input);
+                return /^[a-zA-Z0-9\. '-]+$/.test(input);
             }
         }
 
