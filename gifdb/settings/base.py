@@ -22,8 +22,7 @@ AWS_SECRET_ACCESS_KEY = '7uCbK6nwRIKaGNNBe8+oFFFc14G2GXlwZTkEXZJx' # WARNING: pr
 AWS_PRELOAD_METADATA = True
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-S3_URL = 'http://%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-STATIC_URL = S3_URL
+S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
 
 ADMINS = (
     ('omniaura', 'omniaura5@gmail.com'),
@@ -79,7 +78,7 @@ STATIC_ROOT = root("..", "static")
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/static/'
+STATIC_URL = S3_URL
 
 # Additional locations of static files
 STATICFILES_DIRS = (

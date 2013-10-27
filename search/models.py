@@ -59,7 +59,7 @@ class Gif(models.Model):
     def getThumbUrl(self):
         thumb_url = {'s3': S3_URL, 'thumb': image.THUMB_DIR,
                      'host': self.host, 'file': self.filename}
-        return "%(s3)s/%(thumb)s/%(host)s-%(file)s.jpg" % thumb_url
+        return "%(s3)s%(thumb)s/%(host)s-%(file)s.jpg" % thumb_url
     
     def adminThumb(self):
         return u'<img src="%s"/>' % self.getThumbUrl()
