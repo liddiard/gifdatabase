@@ -350,16 +350,16 @@ votes = tags = {};
                     return;
                 }
                 var gif_id = elem.attr('data-gif');
-                ajaxTagAdd(gif_id, content);
                 elem.val('');
                 var new_tag = $('<span/>', {
                     text: content,
                     class: 'user-added tag'
                 });
-                new_tag.insertBefore(elem);
                 $('<img/>', {
                     class: 'btn erase'
                 }).appendTo(new_tag);
+                new_tag.insertBefore($("[data-gif='" + gif_id + "']"));
+                ajaxTagAdd(gif_id, content);
                 toggleClassOnHover('.tag > .erase', 'tag-deny');
             }
 
@@ -368,7 +368,7 @@ votes = tags = {};
             }
         }
 
-        var tag_add = $('.tag-add');
+        var tag_add = $('#lbCaption .tag-add');
         tag_add.focus();
         tagAdd(tag_add);
 
@@ -380,19 +380,23 @@ votes = tags = {};
                          console.log(data);
                          var comp = data.split('|');
                          if (comp[0] === "ok") {
-                             var tag = $('.tag-add').parent().find('.tag').last()
-                             tag.attr('data-tag', comp[1]); // TODO: this is disgusting. find a better way to do this.
-                             tag.find('.erase').click(function(){tagErase($(this));});
+                             $("[data-gif='" + gif_id + "']").each(function() {
+                                 var tag = $(this).parent().find('.tag').last();
+                                 tag.attr('data-tag', comp[1]); // TODO: this is disgusting. find a better way to do this.
+                                 tag.find('.erase').click(function(){tagErase($(this));});
+                             });
+                         } 
+                         else {
+                             console.log("Error with data recieved.");
                          }
                      }
             );
         }
 
         function tagErase(elem) {
-            var tag = elem.parent();
-            var tag_id = tag.attr('data-tag');
+            var tag_id = elem.parent().attr('data-tag');
             ajaxTagErase(tag_id);
-            tag.remove();
+            $("[data-tag='" + tag_id + "']").remove();
         }
 
         function ajaxTagErase(tag_id) {
