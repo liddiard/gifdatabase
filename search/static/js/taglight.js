@@ -18,7 +18,7 @@ votes = tags = {};
 	preload = {}, preloadPrev = new Image(), preloadNext = new Image(),
 
 	// DOM elements
-	overlay, center, image, sizer, prevLink, nextLink, aside, bottom, caption, number;
+	overlay, center, image, sizer, prevLink, nextLink, topContainer, bottomContainer, aside, bottom, caption, number;
 
 	/*
 		Initialization
@@ -30,6 +30,8 @@ votes = tags = {};
 			$([
 				overlay = $('<div id="lbOverlay" />').click(close)[0],
 				center = $('<div id="lbCenter" />')[0],
+                topContainer = $('<div id="topContainer" />')[0],
+                bottomContainer = $('<div id="bottomContainer" />')[0],
 				aside = $('<div id="lbAside" />')[0]
 			]).css("display", "none")
 		);
