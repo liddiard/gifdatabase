@@ -30,8 +30,8 @@ votes = tags = {};
 			$([
 				overlay = $('<div id="lbOverlay" />').click(close)[0],
 				center = $('<div id="lbCenter" />')[0],
-                topContainer = $('<div id="topContainer" />')[0],
-                bottomContainer = $('<div id="bottomContainer" />')[0],
+                topContainer = $('<div id="lbTopContainer" />')[0],
+                bottomContainer = $('<div id="lbBottomContainer" />')[0],
 				aside = $('<div id="lbAside" />')[0]
 			]).css("display", "none")
 		);
@@ -105,7 +105,8 @@ votes = tags = {};
 	*/
 	$.fn.slimbox = function(_options, linkMapper, linksFilter) {
 		linkMapper = linkMapper || function(el) {
-			return [el.href, el.getAttribute("data-tags")];
+			return [el.href, $(el).find('.aside-data').html(),
+                    $(el).find('.top-data').html(), $(el).find('.bottom-data').html()];
 		};
 
 		linksFilter = linksFilter || function() {
@@ -138,7 +139,7 @@ votes = tags = {};
 
 	function position() {
 		var l = win.scrollLeft(), w = win.width();
-		$([center, aside]).css("left", l + (w / 2));
+		$([center, aside, topContainer, bottomContainer]).css("left", l + (w / 2));
 		if (compatibleOverlay) $(overlay).css({left: l, top: win.scrollTop(), width: w, height: win.height()});
 	}
 
@@ -201,6 +202,8 @@ votes = tags = {};
 		$([sizer, prevLink, nextLink]).height(preload.height);
 
 		$(caption).html(images[activeImage][1] || "");
+        $(topContainer).html(images[activeImage][2] || "");
+        $(bottomContainer).html(images[activeImage][3] || "");
 		$(number).html((((images.length > 1) && options.counterText) || "").replace(/{x}/, activeImage + 1).replace(/{y}/, images.length));
 
 		if (prevImage >= 0) preloadPrev.src = images[prevImage][0];
@@ -216,6 +219,9 @@ votes = tags = {};
 			$(center).animate({width: centerWidth, marginLeft: -centerWidth/2}, options.resizeDuration, options.resizeEasing);
 		}
 		$(center).queue(function() {
+            $([topContainer, bottomContainer]).css({width: centerWidth, marginLeft: -centerWidth/2, visibility: "hidden", display: ""});
+            $(topContainer).css("top", top);
+            $(bottomContainer).css("top", top + centerHeight);
 			$(aside).css({width: CAPTION_WIDTH, top: top, marginLeft: centerWidth/2, visibility: "hidden", display: ""});
 			$(image).css({display: "none", visibility: "", opacity: ""}).fadeIn(options.imageFadeDuration, animateCaption);
 		});
@@ -255,7 +261,7 @@ votes = tags = {};
 		if (prevImage >= 0) $(prevLink).show();
 		if (nextImage >= 0) $(nextLink).show();
 		$(bottom).css("marginTop", -bottom.offsetHeight).animate({marginTop: 0}, options.captionAnimationDuration);
-		aside.style.visibility = "";
+		aside.style.visibility = topContainer.style.visibility = bottomContainer.style.visibility = "";
        
         /* tag voting */
         function toggleClassOnHover(selector, cls) {
@@ -405,7 +411,7 @@ votes = tags = {};
 		preload.onload = null;
 		preload.src = preloadPrev.src = preloadNext.src = activeURL;
 		$([center, image, bottom]).stop(true);
-		$([prevLink, nextLink, image, aside]).hide();
+		$([prevLink, nextLink, image, aside, topContainer, bottomContainer]).hide();
 	}
 
 	function close() {

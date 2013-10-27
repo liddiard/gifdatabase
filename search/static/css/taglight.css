@@ -1,5 +1,11 @@
 /* SLIMBOX */
 
+.thumb-container .top-data,
+.thumb-container .aside-data,
+.thumb-container .bottom-data {
+    display: none;
+}
+
 #lbOverlay {
 	position: fixed;
 	z-index: 9999;
@@ -11,7 +17,7 @@
 	cursor: pointer;
 }
 
-#lbCenter, #lbAside {
+#lbCenter, #lbAside, #lbTopContainer, #lbBottomContainer {
 	position: absolute;
 	z-index: 9999;
 	overflow: visible;
