@@ -11,6 +11,39 @@
 	border: 1px solid rgba(255,255,255, 0.25);
 	border-radius: 2px;
 	font-size: 1.6em;
+
+    .btn {
+		position: absolute;
+		bottom: 0; top: 0;
+		margin: auto;
+		cursor: pointer;
+		opacity: 0.8;
+
+        &:hover {
+			opacity: 1;
+        }
+    }
+
+	.confirm {
+		content: url('../img/tag-confirm.png');
+		padding: 2px 0 2px 1px;
+	}
+
+	.deny {
+		content: url('../img/tag-deny.png');
+		margin-left: 20px;
+		padding: 2px 2px 2px 0;
+	}
+
+    .erase {
+        content: url('../img/tag-erase.png');
+        padding: 2px 2px 2px 4px;
+    }
+
+    .disabled {
+        opacity: 0.2 !important;
+        cursor: default;
+    }
 }
 
 .user-added {
@@ -18,39 +51,6 @@
     background: rgba(0,0,255, 0.1);
     padding-right: 28px;
 }
-
-	.tag .btn {
-		position: absolute;
-		bottom: 0; top: 0;
-		margin: auto;
-		cursor: pointer;
-		opacity: 0.8;
-	}
-
-		.tag .btn:hover {
-			opacity: 1;
-		}
-
-        .tag .disabled {
-            opacity: 0.2 !important;
-            cursor: default;
-        }
-
-	.tag .confirm {
-		content: url('../img/tag-confirm.png');
-		padding: 2px 0 2px 1px;
-	}
-
-	.tag .deny {
-		content: url('../img/tag-deny.png');
-		margin-left: 20px;
-		padding: 2px 2px 2px 0;
-	}
-
-    .tag .erase {
-        content: url('../img/tag-erase.png');
-        padding: 2px 2px 2px 4px;
-    }
 
 .tag-confirm {
 	border: 1px solid rgba(0,255,0, 0.5);

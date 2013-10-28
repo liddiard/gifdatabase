@@ -1,31 +1,93 @@
+.tag {
+  position: relative;
+  display: block;
+  float: left;
+  margin: 0 0.25em 0.25em 0;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0.25em;
+  padding-right: 42px;
+  white-space: pre;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 2px;
+  font-size: 1.6em; }
+  .tag .btn {
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+    cursor: pointer;
+    opacity: 0.8; }
+    .tag .btn:hover {
+      opacity: 1; }
+  .tag .confirm {
+    content: url("../img/tag-confirm.png");
+    padding: 2px 0 2px 1px; }
+  .tag .deny {
+    content: url("../img/tag-deny.png");
+    margin-left: 20px;
+    padding: 2px 2px 2px 0; }
+  .tag .erase {
+    content: url("../img/tag-erase.png");
+    padding: 2px 2px 2px 4px; }
+  .tag .disabled {
+    opacity: 0.2 !important;
+    cursor: default; }
+
+.user-added {
+  border: 1px solid rgba(0, 0, 255, 0.5);
+  background: rgba(0, 0, 255, 0.1);
+  padding-right: 28px; }
+
+.tag-confirm {
+  border: 1px solid rgba(0, 255, 0, 0.5);
+  background-color: rgba(0, 255, 0, 0.1); }
+
+.tag-deny {
+  border: 1px solid rgba(255, 0, 0, 0.5);
+  background-color: rgba(255, 0, 0, 0.1); }
+
+.tag-confirmed {
+  border: 1px solid #0f0;
+  background-color: rgba(0, 255, 0, 0.2); }
+
+.tag-denied {
+  border: 1px solid #f00;
+  background-color: rgba(255, 0, 0, 0.2); }
+
+.tag-add {
+  display: block;
+  clear: both;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 2px;
+  font-size: 1.6em;
+  padding: 0.1em 0.25em;
+  margin: 0;
+  width: 100px; }
+
 body {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background-color: black;
-    color: white;
-	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: black;
+  color: white;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
 img {
-    border: 0;
-}
+  border: 0; }
 
 a {
-    border: 0;
-}
+  border: 0; }
 
 .thumbs-list {
-	max-width: 800px;
-}
+  max-width: 800px; }
 
 .thumb {
-    margin: 0;
-    display: block;
-    float: left;
-    -webkit-transition: -webkit-filter 0.2s;
-}
-
-    .thumb:hover {
-        -webkit-filter: brightness(1.15);
-    }
+  margin: 0;
+  display: block;
+  float: left;
+  -webkit-transition: -webkit-filter 0.2s; }
+  .thumb:hover {
+    -webkit-filter: brightness(1.15); }

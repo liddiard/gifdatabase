@@ -1,4 +1,5 @@
 *.pyc
 *.kate-swp
 *.swp
+*.sass-cache
 gifdb/settings/local.py

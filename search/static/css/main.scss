@@ -1,0 +1,36 @@
+@import "tags";
+
+$helvetica: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$primary_color: #0cf;
+
+body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: black;
+    color: white;
+	font-family: $helvetica;
+}
+
+img {
+    border: 0;
+}
+
+a {
+    border: 0;
+}
+
+.thumbs-list {
+	max-width: 800px;
+}
+
+.thumb {
+    margin: 0;
+    display: block;
+    float: left;
+    -webkit-transition: -webkit-filter 0.2s;
+
+    &:hover {
+        -webkit-filter: brightness(1.15);
+    }
+}
