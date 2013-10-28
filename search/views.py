@@ -163,7 +163,15 @@ def ajaxAddTag(request):
                 return HttpResponse("DoesNotExist: could not add tag to gif "
                                     "because gif matching id doesn't exist")
             t = Tag.objects.get_or_create(name=tag_name)[0]
-            ti = TagInstance.objects.get_or_create(tag=t, content_object=gif, user_added=user)[0]
+            ti_tuple = TagInstance.objects.get_or_create(tag=t,
+                                                         content_object=gif)
+            ti = ti_tuple[0]
+            created = ti_tuple[1]
+            if created:
+                ti.user_added = user
+                ti.save()
+            else:
+                pass
             return HttpResponse("ok|%s" % ti.pk)
         else:
             return HttpResponse("AuthenticationError: user is not authenticated")
