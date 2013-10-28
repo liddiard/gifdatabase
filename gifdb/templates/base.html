@@ -11,17 +11,16 @@
 </head>
 <body>
     <header>
-        {% if not user.username %}
-        <form method="post" action="{% url 'login' %}" id="login">{% csrf_token %}
-            <input type="text" name="username" placeholder="username"/>
-            <input type="password" name="password" placeholder="password"/>
-            <input type="submit" value="Login"/>
-        </form>
-        {% endif %}
-        {{ user.username }}
-        {{ user_score }}
-        {% if user.username %}
-        <a href="/logout/">Logout</a>
+        {% if user.is_authenticated %}
+            {{ user.username }}
+            {{ user_score }}
+            <a href="/logout/">Logout</a>
+        {% else %}
+            <form method="post" action="{% url 'login' %}" id="login">{% csrf_token %}
+                <input type="text" name="username" placeholder="username"/>
+                <input type="password" name="password" placeholder="password"/>
+                <input type="submit" value="Login"/>
+            </form>
         {% endif %}
     </header>
 {% block content %}
