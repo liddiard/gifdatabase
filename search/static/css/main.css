@@ -81,6 +81,20 @@ img {
 a {
   border: 0; }
 
+.search input {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  font-size: 1.1em;
+  padding: 0.2em; }
+  .search input:focus {
+    background-color: rgba(0, 204, 255, 0.2);
+    outline: none; }
+
+form .btn {
+  color: #00ccff; }
+
 .thumbs-list {
   max-width: 800px; }
 
@@ -91,3 +105,12 @@ a {
   -webkit-transition: -webkit-filter 0.2s; }
   .thumb:hover {
     -webkit-filter: brightness(1.15); }
+
+#lbTopContainer .btn {
+  cursor: pointer; }
+#lbTopContainer .copy {
+  display: none; }
+#lbTopContainer .star {
+  content: url("../img/star.png"); }
+#lbTopContainer .dropdown {
+  display: none; }

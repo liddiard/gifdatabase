@@ -1,0 +1,72 @@
+@import "tags";
+
+$helvetica: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$primary_color: #0cf;
+
+body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: black;
+    color: white;
+	font-family: $helvetica;
+}
+
+img {
+    border: 0;
+}
+
+a {
+    border: 0;
+}
+
+.search input {
+    color: white;
+    background-color: rgba(0,0,0, 0.5);
+    border: 2px solid rgba(255,255,255, 0.2);
+    border-radius: 4px;
+    font-size: 1.1em;
+    padding: 0.2em;
+
+    &:focus {
+        background-color: rgba($primary_color, 0.2);
+        outline: none;
+    }
+}
+
+form .btn {
+    color: $primary_color;
+}
+
+.thumbs-list {
+	max-width: 800px;
+}
+
+.thumb {
+    margin: 0;
+    display: block;
+    float: left;
+    -webkit-transition: -webkit-filter 0.2s;
+
+    &:hover {
+        -webkit-filter: brightness(1.15);
+    }
+}
+
+#lbTopContainer {
+    .btn {
+        cursor: pointer;
+    }
+
+    .copy {
+        display: none;
+    }
+
+    .star {
+        content: url('../img/star.png');
+    }
+
+    .dropdown {
+        display: none;
+    }
+}

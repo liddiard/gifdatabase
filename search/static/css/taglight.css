@@ -27,6 +27,10 @@
     padding-left: 4px;
 }
 
+#lbTopContainer, #lbBottomContainer {
+    text-align: right;
+}
+
 .lbLoading {
 	background: transparent url(loading.gif) no-repeat center;
 }

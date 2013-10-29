@@ -6,8 +6,9 @@
             <a class="thumb-container" href="{{ result.gif.getUrl }}" rel="lightbox-results">
                 <img class="thumb" src="{{ result.gif.getThumbUrl }}" />
                 <div class="top-data">
-                    <img class="star"/>
-                    <img class="dropdown"/>
+                    <img class="btn copy" data-url="{{ result.gif.getUrl }}"/>
+                    <img class="btn star" data-gif="{{ result.gif.pk }}"/>
+                    <img class="btn dropdown"/>
                 </div>
                 <div class="aside-data">
                     {% for pk, tag in result.gif.pksTags %}

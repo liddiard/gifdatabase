@@ -220,7 +220,7 @@ votes = tags = {};
 		}
 		$(center).queue(function() {
             $([topContainer, bottomContainer]).css({width: centerWidth, marginLeft: -centerWidth/2, visibility: "hidden", display: ""});
-            $(topContainer).css("top", top);
+            $(topContainer).css("top", top - 24); // TODO: number shouldn't be hardcoded
             $(bottomContainer).css("top", top + centerHeight);
 			$(aside).css({width: CAPTION_WIDTH, top: top, marginLeft: centerWidth/2, visibility: "hidden", display: ""});
 			$(image).css({display: "none", visibility: "", opacity: ""}).fadeIn(options.imageFadeDuration, animateCaption);

@@ -11,6 +11,10 @@
 </head>
 <body>
     <header>
+        <form method="get" class="search" action="{% url 'search_results' %}">
+            <input type="text" name="q" placeholder="search"/>
+            <input class="btn" type="submit" value="Search"/>
+        </form>
         {% if user.is_authenticated %}
             {{ user.username }}
             {{ user_score }}

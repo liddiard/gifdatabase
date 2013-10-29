@@ -1,5 +1,6 @@
 $(document).ready(function(){
-    ;
+    // preload images
+    // $('<img />').attr('src', url);
 });
 
 function getCookie(name) {
