@@ -263,7 +263,6 @@ votes = tags = {};
 		$(bottom).css("marginTop", -bottom.offsetHeight).animate({marginTop: 0}, options.captionAnimationDuration);
 		aside.style.visibility = topContainer.style.visibility = bottomContainer.style.visibility = "";
        
-        /* tag voting */
         function toggleClassOnHover(selector, cls) {
             $(selector).hover(
                 function(){
@@ -273,6 +272,7 @@ votes = tags = {};
             );
         }
 
+        /* Bind hover events */
         toggleClassOnHover('.tag > .confirm', 'tag-confirm');
         toggleClassOnHover('.tag > .deny', 'tag-deny');
         toggleClassOnHover('.tag > .erase', 'tag-deny');
@@ -331,13 +331,13 @@ votes = tags = {};
 
         function tagAdd(elem) {
             elem.keydown(function(event) {
-                if (event.which == 9) {
+                if (event.which == 9) { // tab
                     createTag();
                 }
             });
 
             elem.keypress(function(event) {
-                if (event.which == 13 || event.which == 44) { // tab, enter, and comma, respectively
+                if (event.which == 13 || event.which == 44) { // enter and comma, respectively
                     createTag();
                 }
             });
@@ -406,7 +406,7 @@ votes = tags = {};
                     );
         }
 
-        function getStar(elem) {
+        function ajaxGetStar(elem) {
             gif_id = elem.attr('data-gif');
             ajaxPost({gif: gif_id},
                      "/api/star-get/",
@@ -430,9 +430,11 @@ votes = tags = {};
                     );
         }
 
+        /* Bind click events */
         $('.tag > .confirm').click(function(){vote($(this), true);});
         $('.tag > .deny').click(function(){vote($(this), false);});
         $('.tag > .erase').click(function(){tagErase($(this));});
+        // $('#lbTopContainer > .star').click(function(){});
 	}
 
 	function stop() {

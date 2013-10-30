@@ -15,12 +15,21 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^$', frontPage, name="main"),
+
+    # state modification
     url(r'^login/$', login, name="login"),
     url(r'^logout/$', logout, name="logout"),
+    
+    # api
     url(r'^api/vote/$', ajaxTagVote, name="vote"),
     url(r'^api/tagvote-get/$', ajaxGetTagVote, name="get_tagvote"),
     url(r'^api/tag-add/$', ajaxAddTag, name="tag_add"),
     url(r'^api/tag-erase/$', ajaxEraseTag, name="tag_erase"),
+    url(r'^api/star-get/$', ajaxGetStar, name="star"),
+    url(r'^api/star-add/$', ajaxAddStar, name="star_add"),
+    url(r'^api/star-remove/$', ajaxRemoveStar, name="star_remove"),
+    
+    # pages
     url(r'^search/$', searchResults, name="search_results"),
     url(r'^user/(?P<username>\w+)/$', profile, name="profile"),
     url(r'^user/(?P<username>\w+)/starred/$', profileStarred,

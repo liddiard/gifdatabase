@@ -201,3 +201,70 @@ def ajaxEraseTag(request):
             return HttpResponse("AuthenticationError: user is not authenticated")
     else:
         raise Http404
+
+def ajaxGetStar(request):
+    if request.is_ajax():
+        if request.user.is_authenticated():
+            user = request.user
+            try:
+                gif_id = request.POST['gif']
+            except KeyError:
+                return HttpResponse("KeyError: necessary keys not found")
+            try:
+                gif = Gif.objects.get(pk=gif_id)
+            except Gif.DoesNotExist:
+                return HttpResponse("DoesNotExist: could not get UserFavorite "
+                                    "because Gif matching id does not exist")
+            try:
+                UserFavorite.objects.get(user=user, gif=gif)
+                return HttpResponse("1")
+            except UserFavorite.DoesNotExist:
+                return HttpResponse("0")    
+        else:
+            return HttpResponse("AuthenticationError: user is not authenticated")
+    else:
+        raise Http404
+
+def ajaxAddStar(request):
+    if request.is_ajax():
+        if request.user.is_authenticated():
+            user = request.user
+            try:
+                gif_id = request.POST['gif']
+            except KeyError:
+                return HttpResponse("KeyError: necessary keys not found")
+            try:
+                gif = Gif.objects.get(pk=gif_id)
+            except Gif.DoesNotExist:
+                return HttpResponse("DoesNotExist: could not create UserFavorite "
+                                    "because Gif matching id does not exist")
+            uf = UserFavorite.objects.get_or_create(user=user, gif=gif)[0]
+            return HttpResponse("ok|%s" % uf.pk)
+        else:
+            return HttpResponse("AuthenticationError: user is not authenticated")
+    else:
+        return Http404
+
+def ajaxRemoveStar(request):
+    if request.is_ajax():
+        if request.user.is_authenticated():
+            user = request.user
+            try:
+                gif_id = request.POST['gif']
+            except KeyError:
+                return HttpResponse("KeyError: necessary keys not found")
+            try:
+                uf = UserFavorite.objects.get(user=user, gif=gif_id)
+            except Gif.DoesNotExist:
+                return HttpResponse("DoesNotExist: could not delete UserFavorite "
+                                    "because Gif matching id does not exist")
+            if uf.user == user:
+                uf.delete()
+                return HttpResponse("Deleted UserFavorite")
+            else:
+                return HttpResponse("AccessError: requesting user does not "
+                                    "match user who created the UserFavorite") 
+        else:
+            return HttpResponse("AuthenticationError: user is not authenticated")
+    else:
+        return Http404
