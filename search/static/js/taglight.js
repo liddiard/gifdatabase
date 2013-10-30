@@ -406,6 +406,30 @@ votes = tags = {};
                     );
         }
 
+        function getStar(elem) {
+            gif_id = elem.attr('data-gif');
+            ajaxPost({gif: gif_id},
+                     "/api/star-get/",
+                     function(data) {console.log(data);}
+                    );
+        }
+
+        function ajaxAddStar(elem) {
+            gif_id = elem.attr('data-gif');
+            ajaxPost({gif: gif_id},
+                     "/api/star-add/",
+                     function(data) {console.log(data);}
+                    );
+        }
+
+        function ajaxRemoveStar(elem) {
+            gif_id = elem.attr('data-gif');
+            ajaxPost({gif: gif_id},
+                     "/api/star-remove/",
+                     function(data) {console.log(data);}
+                    );
+        }
+
         $('.tag > .confirm').click(function(){vote($(this), true);});
         $('.tag > .deny').click(function(){vote($(this), false);});
         $('.tag > .erase').click(function(){tagErase($(this));});
