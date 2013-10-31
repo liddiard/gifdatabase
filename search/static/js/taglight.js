@@ -6,7 +6,7 @@
 */
 
 CAPTION_WIDTH = 220; //this makes me cry a little
-votes = tags = {};
+votes = {};
 
 (function($) {
 
@@ -68,7 +68,7 @@ votes = tags = {};
 			initialHeight: 250,			// Initial height of the box (in pixels)
 			imageFadeDuration: 0,			// Duration of the image fade-in animation (in milliseconds)
 			captionAnimationDuration: 0,		// Duration of the caption animation (in milliseconds)
-			counterText: "gif {x} of {y}",	// Translate or change as you wish, or set it to false to disable counter text for image groups
+			counterText: false, // "gif {x} of {y}",	// Translate or change as you wish, or set it to false to disable counter text for image groups
 			closeKeys: [27],		// Array of keycodes to close Slimbox, default: Esc (27), 'x' (88), 'c' (67)
 			previousKeys: [37],			// Array of keycodes to navigate to the previous image, default: Left arrow (37), 'p' (80)
 			nextKeys: [39]			// Array of keycodes to navigate to the next image, default: Right arrow (39), 'n' (78)
@@ -220,7 +220,7 @@ votes = tags = {};
 		}
 		$(center).queue(function() {
             $([topContainer, bottomContainer]).css({width: centerWidth, marginLeft: -centerWidth/2, visibility: "hidden", display: ""});
-            $(topContainer).css("top", top - 24); // TODO: number shouldn't be hardcoded
+            $(topContainer).css("top", top - 22); // TODO: number shouldn't be hardcoded
             $(bottomContainer).css("top", top + centerHeight);
 			$(aside).css({width: CAPTION_WIDTH, top: top, marginLeft: centerWidth/2, visibility: "hidden", display: ""});
 			$(image).css({display: "none", visibility: "", opacity: ""}).fadeIn(options.imageFadeDuration, animateCaption);
@@ -237,8 +237,8 @@ votes = tags = {};
             });
         }
 
-        function ajaxInterpretTagVote(tagvote) {
-            data = tagvote.split('|');
+        function ajaxInterpretTagVote(response) {
+            data = response.split('|');
             tag = data[0];
             v = data[1];
             elem = $('.tag[data-tag='+tag+']');
@@ -258,12 +258,19 @@ votes = tags = {};
 
         ajaxGetTagVotes();
 
+        function ajaxInterpretStar(response) {
+            if (response === "1")
+                $('#lbTopContainer .star').addClass('selected');
+        }
+
+        ajaxGetStar($('#lbTopContainer .star'));
+
 		if (prevImage >= 0) $(prevLink).show();
 		if (nextImage >= 0) $(nextLink).show();
 		$(bottom).css("marginTop", -bottom.offsetHeight).animate({marginTop: 0}, options.captionAnimationDuration);
 		aside.style.visibility = topContainer.style.visibility = bottomContainer.style.visibility = "";
        
-        function toggleClassOnHover(selector, cls) {
+        function toggleParentOnHover(selector, cls) {
             $(selector).hover(
                 function(){
                     $(this).parent().addClass(cls);},
@@ -272,10 +279,21 @@ votes = tags = {};
             );
         }
 
+        function toggleClassOnHover(selector, cls) {
+            $(selector).hover(
+                function(){
+                    $(this).addClass(cls);},
+                function(){
+                    $(this).removeClass(cls);}
+            );
+        }
+
         /* Bind hover events */
-        toggleClassOnHover('.tag > .confirm', 'tag-confirm');
-        toggleClassOnHover('.tag > .deny', 'tag-deny');
-        toggleClassOnHover('.tag > .erase', 'tag-deny');
+        toggleParentOnHover('.tag > .confirm', 'tag-confirm');
+        toggleParentOnHover('.tag > .deny', 'tag-deny');
+        toggleParentOnHover('.tag > .erase', 'tag-deny');
+        toggleClassOnHover('#lbTopContainer .star', 'hover');
+        toggleClassOnHover('#lbTopContainer .copy', 'hover');
 
         function ajaxTagVote(tag, set) {
             ajaxPost({
@@ -410,7 +428,7 @@ votes = tags = {};
             gif_id = elem.attr('data-gif');
             ajaxPost({gif: gif_id},
                      "/api/star-get/",
-                     function(data) {console.log(data);}
+                     ajaxInterpretStar
                     );
         }
 
@@ -430,11 +448,34 @@ votes = tags = {};
                     );
         }
 
+        function toggleStar(elem) {
+            if (elem.hasClass('selected')) {
+                ajaxRemoveStar(elem);
+                elem.removeClass('selected');
+            } else {
+                ajaxAddStar(elem);
+                elem.addClass('selected');
+            }
+        }
+
+        function toggleCopyText(elem) {
+            var copy_text = elem.parent().find('.copy-text');
+            if (elem.hasClass('selected')) {
+                elem.removeClass('selected');
+                copy_text.hide();
+            } else {
+                elem.addClass('selected');
+                copy_text.show();
+                copy_text.select();
+            }
+        }
+
         /* Bind click events */
-        $('.tag > .confirm').click(function(){vote($(this), true);});
-        $('.tag > .deny').click(function(){vote($(this), false);});
-        $('.tag > .erase').click(function(){tagErase($(this));});
-        // $('#lbTopContainer > .star').click(function(){});
+        $('.tag > .confirm').click(function(){ vote($(this), true); });
+        $('.tag > .deny').click(function(){ vote($(this), false); });
+        $('.tag > .erase').click(function(){ tagErase($(this)); });
+        $('#lbTopContainer .star').click(function(){ toggleStar($(this)); });
+        $('#lbTopContainer .copy').click(function(){ toggleCopyText($(this)); });
 	}
 
 	function stop() {

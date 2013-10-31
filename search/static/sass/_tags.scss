@@ -1,3 +1,5 @@
+$primary_color: #0cf;
+
 .tag {
 	position: relative;
 	display: block;
@@ -47,8 +49,8 @@
 }
 
 .user-added {
-    border: 1px solid rgba(0,0,255, 0.5);
-    background: rgba(0,0,255, 0.1);
+    border: 1px solid rgba($primary_color, 0.5);
+    background: rgba($primary_color, 0.1);
     padding-right: 28px;
 }
 

@@ -35,8 +35,8 @@
     cursor: default; }
 
 .user-added {
-  border: 1px solid rgba(0, 0, 255, 0.5);
-  background: rgba(0, 0, 255, 0.1);
+  border: 1px solid rgba(0, 204, 255, 0.5);
+  background: rgba(0, 204, 255, 0.1);
   padding-right: 28px; }
 
 .tag-confirm {
@@ -107,10 +107,35 @@ form .btn {
     -webkit-filter: brightness(1.15); }
 
 #lbTopContainer .btn {
-  cursor: pointer; }
+  cursor: pointer;
+  display: block;
+  float: right;
+  padding-left: 2px; }
 #lbTopContainer .copy {
-  display: none; }
+  margin-top: 2px;
+  content: url("../img/link.png"); }
+  #lbTopContainer .copy.hover {
+    content: url("../img/link_hover.png"); }
+  #lbTopContainer .copy.selected {
+    content: url("../img/link_selected.png"); }
+#lbTopContainer .copy-text {
+  display: none;
+  float: right;
+  font-size: 0.6em;
+  margin-right: 2px; }
 #lbTopContainer .star {
+  margin-right: -1px;
   content: url("../img/star.png"); }
+  #lbTopContainer .star.hover {
+    content: url("../img/star_hover.png"); }
+  #lbTopContainer .star.selected {
+    content: url("../img/star_selected.png"); }
 #lbTopContainer .dropdown {
   display: none; }
+
+#lbBottomContainer .credit {
+  font-size: 0.8em;
+  vertical-align: top; }
+
+.preload {
+  display: none !important; }

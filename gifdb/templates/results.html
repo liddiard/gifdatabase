@@ -6,9 +6,10 @@
             <a class="thumb-container" href="{{ result.gif.getUrl }}" rel="lightbox-results">
                 <img class="thumb" src="{{ result.gif.getThumbUrl }}" />
                 <div class="top-data">
-                    <img class="btn copy" data-url="{{ result.gif.getUrl }}"/>
-                    <img class="btn star" data-gif="{{ result.gif.pk }}"/>
                     <img class="btn dropdown"/>
+                    <img class="btn star" data-gif="{{ result.gif.pk }}"/>
+                    <img class="btn copy"/>
+                    <input class="copy-text" value="{{ result.gif.getUrl }}"/>
                 </div>
                 <div class="aside-data">
                     {% for pk, tag in result.gif.pksTags %}
@@ -21,7 +22,7 @@
                     <input class="tag-add" data-gif="{{ result.gif.pk }}"/>
                 </div>
                 <div class="bottom-data">
-                    {{ result.gif.user_added }}
+                    <span class="credit">{{ result.gif.user_added }}</span>
                 </div>
             </a>
         {% endfor %}

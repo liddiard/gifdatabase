@@ -1,6 +1,12 @@
 $(document).ready(function(){
     // preload images
-    // $('<img />').attr('src', url);
+    /*
+    var MEDIA_ROOT = '../img/';
+    var preload = ['link_hover.png', 'star_hover.png'];
+    for (var i = 0; i < preload.length; i++) {
+        $('<img />').attr('src', MEDIA_ROOT + preload[i]);
+    }
+    */
 });
 
 function getCookie(name) {

@@ -56,17 +56,55 @@ form .btn {
 #lbTopContainer {
     .btn {
         cursor: pointer;
+        display: block;
+        float: right;
+        padding-left: 2px;
     }
 
     .copy {
+        margin-top: 2px;
+        content: url('../img/link.png');
+
+        &.hover {
+            content: url('../img/link_hover.png');
+        }
+
+        &.selected {
+            content: url('../img/link_selected.png');
+        }
+    }
+
+    .copy-text {
         display: none;
+        float: right;
+        font-size: 0.6em;
+        margin-right: 2px;
     }
 
     .star {
+        margin-right: -1px;
         content: url('../img/star.png');
+
+        &.hover {
+            content: url('../img/star_hover.png');
+        }
+
+        &.selected {
+            content: url('../img/star_selected.png');
+        }
     }
 
     .dropdown {
         display: none;
     }
+}
+
+#lbBottomContainer {
+    .credit {
+        font-size: 0.8em;
+        vertical-align: top;
+    }
+}
+.preload {
+    display: none !important;
 }
