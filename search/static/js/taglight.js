@@ -376,9 +376,9 @@ votes = {};
                 $('<img/>', {
                     class: 'btn erase'
                 }).appendTo(new_tag);
-                new_tag.insertBefore($("[data-gif='" + gif_id + "']"));
+                new_tag.insertBefore($("#lbAside [data-gif='" + gif_id + "']"));
                 ajaxTagAdd(gif_id, content);
-                toggleClassOnHover('.tag > .erase', 'tag-deny');
+                toggleParentOnHover('.tag > .erase', 'tag-deny');
             }
 
             function validateTag(input) {
