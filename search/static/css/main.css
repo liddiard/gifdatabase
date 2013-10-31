@@ -58,7 +58,6 @@
 .tag-add {
   display: block;
   clear: both;
-  background-color: rgba(0, 0, 0, 0.5);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 2px;
@@ -89,11 +88,52 @@ img {
 a {
   border: 0; }
 
+::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.4); }
+
+:-moz-placeholder {
+  /* Firefox 18- */
+  color: rgba(255, 255, 255, 0.4); }
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: rgba(255, 255, 255, 0.4); }
+
+:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.4); }
+
 input {
   color: white;
-  background-color: rgba(0, 0, 0, 0.5);
-  border: 2px solid rgba(255, 255, 255, 0.2); }
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.05) 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(255, 255, 255, 0.05)));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.05) 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.05) 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.05) 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.05) 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf000000', endColorstr='#40000000',GradientType=0 );
+  /* IE6-9 */ }
   input:focus {
+    background: -moz-linear-gradient(top, black 0%, rgba(0, 0, 0, 0) 100%);
+    /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, black), color-stop(100%, rgba(0, 0, 0, 0)));
+    /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, black 0%, rgba(0, 0, 0, 0) 100%);
+    /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, black 0%, rgba(0, 0, 0, 0) 100%);
+    /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, black 0%, rgba(0, 0, 0, 0) 100%);
+    /* IE10+ */
+    background: linear-gradient(to bottom, black 0%, rgba(0, 0, 0, 0) 100%);
+    /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf000000', endColorstr='#40000000',GradientType=0 );
+    /* IE6-9 */
     background-color: rgba(0, 204, 255, 0.1);
     border-color: #00ccff;
     outline: none; }
@@ -107,7 +147,9 @@ input {
   text-align: center; }
 
 form .btn {
-  color: #00ccff; }
+  background-color: #00ccff;
+  color: white;
+  cursor: pointer; }
 
 .thumbs-list {
   max-width: 800px; }

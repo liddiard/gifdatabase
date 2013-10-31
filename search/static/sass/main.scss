@@ -2,6 +2,32 @@
 
 $helvetica: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 $primary_color: #0cf;
+@mixin horizontal_gradient($start_color, $end_color) {
+    background: -moz-linear-gradient(top,  $start_color 0%, $end_color 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$start_color), color-stop(100%,$end_color)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  $start_color 0%,$end_color 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  $start_color 0%,$end_color 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  $start_color 0%,$end_color 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  $start_color 0%,$end_color 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bf000000', endColorstr='#40000000',GradientType=0 ); /* IE6-9 */
+}
+@mixin placeholder_color($color) {
+    ::-webkit-input-placeholder {
+        color: $color;
+    }
+
+    :-moz-placeholder { /* Firefox 18- */
+        color: $color;
+    }
+
+    ::-moz-placeholder {  /* Firefox 19+ */
+        color: $color;
+    }
+
+    :-ms-input-placeholder {  
+        color: $color;
+    }
+}
 
 ::selection {
     background: $primary_color; /* Webkit */
@@ -28,17 +54,19 @@ a {
     border: 0;
 }
 
+@include placeholder_color(rgba(255,255,255, 0.4));
 input {
     color: white;
-    background-color: rgba(0,0,0, 0.5);
     border: 2px solid rgba(255,255,255, 0.2);
+    @include horizontal_gradient(rgba(0,0,0,0), rgba(255,255,255,0.05));
 
     &:focus {
+        @include horizontal_gradient(rgba(0,0,0,1), rgba(0,0,0,0));
         background-color: rgba($primary_color, 0.1);
         border-color: rgba($primary_color, 1);
         outline: none;
     }
-
+    
     .search & {
         border-radius: 4px;
         font-size: 1.1em;
@@ -52,7 +80,9 @@ input {
 }
 
 form .btn {
-    color: $primary_color;
+    background-color: $primary_color;
+    color: white;
+    cursor: pointer;
 }
 
 .thumbs-list {
