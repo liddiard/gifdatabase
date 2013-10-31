@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Project Menagerie</title>
+    <title>GIFdatabase: the internet's finest animated GIF search</title>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/main.css">
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/taglight.css">
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -10,6 +10,7 @@
     <script src="{{ STATIC_URL }}js/taglight.js"></script>
 </head>
 <body>
+    {% block header %}
     <header>
         <form method="get" class="search" action="{% url 'search_results' %}">
             <input type="text" name="q" placeholder="search"/>
@@ -27,6 +28,7 @@
             </form>
         {% endif %}
     </header>
+    {% endblock %}
 {% block content %}
 {% endblock %}
 <!-- preloading -->

@@ -67,6 +67,14 @@
   margin: 0;
   width: 100px; }
 
+::selection {
+  background: #00ccff;
+  /* Webkit */ }
+
+::-moz-selection {
+  background: #00ccff;
+  /* Firefox */ }
+
 body {
   margin: 0;
   padding: 0;
@@ -81,16 +89,22 @@ img {
 a {
   border: 0; }
 
-.search input {
+input {
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-  font-size: 1.1em;
-  padding: 0.2em; }
-  .search input:focus {
-    background-color: rgba(0, 204, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.2); }
+  input:focus {
+    background-color: rgba(0, 204, 255, 0.1);
+    border-color: #00ccff;
     outline: none; }
+  .search input {
+    border-radius: 4px;
+    font-size: 1.1em;
+    padding: 0.2em; }
+
+.main.search {
+  margin: 20px 0;
+  text-align: center; }
 
 form .btn {
   color: #00ccff; }
@@ -106,6 +120,19 @@ form .btn {
   .thumb:hover {
     -webkit-filter: brightness(1.15); }
 
+#banner-main {
+  display: block;
+  margin: 200px auto 0 auto; }
+
+.tagline {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 110%; }
+  .tagline.main {
+    margin: 5px auto;
+    text-align: center; }
+
+/* lightbox */
 #lbTopContainer .btn {
   cursor: pointer;
   display: block;
