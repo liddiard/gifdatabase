@@ -52,8 +52,15 @@ img {
     border: 0;
 }
 
-a {
+a, .link {
+    color: inherit;
+    text-decoration: none;
     border: 0;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 nav {
@@ -63,11 +70,20 @@ nav {
     background-color: rgba(0,0,0, 0.8);
     z-index: 1000;
 
+    a:hover {
+        text-decoration: none;
+
+        & .user {
+            text-decoration: underline;
+        }
+    }
+
     .user {
             ;        
-        .score {
-            color: $primary_color;
-        }
+    }
+
+    .score {
+        color: $primary_color;
     }
 
     .search {

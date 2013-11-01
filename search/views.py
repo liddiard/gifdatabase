@@ -21,7 +21,10 @@ def frontPage(request):
                               context_instance=RequestContext(request))
 
 def searchResults(request):
-    query = request.GET['q']
+    try:
+        query = request.GET['q']
+    except MultiValueDictKeyError:
+        return redirect('front')
     results = engine.query(query)
     for result in results:
         result.gif.added_by_user = (result.gif.user_added == request.user)
@@ -58,7 +61,7 @@ def login(request):
         username = request.POST['username']
         password = request.POST['password']
     except MultiValueDictKeyError:
-        return redirect('main')
+        return redirect('front')
     user = authenticate(username=username, password=password)
     if user is not None:
         if user.is_active:
@@ -74,7 +77,7 @@ def logout(request):
     try:
         return redirect(request.META['HTTP_REFERER'])
     except KeyError:
-        return redirect('main')
+        return redirect('front')
 
 def ajaxTagVote(request):
     def safeVote(user, tag, up):

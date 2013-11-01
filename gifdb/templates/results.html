@@ -14,9 +14,9 @@
                 <div class="aside-data">
                     {% for pk, tag in result.gif.pksTags %}
                         {% if result.gif.added_by_user %}
-                            <span class="user-added tag" data-tag="{{ pk }}">{{ tag }}<img class="btn erase"/></span>
+                            <span class="user-added tag" data-tag="{{ pk }}"><span class="link" onclick="document.location.href='{% url 'search_results' %}?q={{ tag }}';return false">{{ tag }}</span><img class="btn erase"/></span>
                         {% else %}
-                            <span class="tag" data-tag="{{ pk }}">{{ tag }}<img class="btn confirm"/><img class="btn deny"/></span>
+                            <span class="tag" data-tag="{{ pk }}"><span class="link" onclick="document.location.href='{% url 'search_results' %}?q={{ tag }}';return false">{{ tag }}</span><img class="btn confirm"/><img class="btn deny"/></span>
                         {% endif %}
                     {% endfor %}
                     <input class="tag-add" data-gif="{{ result.gif.pk }}"/>

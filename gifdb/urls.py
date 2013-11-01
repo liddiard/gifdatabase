@@ -13,8 +13,8 @@ urlpatterns = patterns('',
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
-    # Uncomment the next line to enable the admin:
-    url(r'^$', frontPage, name="main"),
+    # front page
+    url(r'^$', frontPage, name="front"),
 
     # state modification
     url(r'^login/$', login, name="login"),
@@ -34,5 +34,7 @@ urlpatterns = patterns('',
     url(r'^user/(?P<username>\w+)/$', profile, name="profile"),
     url(r'^user/(?P<username>\w+)/starred/$', profileStarred,
         name="profile_starred"),
+
+   # admin
     url(r'^admin/', include(admin.site.urls)),
 )

@@ -12,13 +12,14 @@
 <body>
     {% block top_bar %}
     <nav>
-        <img src="{{ STATIC_URL }}img/banner_small.png"/>
+        <a href="{% url 'front' %}"><img src="{{ STATIC_URL }}img/banner_small.png"/></a>
         <form method="get" class="search" action="{% url 'search_results' %}">
             <input type="text" name="q" placeholder="Search GIFs"/>
             <button type="submit"><img src="{{ STATIC_URL }}img/magnifier.png"/></button>
         </form>
         {% if user.is_authenticated %}
-            <span class="user">{{ user.username }} <span class="score">{{ user_score }}</span></span>
+            <a href="{% url 'profile' user %}"><span class="user">{{ user.username }}</span> <span class="score">{{ user_score }}</span></a>
+            <a href="{% url 'profile_starred' user %}"><img src="{{ STATIC_URL }}img/star_selected.png"/></a>
             <a href="/logout/">Logout</a>
         {% else %}
             <form method="post" action="{% url 'login' %}" id="login">{% csrf_token %}

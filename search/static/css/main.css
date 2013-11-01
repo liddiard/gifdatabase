@@ -85,8 +85,13 @@ body {
 img {
   border: 0; }
 
-a {
-  border: 0; }
+a, .link {
+  color: inherit;
+  text-decoration: none;
+  border: 0;
+  cursor: pointer; }
+  a:hover, .link:hover {
+    text-decoration: underline; }
 
 nav {
   position: fixed;
@@ -94,7 +99,11 @@ nav {
   padding: 5px 0;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 1000; }
-  nav .user .score {
+  nav a:hover {
+    text-decoration: none; }
+    nav a:hover .user {
+      text-decoration: underline; }
+  nav .score {
     color: #00ccff; }
   nav .search {
     display: inline-block; }
