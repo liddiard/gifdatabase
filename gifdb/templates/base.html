@@ -12,28 +12,41 @@
 <body>
     {% block top_bar %}
     <nav>
-        <a href="{% url 'front' %}"><img src="{{ STATIC_URL }}img/banner_small.png"/></a>
-        <form method="get" class="search" action="{% url 'search_results' %}">
-            <input type="text" name="q" placeholder="Search GIFs"/>
-            <button type="submit"><img src="{{ STATIC_URL }}img/magnifier.png"/></button>
-        </form>
-        {% if user.is_authenticated %}
-            <a href="{% url 'profile' user %}"><span class="user">{{ user.username }}</span> <span class="score">{{ user_score }}</span></a>
-            <a href="{% url 'profile_starred' user %}"><img src="{{ STATIC_URL }}img/star_selected.png"/></a>
-            <a href="/logout/">Logout</a>
-        {% else %}
-            <form method="post" action="{% url 'login' %}" id="login">{% csrf_token %}
-                <input type="text" name="username" placeholder="username"/>
-                <input type="password" name="password" placeholder="password"/>
-                <input type="submit" value="Login"/>
+        <div class="contents">
+            <a class="banner" href="{% url 'front' %}"><img src="{{ STATIC_URL }}img/banner_small.png"/></a>
+            <form method="get" class="search" action="{% url 'search_results' %}">
+                <input type="text" name="q" placeholder="Search GIFs"/>
+                <button type="submit"><img src="{{ STATIC_URL }}img/magnifier.png"/></button>
             </form>
-        {% endif %}
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' user %}"><span class="user">{{ user.username }}</span> <span class="score">{{ user_score }}</span></a>
+                <a href="{% url 'profile_starred' user %}"><img src="{{ STATIC_URL }}img/star_selected.png"/></a>
+                <a class="logout" href="/logout/">Logout</a>
+            {% else %}
+                <form method="post" action="{% url 'login' %}" id="login">{% csrf_token %}
+                    <input type="text" name="username" placeholder="username"/>
+                    <input type="password" name="password" placeholder="password"/>
+                    <input type="submit" value="Login"/>
+                </form>
+            {% endif %}
+        </div>
     </nav>
     {% endblock %}
-{% block content %}
-{% endblock %}
-<!-- preloading -->
-<img class="preload" src="{{ STATIC_URL }}img/star_hover.png"/>
-<img class="preload" src="{{ STATIC_URL }}img/link_hover.png"/>
+
+    <div id="wrap">
+        <section>
+        {% block content %}
+        {% endblock %}
+        </section>
+
+        <aside>
+        {% block sidebar %}
+        {% endblock %}
+        </aside>
+    </div>
+
+    <!-- preloading -->
+    <img class="preload" src="{{ STATIC_URL }}img/star_hover.png"/>
+    <img class="preload" src="{{ STATIC_URL }}img/link_hover.png"/>
 </body>
 </html>

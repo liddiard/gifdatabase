@@ -96,17 +96,52 @@ a, .link {
 nav {
   position: fixed;
   width: 100%;
-  padding: 5px 0;
+  padding: 2px 0;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 1000; }
+  nav .contents {
+    max-width: 1100px;
+    margin: 0 auto; }
+    nav .contents:before {
+      content: '';
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+      margin-right: -0.25em;
+      /* Adjusts for spacing */ }
   nav a:hover {
     text-decoration: none; }
     nav a:hover .user {
       text-decoration: underline; }
-  nav .score {
-    color: #00ccff; }
+  nav img {
+    display: inline-block;
+    vertical-align: text-bottom; }
+  nav .banner {
+    margin-right: 5px;
+    padding-left: 2px; }
   nav .search {
     display: inline-block; }
+  nav .score {
+    color: #00ccff; }
+  nav .logout {
+    color: #999999; }
+    nav .logout:hover {
+      color: #cccccc; }
+
+#wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-top: 50px; }
+
+section {
+  max-width: 800px;
+  float: left; }
+
+aside {
+  float: left;
+  width: 300px;
+  height: 600px;
+  background-color: gray; }
 
 .search {
   position: relative;
@@ -146,6 +181,8 @@ input {
   /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf000000', endColorstr='#40000000',GradientType=0 );
   /* IE6-9 */ }
+  input:hover {
+    border-color: rgba(255, 255, 255, 0.4); }
   input:focus {
     background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
     /* FF3.6+ */
@@ -209,7 +246,7 @@ button {
 .tagline {
   font-weight: normal;
   font-size: 110%;
-  color: #999; }
+  color: #999999; }
   .tagline.main {
     margin: 7px auto;
     text-align: center; }

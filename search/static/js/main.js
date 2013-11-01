@@ -7,6 +7,11 @@ $(document).ready(function(){
         $('<img />').attr('src', MEDIA_ROOT + preload[i]);
     }
     */
+    var inputs = document.getElementsByTagName('input');
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].autocomplete = "off";
+    }
+
     $('.search input').focus();
 });
 

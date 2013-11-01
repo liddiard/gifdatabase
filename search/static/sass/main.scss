@@ -2,6 +2,9 @@
 
 $helvetica: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 $primary_color: #0cf;
+$dark_gray: #666;
+$neutral_gray: #999;
+$light_gray: #ccc;
 
 @mixin horizontal_gradient($start_color, $end_color) {
     background: -moz-linear-gradient(top,  $start_color 0%, $end_color 100%); /* FF3.6+ */
@@ -66,9 +69,22 @@ a, .link {
 nav {
     position: fixed;
     width: 100%;
-    padding: 5px 0;
+    padding: 2px 0;
     background-color: rgba(0,0,0, 0.8);
     z-index: 1000;
+
+    .contents {
+        max-width: 1100px;
+        margin: 0 auto;
+
+        &:before {
+            content: '';
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
+            margin-right: -0.25em; /* Adjusts for spacing */
+        }
+    }
 
     a:hover {
         text-decoration: none;
@@ -76,6 +92,20 @@ nav {
         & .user {
             text-decoration: underline;
         }
+    }
+
+    img {
+        display: inline-block;
+        vertical-align: text-bottom;
+    }
+
+    .banner {
+        margin-right: 5px;
+        padding-left: 2px;
+    }
+
+    .search {
+        display: inline-block;
     }
 
     .user {
@@ -86,9 +116,31 @@ nav {
         color: $primary_color;
     }
 
-    .search {
-        display: inline-block;
+    .logout {
+        color: $neutral_gray;
+
+        &:hover {
+            color: $light_gray;
+        }
     }
+}
+
+#wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-top: 50px;
+}
+
+section {
+    max-width: 800px;
+    float: left;
+}
+
+aside {
+    float: left;
+    width: 300px;
+    height: 600px;
+    background-color: gray;
 }
 
 .search {
@@ -106,6 +158,10 @@ input {
     border-color: rgba(255,255,255, 0.2);
     border-style: solid;
     @include horizontal_gradient(rgba(0,0,0,0), rgba(255,255,255,0.05));
+
+    &:hover {
+        border-color: rgba(255,255,255, 0.4);
+    }
 
     &:focus {
         @include horizontal_gradient(rgba(0,0,0,0.75), rgba(0,0,0,0));
@@ -172,7 +228,7 @@ button {
 .tagline {
     font-weight: normal;
     font-size: 110%;
-    color: #999;
+    color: $neutral_gray;
 
     &.main {
         margin: 7px auto;
