@@ -121,12 +121,13 @@ nav {
     padding-left: 2px; }
   nav .search {
     display: inline-block; }
-  nav .score {
-    color: #00ccff; }
   nav .logout {
     color: #999999; }
     nav .logout:hover {
       color: #cccccc; }
+
+.score {
+  color: #00ccff; }
 
 #wrap {
   max-width: 1100px;
@@ -282,6 +283,8 @@ button {
 #lbBottomContainer .credit {
   font-size: 0.8em;
   vertical-align: top; }
+  #lbBottomContainer .credit .score {
+    vertical-align: top; }
 
 .preload {
   display: none !important; }

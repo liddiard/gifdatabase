@@ -112,10 +112,6 @@ nav {
             ;        
     }
 
-    .score {
-        color: $primary_color;
-    }
-
     .logout {
         color: $neutral_gray;
 
@@ -124,6 +120,12 @@ nav {
         }
     }
 }
+
+
+.score {
+    color: $primary_color;
+}
+
 
 #wrap {
     max-width: 1100px;
@@ -287,6 +289,10 @@ button {
     .credit {
         font-size: 0.8em;
         vertical-align: top;
+
+        .score {
+            vertical-align: top;
+        }
     }
 }
 

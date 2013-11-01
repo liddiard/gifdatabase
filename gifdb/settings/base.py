@@ -163,14 +163,10 @@ DJANGO_CONTEXT_PROCESSORS = (
     "django.contrib.messages.context_processors.messages"
 )
 
-USER_CONTEXT_PROCESSORS = (
-    'gifdb.context.userScore',
-)
+USER_CONTEXT_PROCESSORS = ()
 
 TEMPLATE_CONTEXT_PROCESSORS = (DJANGO_CONTEXT_PROCESSORS + 
                                USER_CONTEXT_PROCESSORS)
-
-CORS_ORIGIN_ALLOW_ALL = True # TODO: remove if unneeded
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

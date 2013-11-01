@@ -21,7 +21,7 @@
                 <input class="tag-add" data-gif="{{ result.gif.pk }}"/>
             </div>
             <div class="bottom-data">
-                <span class="credit">{{ result.gif.user_added }}</span>
+                <span class="credit">{{ result.gif.user_added }} <span class="score">{{ result.gif.user_added.getUserScore }}</span></span>
             </div>
         </a>
     {% endfor %}

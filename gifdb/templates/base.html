@@ -19,7 +19,7 @@
                 <button type="submit"><img src="{{ STATIC_URL }}img/magnifier.png"/></button>
             </form>
             {% if user.is_authenticated %}
-                <a href="{% url 'profile' user %}"><span class="user">{{ user.username }}</span> <span class="score">{{ user_score }}</span></a>
+                <a href="{% url 'profile' user %}"><span class="user">{{ user.username }}</span> <span class="score">{{ user.getUserScore }}</span></a>
                 <a href="{% url 'profile_starred' user %}"><img src="{{ STATIC_URL }}img/star_selected.png"/></a>
                 <a class="logout" href="/logout/">Logout</a>
             {% else %}

@@ -26,6 +26,13 @@ class UserScore(models.Model):
     def __unicode__(self):
         return "%s (%s)" % (self.user, self.score)
 
+def getUserScore(user):
+    try:
+        return UserScore.objects.get(user=user).score
+    except UserScore.DoesNotExist:
+        return ""
+User.getUserScore = getUserScore
+
 class UserScoreAdmin(admin.ModelAdmin):
     list_display = ('user', 'score')
 admin.site.register(UserScore, UserScoreAdmin)
