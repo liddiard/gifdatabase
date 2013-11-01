@@ -13,12 +13,11 @@
     {% block top_bar %}
     <nav>
         <form method="get" class="search" action="{% url 'search_results' %}">
-            <input type="text" name="q" placeholder="search"/>
-            <input class="btn" type="submit" value="Search"/>
+            <input type="text" name="q" placeholder="Search GIFs"/>
+            <button type="submit"><img src="{{ STATIC_URL }}img/magnifier.png"/></button>
         </form>
         {% if user.is_authenticated %}
-            {{ user.username }}
-            {{ user_score }}
+            <span class="user">{{ user.username }} <span class="score">{{ user_score }}</span></span>
             <a href="/logout/">Logout</a>
         {% else %}
             <form method="post" action="{% url 'login' %}" id="login">{% csrf_token %}

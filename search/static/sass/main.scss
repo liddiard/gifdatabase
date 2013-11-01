@@ -56,6 +56,34 @@ a {
     border: 0;
 }
 
+nav {
+    position: fixed;
+    width: 100%;
+    padding: 5px 0;
+    background-color: rgba(0,0,0, 0.8);
+    z-index: 1000;
+
+    .user {
+            ;        
+        .score {
+            color: $primary_color;
+        }
+    }
+
+    .search {
+        display: inline-block;
+    }
+}
+
+.search {
+    position: relative;
+    width: 244px;
+
+    &.main {
+        margin: 20px auto;
+    }
+}
+
 @include placeholder_color(rgba(255,255,255, 0.4));
 input {
     color: white;
@@ -80,19 +108,13 @@ input {
     }
 }
 
-.main.search {
-    width: 244px;
-    margin: 20px auto;
-    text-align: center;
-    position: relative;
-}
-
 button {
     color: white;
     background-color: $primary_color;
     border: 0;
     cursor: pointer;
     padding: 0;
+    outline: none;
 
     img {
         display: block;

@@ -88,6 +88,23 @@ img {
 a {
   border: 0; }
 
+nav {
+  position: fixed;
+  width: 100%;
+  padding: 5px 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1000; }
+  nav .user .score {
+    color: #00ccff; }
+  nav .search {
+    display: inline-block; }
+
+.search {
+  position: relative;
+  width: 244px; }
+  .search.main {
+    margin: 20px auto; }
+
 ::-webkit-input-placeholder {
   color: rgba(255, 255, 255, 0.4); }
 
@@ -146,18 +163,13 @@ input {
     width: 208px;
     padding-right: 28px; }
 
-.main.search {
-  width: 244px;
-  margin: 20px auto;
-  text-align: center;
-  position: relative; }
-
 button {
   color: white;
   background-color: #00ccff;
   border: 0;
   cursor: pointer;
-  padding: 0; }
+  padding: 0;
+  outline: none; }
   button img {
     display: block; }
   .search button {
