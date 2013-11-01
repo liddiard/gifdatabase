@@ -7,6 +7,7 @@ $(document).ready(function(){
         $('<img />').attr('src', MEDIA_ROOT + preload[i]);
     }
     */
+    $('.search input').focus();
 });
 
 function getCookie(name) {

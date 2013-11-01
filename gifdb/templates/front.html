@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block header %}{% endblock %}
+{% block top_bar %}{% endblock %}
 
 {% block content %}
     <img id="banner-main" src="{{ STATIC_URL }}img/banner_large.png" alt="GIFdatabase"/>
-    <h2 class="main tagline">The internet&rsquo;s finest animated GIF search.</h2>
+    <h2 class="main tagline">The internet&rsquo;s finest animated GIF search</h2>
     <form method="get" class="main search" action="{% url 'search_results' %}">
         <input type="text" name="q" placeholder="Search GIFs"/>
-        <input class="btn" type="submit" value="Search"/>
+        <button type="submit"><img src="{{ STATIC_URL }}img/magnifier.png"/></button>
     </form>
 {% endblock %}

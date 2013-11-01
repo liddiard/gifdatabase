@@ -2,6 +2,7 @@
 
 $helvetica: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 $primary_color: #0cf;
+
 @mixin horizontal_gradient($start_color, $end_color) {
     background: -moz-linear-gradient(top,  $start_color 0%, $end_color 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$start_color), color-stop(100%,$end_color)); /* Chrome,Safari4+ */
@@ -11,6 +12,7 @@ $primary_color: #0cf;
     background: linear-gradient(to bottom,  $start_color 0%,$end_color 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bf000000', endColorstr='#40000000',GradientType=0 ); /* IE6-9 */
 }
+
 @mixin placeholder_color($color) {
     ::-webkit-input-placeholder {
         color: $color;
@@ -57,32 +59,56 @@ a {
 @include placeholder_color(rgba(255,255,255, 0.4));
 input {
     color: white;
-    border: 2px solid rgba(255,255,255, 0.2);
+    border-color: rgba(255,255,255, 0.2);
+    border-style: solid;
     @include horizontal_gradient(rgba(0,0,0,0), rgba(255,255,255,0.05));
 
     &:focus {
-        @include horizontal_gradient(rgba(0,0,0,1), rgba(0,0,0,0));
+        @include horizontal_gradient(rgba(0,0,0,0.75), rgba(0,0,0,0));
         background-color: rgba($primary_color, 0.1);
         border-color: rgba($primary_color, 1);
         outline: none;
     }
     
     .search & {
+        border-width: 2px;
         border-radius: 4px;
         font-size: 1.1em;
         padding: 0.2em;
+        width: 208px;
+        padding-right: 28px;
     }
 }
 
 .main.search {
-    margin: 20px 0;
+    width: 244px;
+    margin: 20px auto;
     text-align: center;
+    position: relative;
 }
 
-form .btn {
-    background-color: $primary_color;
+button {
     color: white;
+    background-color: $primary_color;
+    border: 0;
     cursor: pointer;
+    padding: 0;
+
+    img {
+        display: block;
+    }
+
+    .search & {
+        position: absolute;
+        top: 0; right: 0;
+        padding: 5px 3px;
+        background: transparent;
+        opacity: 0.4;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
 }
 
 .thumbs-list {
@@ -106,12 +132,12 @@ form .btn {
 }
 
 .tagline {
-    font-style: italic;
     font-weight: normal;
     font-size: 110%;
+    color: #999;
 
     &.main {
-        margin: 5px auto;
+        margin: 7px auto;
         text-align: center;
     }
 }

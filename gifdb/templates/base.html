@@ -10,8 +10,8 @@
     <script src="{{ STATIC_URL }}js/taglight.js"></script>
 </head>
 <body>
-    {% block header %}
-    <header>
+    {% block top_bar %}
+    <nav>
         <form method="get" class="search" action="{% url 'search_results' %}">
             <input type="text" name="q" placeholder="search"/>
             <input class="btn" type="submit" value="Search"/>
@@ -27,7 +27,7 @@
                 <input type="submit" value="Login"/>
             </form>
         {% endif %}
-    </header>
+    </nav>
     {% endblock %}
 {% block content %}
 {% endblock %}

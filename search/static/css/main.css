@@ -104,7 +104,8 @@ a {
 
 input {
   color: white;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
+  border-style: solid;
   background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.05) 100%);
   /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(255, 255, 255, 0.05)));
@@ -120,17 +121,17 @@ input {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf000000', endColorstr='#40000000',GradientType=0 );
   /* IE6-9 */ }
   input:focus {
-    background: -moz-linear-gradient(top, black 0%, rgba(0, 0, 0, 0) 100%);
+    background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
     /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, black), color-stop(100%, rgba(0, 0, 0, 0)));
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0.75)), color-stop(100%, rgba(0, 0, 0, 0)));
     /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, black 0%, rgba(0, 0, 0, 0) 100%);
+    background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
     /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, black 0%, rgba(0, 0, 0, 0) 100%);
+    background: -o-linear-gradient(top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
     /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, black 0%, rgba(0, 0, 0, 0) 100%);
+    background: -ms-linear-gradient(top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
     /* IE10+ */
-    background: linear-gradient(to bottom, black 0%, rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
     /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf000000', endColorstr='#40000000',GradientType=0 );
     /* IE6-9 */
@@ -138,18 +139,36 @@ input {
     border-color: #00ccff;
     outline: none; }
   .search input {
+    border-width: 2px;
     border-radius: 4px;
     font-size: 1.1em;
-    padding: 0.2em; }
+    padding: 0.2em;
+    width: 208px;
+    padding-right: 28px; }
 
 .main.search {
-  margin: 20px 0;
-  text-align: center; }
+  width: 244px;
+  margin: 20px auto;
+  text-align: center;
+  position: relative; }
 
-form .btn {
-  background-color: #00ccff;
+button {
   color: white;
-  cursor: pointer; }
+  background-color: #00ccff;
+  border: 0;
+  cursor: pointer;
+  padding: 0; }
+  button img {
+    display: block; }
+  .search button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px 3px;
+    background: transparent;
+    opacity: 0.4; }
+    .search button:hover {
+      opacity: 1; }
 
 .thumbs-list {
   max-width: 800px; }
@@ -167,11 +186,11 @@ form .btn {
   margin: 200px auto 0 auto; }
 
 .tagline {
-  font-style: italic;
   font-weight: normal;
-  font-size: 110%; }
+  font-size: 110%;
+  color: #999; }
   .tagline.main {
-    margin: 5px auto;
+    margin: 7px auto;
     text-align: center; }
 
 /* lightbox */
