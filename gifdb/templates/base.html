@@ -12,6 +12,7 @@
 <body>
     {% block top_bar %}
     <nav>
+        <img src="{{ STATIC_URL }}img/banner_small.png"/>
         <form method="get" class="search" action="{% url 'search_results' %}">
             <input type="text" name="q" placeholder="Search GIFs"/>
             <button type="submit"><img src="{{ STATIC_URL }}img/magnifier.png"/></button>
