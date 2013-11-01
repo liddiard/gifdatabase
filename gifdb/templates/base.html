@@ -33,6 +33,9 @@
     </nav>
     {% endblock %}
 
+    {% block extra_wrap %}{% endblock %}
+
+    {% block wrap %}
     <div id="wrap">
         <section>
         {% block content %}
@@ -44,6 +47,7 @@
         {% endblock %}
         </aside>
     </div>
+    {% endblock %}
 
     <!-- preloading -->
     <img class="preload" src="{{ STATIC_URL }}img/star_hover.png"/>
