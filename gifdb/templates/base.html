@@ -18,17 +18,20 @@
                 <input type="text" name="q" placeholder="Search GIFs"/>
                 <button type="submit"><img src="{{ STATIC_URL }}img/magnifier.png"/></button>
             </form>
-            {% if user.is_authenticated %}
-                <a href="{% url 'profile' user %}"><span class="user">{{ user.username }}</span> <span class="score">{{ user.getUserScore }}</span></a>
-                <a href="{% url 'profile_starred' user %}"><img src="{{ STATIC_URL }}img/star_selected.png"/></a>
-                <a class="logout" href="/logout/">Logout</a>
-            {% else %}
-                <form method="post" action="{% url 'login' %}" id="login">{% csrf_token %}
-                    <input type="text" name="username" placeholder="username"/>
-                    <input type="password" name="password" placeholder="password"/>
-                    <input type="submit" value="Login"/>
-                </form>
-            {% endif %}
+            <div class="user-actions">
+                {% if user.is_authenticated %}
+                    <button class="add-gif"><img src="{{ STATIC_URL }}img/plus_black.png"/>add GIF</button>
+                    <a class="user" href="{% url 'profile' user %}"><span class="username">{{ user.username }}</span> <span class="score">{{ user.getUserScore }}</span></a>
+                    <a class="star" href="{% url 'profile_starred' user %}"><img src="{{ STATIC_URL }}img/star_selected.png"/></a>
+                    <a class="logout" href="/logout/">Logout</a>
+                {% else %}
+                    <form method="post" action="{% url 'login' %}" id="login">{% csrf_token %}
+                        <input type="text" name="username" placeholder="username"/>
+                        <input type="password" name="password" placeholder="password"/>
+                        <input type="submit" value="Login"/>
+                    </form>
+                {% endif %}
+            </div>
         </div>
     </nav>
     {% endblock %}

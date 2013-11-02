@@ -63,6 +63,14 @@ a, .link {
 
     &:hover {
         text-decoration: underline;
+
+        &.user {
+            text-decoration: none;
+
+            > .username {
+                text-decoration: underline;
+            }
+        }
     }
 }
 
@@ -70,8 +78,9 @@ nav {
     position: fixed;
     width: 100%;
     padding: 2px 0;
-    background-color: rgba(0,0,0, 0.8);
     z-index: 1000;
+    box-shadow: 0 -1px 0 0 rgba(255,255,255, 0.1) inset;
+    @include horizontal_gradient(rgba(20,20,20, 0.8), rgba(10,10,10, 0.8));
 
     .contents {
         max-width: 1100px;
@@ -88,10 +97,6 @@ nav {
 
     a:hover {
         text-decoration: none;
-
-        & .user {
-            text-decoration: underline;
-        }
     }
 
     img {
@@ -99,9 +104,14 @@ nav {
         vertical-align: text-bottom;
     }
 
+    .user-actions {
+        float: right;
+        margin: 3px 2px 0 0;
+    }
+
     .banner {
-        margin-right: 5px;
         padding-left: 2px;
+        margin-right: 5px;
     }
 
     .search {
@@ -109,11 +119,16 @@ nav {
     }
 
     .user {
-            ;        
+        margin: 0 0.25em 0 0.5em;
+    }
+
+    .star {
+        margin-right: 0.5em;
     }
 
     .logout {
         color: $neutral_gray;
+        font-size: 0.8em;
 
         &:hover {
             color: $light_gray;
@@ -128,6 +143,7 @@ nav {
 
 
 #wrap {
+    position: relative;
     max-width: 1100px;
     margin: 0 auto;
     padding-top: 50px;
@@ -168,7 +184,7 @@ input {
     &:focus {
         @include horizontal_gradient(rgba(0,0,0,0.75), rgba(0,0,0,0));
         background-color: rgba($primary_color, 0.1);
-        border-color: rgba($primary_color, 1);
+        border-color: rgba($primary_color, 1) !important;
         outline: none;
     }
     
@@ -183,15 +199,37 @@ input {
 }
 
 button {
-    color: white;
+    color: black;
     background-color: $primary_color;
     border: 0;
     cursor: pointer;
     padding: 0;
     outline: none;
 
+    &:hover {
+        background-color: $primary_color + #222;
+    }
+
+    &:active {
+        background-color: $primary_color - #222;
+    }
+
+    &.medium {
+        padding: 5px;
+    }
+
+    &.add-gif {
+        font-weight: bold;
+        padding: 3px 6px 0 4px;
+
+        img {
+            vertical-align: middle;
+            padding: 0 2px 4px 0;
+        }
+    }
+
     img {
-        display: block;
+        ;
     }
 
     .search & {

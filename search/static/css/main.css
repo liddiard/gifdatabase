@@ -92,13 +92,31 @@ a, .link {
   cursor: pointer; }
   a:hover, .link:hover {
     text-decoration: underline; }
+    a:hover.user, .link:hover.user {
+      text-decoration: none; }
+      a:hover.user > .username, .link:hover.user > .username {
+        text-decoration: underline; }
 
 nav {
   position: fixed;
   width: 100%;
   padding: 2px 0;
-  background-color: rgba(0, 0, 0, 0.8);
-  z-index: 1000; }
+  z-index: 1000;
+  box-shadow: 0 -1px 0 0 rgba(255, 255, 255, 0.1) inset;
+  background: -moz-linear-gradient(top, rgba(20, 20, 20, 0.8) 0%, rgba(10, 10, 10, 0.8) 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(20, 20, 20, 0.8)), color-stop(100%, rgba(10, 10, 10, 0.8)));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, rgba(20, 20, 20, 0.8) 0%, rgba(10, 10, 10, 0.8) 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, rgba(20, 20, 20, 0.8) 0%, rgba(10, 10, 10, 0.8) 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, rgba(20, 20, 20, 0.8) 0%, rgba(10, 10, 10, 0.8) 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, rgba(20, 20, 20, 0.8) 0%, rgba(10, 10, 10, 0.8) 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf000000', endColorstr='#40000000',GradientType=0 );
+  /* IE6-9 */ }
   nav .contents {
     max-width: 1100px;
     margin: 0 auto; }
@@ -111,18 +129,24 @@ nav {
       /* Adjusts for spacing */ }
   nav a:hover {
     text-decoration: none; }
-    nav a:hover .user {
-      text-decoration: underline; }
   nav img {
     display: inline-block;
     vertical-align: text-bottom; }
+  nav .user-actions {
+    float: right;
+    margin: 3px 2px 0 0; }
   nav .banner {
-    margin-right: 5px;
-    padding-left: 2px; }
+    padding-left: 2px;
+    margin-right: 5px; }
   nav .search {
     display: inline-block; }
+  nav .user {
+    margin: 0 0.25em 0 0.5em; }
+  nav .star {
+    margin-right: 0.5em; }
   nav .logout {
-    color: #999999; }
+    color: #999999;
+    font-size: 0.8em; }
     nav .logout:hover {
       color: #cccccc; }
 
@@ -130,6 +154,7 @@ nav {
   color: #00ccff; }
 
 #wrap {
+  position: relative;
   max-width: 1100px;
   margin: 0 auto;
   padding-top: 50px; }
@@ -200,7 +225,7 @@ input {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf000000', endColorstr='#40000000',GradientType=0 );
     /* IE6-9 */
     background-color: rgba(0, 204, 255, 0.1);
-    border-color: #00ccff;
+    border-color: #00ccff !important;
     outline: none; }
   .search input {
     border-width: 2px;
@@ -211,14 +236,24 @@ input {
     padding-right: 28px; }
 
 button {
-  color: white;
+  color: black;
   background-color: #00ccff;
   border: 0;
   cursor: pointer;
   padding: 0;
   outline: none; }
-  button img {
-    display: block; }
+  button:hover {
+    background-color: #22eeff; }
+  button:active {
+    background-color: #00aadd; }
+  button.medium {
+    padding: 5px; }
+  button.add-gif {
+    font-weight: bold;
+    padding: 3px 6px 0 4px; }
+    button.add-gif img {
+      vertical-align: middle;
+      padding: 0 2px 4px 0; }
   .search button {
     position: absolute;
     top: 0;
