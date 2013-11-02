@@ -21,7 +21,7 @@
                 <input class="tag-add" data-gif="{{ result.gif.pk }}"/>
             </div>
             <div class="bottom-data">
-                <span class="user link" onclick="document.location.href={% url 'profile' result.gif.user_added %}"><span class="username">{{ result.gif.user_added }}</span> <span class="score">{{ result.gif.user_added.getUserScore }}</span></span>
+                <span class="user link" onclick="document.location.href='{% url 'profile' result.gif.user_added %}'"><span class="username">{{ result.gif.user_added }}</span> <span class="score">{{ result.gif.user_added.getUserScore }}</span></span>
             </div>
         </a>
     {% endfor %}
