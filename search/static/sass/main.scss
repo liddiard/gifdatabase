@@ -1,5 +1,6 @@
 @import "tags";
 
+$GOLDEN_RATIO: 1.618;
 $helvetica: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 $primary_color: #0cf;
 $dark_gray: #666;
@@ -117,7 +118,7 @@ nav {
 
     .banner {
         padding-left: 2px;
-        margin-right: 5px;
+        margin-right: 0.5em;
     }
 
     .search {
@@ -251,19 +252,33 @@ button {
     }
 }
 
-.thumbs-list {
-	max-width: 800px;
+.modal {
+    $padding: 10px;
+    position: fixed;
+    background-color: #333;
+    box-shadow: 0 0 0 1px rgba(255,255,255, 0.1) inset;
+    top: 50%; left: 50%;
+    z-index: 1000;
+    padding: $padding;
+
+    &.medium {
+        $e: $padding*2; // effective increase the padding has on a dimension
+        $width: 400px - $e;
+        $height: (($width + $e) / $GOLDEN_RATIO) - $e;
+        width: $width;
+        height: $height;
+        margin-left: -$width / 2;
+        margin-top: -$height / 2;
+    }
 }
 
-.thumb {
-    margin: 0;
-    display: block;
-    float: left;
-    -webkit-transition: -webkit-filter 0.2s;
-
-    &:hover {
-        -webkit-filter: brightness(1.15);
-    }
+.modal-mask {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 999;
+    background-color: rgba(0,0,0, 0.8);
+    cursor: pointer;
 }
 
 #banner-main {
@@ -279,6 +294,21 @@ button {
     &.main {
         margin: 7px auto;
         text-align: center;
+    }
+}
+
+.thumbs-list {
+	max-width: 800px;
+}
+
+.thumb {
+    margin: 0;
+    display: block;
+    float: left;
+    -webkit-transition: -webkit-filter 0.2s;
+
+    &:hover {
+        -webkit-filter: brightness(1.15);
     }
 }
 

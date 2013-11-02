@@ -141,7 +141,7 @@ nav {
     margin: 3px 2px 0 0; }
   nav .banner {
     padding-left: 2px;
-    margin-right: 5px; }
+    margin-right: 0.5em; }
   nav .search {
     display: inline-block; }
   nav .user {
@@ -268,16 +268,29 @@ button {
     .search button:hover {
       opacity: 1; }
 
-.thumbs-list {
-  max-width: 800px; }
+.modal {
+  position: fixed;
+  background-color: #333;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  top: 50%;
+  left: 50%;
+  z-index: 1000;
+  padding: 10px; }
+  .modal.medium {
+    width: 380px;
+    height: 227.21879px;
+    margin-left: -190px;
+    margin-top: -113.60939px; }
 
-.thumb {
-  margin: 0;
-  display: block;
-  float: left;
-  -webkit-transition: -webkit-filter 0.2s; }
-  .thumb:hover {
-    -webkit-filter: brightness(1.15); }
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.8);
+  cursor: pointer; }
 
 #banner-main {
   display: block;
@@ -290,6 +303,17 @@ button {
   .tagline.main {
     margin: 7px auto;
     text-align: center; }
+
+.thumbs-list {
+  max-width: 800px; }
+
+.thumb {
+  margin: 0;
+  display: block;
+  float: left;
+  -webkit-transition: -webkit-filter 0.2s; }
+  .thumb:hover {
+    -webkit-filter: brightness(1.15); }
 
 /* lightbox */
 #lbTopContainer .btn {
