@@ -72,6 +72,12 @@ a, .link {
             }
         }
     }
+
+    #lbBottomContainer & {
+        display: block;
+        font-size: 0.8em;
+        margin-top: 1px;
+    }
 }
 
 nav {
@@ -320,17 +326,6 @@ button {
 
     .dropdown {
         display: none;
-    }
-}
-
-#lbBottomContainer {
-    .credit {
-        font-size: 0.8em;
-        vertical-align: top;
-
-        .score {
-            vertical-align: top;
-        }
     }
 }
 

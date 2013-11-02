@@ -96,6 +96,10 @@ a, .link {
       text-decoration: none; }
       a:hover.user > .username, .link:hover.user > .username {
         text-decoration: underline; }
+  #lbBottomContainer a, #lbBottomContainer .link {
+    display: block;
+    font-size: 0.8em;
+    margin-top: 1px; }
 
 nav {
   position: fixed;
@@ -314,12 +318,6 @@ button {
     content: url("../img/star_selected.png"); }
 #lbTopContainer .dropdown {
   display: none; }
-
-#lbBottomContainer .credit {
-  font-size: 0.8em;
-  vertical-align: top; }
-  #lbBottomContainer .credit .score {
-    vertical-align: top; }
 
 .preload {
   display: none !important; }
