@@ -236,7 +236,7 @@ input {
   input.add-gif {
     display: block;
     margin: 0 auto;
-    width: 370px; }
+    width: 320px; }
   .search input {
     width: 208px;
     padding-right: 28px; }
@@ -279,10 +279,10 @@ button {
   padding: 0;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset; }
   .modal.medium {
-    width: 400px;
-    height: 247.21879px;
-    margin-left: -200px;
-    margin-top: -123.60939px; }
+    width: 350px;
+    height: 216.31644px;
+    margin-left: -175px;
+    margin-top: -108.15822px; }
   .modal h1 {
     background-color: #111;
     margin: 0;
@@ -293,18 +293,19 @@ button {
     padding: 10px; }
   .modal .lead {
     display: block;
-    color: #999999; }
+    color: #999999;
+    margin-bottom: 0.9em; }
   .modal .descriptor {
     display: block;
     font-weight: bold;
-    margin: 1.25em 0 0.25em 0; }
+    margin: 0.5em 0 0.25em 0; }
   .modal .conjunction {
     display: block;
     color: #999999;
     font-weight: bold;
     font-size: 0.9em;
     text-transform: uppercase;
-    margin-top: 1.25em; }
+    margin-top: 1em; }
 
 .modal-mask {
   position: fixed;
