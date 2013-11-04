@@ -9,7 +9,6 @@
   padding-right: 42px;
   white-space: pre;
   border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 2px;
   font-size: 1.6em; }
   .tag .btn {
     position: absolute;
@@ -60,7 +59,6 @@
   clear: both;
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 2px;
   font-size: 1.6em;
   padding: 0.1em 0.25em;
   margin: 0;
@@ -233,7 +231,6 @@ input {
     outline: none; }
   input.large {
     border-width: 2px;
-    border-radius: 4px;
     font-size: 1.1em;
     padding: 0.2em; }
   input.add-gif {
