@@ -168,7 +168,7 @@ aside {
     background-color: gray;
 }
 
-.search {
+form.search {
     position: relative;
     width: 244px;
 
@@ -194,12 +194,21 @@ input {
         border-color: rgba($primary_color, 1) !important;
         outline: none;
     }
-    
-    .search & {
+
+    &.large {
         border-width: 2px;
         border-radius: 4px;
         font-size: 1.1em;
         padding: 0.2em;
+    }
+
+    &.add-gif {
+        display: block;
+        margin: 0 auto;
+        width: 370px;        
+    }
+    
+    .search & { // this gets applied to the search <form> above this element
         width: 208px;
         padding-right: 28px;
     }
@@ -253,13 +262,13 @@ button {
 }
 
 .modal {
-    $padding: 10px;
+    $padding: 0;
     position: fixed;
     background-color: #333;
-    box-shadow: 0 0 0 1px rgba(255,255,255, 0.1) inset;
     top: 50%; left: 50%;
     z-index: 1000;
     padding: $padding;
+    box-shadow: 0 0 0 1px rgba(255,255,255, 0.1) inset;
 
     &.medium {
         $e: $padding*2; // effective increase the padding has on a dimension
@@ -269,6 +278,38 @@ button {
         height: $height;
         margin-left: -$width / 2;
         margin-top: -$height / 2;
+    }
+
+    h1 {
+       background-color: #111; 
+       margin: 0;
+       padding: 5px 10px;
+       font-size: 150%;
+       box-shadow: 1px 0 0 0 rgba(255,255,255, 0.1) inset, -1px 0 0 0 rgba(255,255,255, 0.1) inset, 0 1px 0 0 rgba(255,255,255, 0.1) inset;
+    }
+
+    .message {
+        padding: 10px;
+    }
+
+    .lead {
+        display: block;
+        color: $neutral_gray;
+    }
+
+    .descriptor {
+        display: block;
+        font-weight: bold;
+        margin: 1.25em 0 0.25em 0;
+    }
+
+    .conjunction {
+        display: block;
+        color: $neutral_gray;
+        font-weight: bold;
+        font-size: 0.9em;
+        text-transform: uppercase;
+        margin-top: 1.25em;
     }
 }
 

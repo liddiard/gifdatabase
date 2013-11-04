@@ -10,12 +10,23 @@
     <script src="{{ STATIC_URL }}js/taglight.js"></script>
 </head>
 <body>
+    <div class="modal-mask"></div>
+    <div class="modal medium">
+        <h1>Add GIF</h1>
+        <div class="message">
+            <span class="lead">GIFdatabase hosts GIFs on imgur.com.</span>
+            <span class="descriptor">Paste an imgur link:</span>
+            <input class="large add-gif" placeholder="http://imgur.com/"/>
+            <span class="conjunction">or</span>
+            <span class="descriptor"><a href="http://imgur.com/" rel="nofollow" target="blank">Upload a GIF to imgur</a></span>
+        </div>
+    </div>
     {% block top_bar %}
     <nav>
         <div class="contents">
             <a class="banner" href="{% url 'front' %}"><img src="{{ STATIC_URL }}img/banner_small.png"/></a>
             <form method="get" class="search" action="{% url 'search_results' %}">
-                <input type="text" name="q" placeholder="Search GIFs"/>
+                <input class="large" type="text" name="q" placeholder="Search GIFs"/>
                 <button type="submit"><img src="{{ STATIC_URL }}img/magnifier.png"/></button>
             </form>
             <div class="user-actions">
