@@ -13,6 +13,19 @@ $(document).ready(function(){
     }
 
     $('.search input').focus();
+    $('button.add-gif').click(function() {
+        $('.modal-mask, #add-gif').toggle(0, function(){
+            if ($('#add-gif').is(':visible')) { 
+                $('#add-gif input').focus();
+            } else {
+                $('.search input').focus();
+            }
+        });
+        $('.modal-mask').click(function() {
+            $('.modal-mask, #add-gif').hide();
+            $('.search input').focus();
+        });
+    });
 });
 
 function getCookie(name) {

@@ -271,6 +271,7 @@ button {
       opacity: 1; }
 
 .modal {
+  display: none;
   position: fixed;
   background-color: #333;
   top: 50%;
@@ -308,6 +309,7 @@ button {
     margin-top: 1em; }
 
 .modal-mask {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
