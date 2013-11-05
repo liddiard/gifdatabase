@@ -367,7 +367,6 @@ votes = {};
                     elem.select();
                     return;
                 }
-                var gif_id = elem.attr('data-gif');
                 elem.val('');
                 var new_tag = $('<span/>', {
                     text: content,
@@ -376,7 +375,8 @@ votes = {};
                 $('<img/>', {
                     class: 'btn erase'
                 }).appendTo(new_tag);
-                new_tag.insertBefore($("#lbAside [data-gif='" + gif_id + "']"));
+                var gif_id = elem.attr('data-gif');
+                new_tag.insertBefore($("input[data-gif='" + gif_id + "']"));
                 ajaxTagAdd(gif_id, content);
                 toggleParentOnHover('.tag > .erase', 'tag-deny');
             }
