@@ -218,7 +218,8 @@ admin.site.register(TagInstance, TagInstanceAdmin)
 
 class Flag(models.Model):
     gif = models.ForeignKey('Gif')
-    #FLAGGED_CHOICES = (('in', 'inappropriate content'),)
+    #FLAGGED_CHOICES = (('nf', '404 not found'),
+    #                   ('ic', 'inappropriate content'), ('ot', 'other'))
     #reason = models.CharField(choices=FLAGGED_CHOICES, max_length=2)
     message = models.CharField(max_length=500)
     date_flagged = models.DateTimeField(auto_now_add=True)
