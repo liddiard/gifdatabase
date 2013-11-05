@@ -1,25 +1,19 @@
 $(document).ready(function(){
-    // preload images
-    /*
-    var MEDIA_ROOT = '../img/';
-    var preload = ['link_hover.png', 'star_hover.png'];
-    for (var i = 0; i < preload.length; i++) {
-        $('<img />').attr('src', MEDIA_ROOT + preload[i]);
-    }
-    */
+    /* turn autocomplete off for all inputs */
     var inputs = document.getElementsByTagName('input');
     for (var i = 0; i < inputs.length; i++) {
         inputs[i].autocomplete = "off";
     }
 
     $('.search input').focus();
+
     $('button.add-gif').click(function() {
         $('.modal-mask, #add-gif').toggle(0, function(){
             if ($('#add-gif').is(':visible')) { 
                 var add_gif = $('#add-gif input');
                 add_gif.focus();
                 add_gif.on('input', function(){
-                    alert(add_gif.val());
+                    showGifFromUrl(add_gif.val());
                 });
             } else {
                 $('.search input').focus();
@@ -31,6 +25,52 @@ $(document).ready(function(){
         });
     });
 });
+
+function showGifFromUrl(string) {
+    var re = /[^(http:\/\/i.imgur.com/gallery)][a-zA-Z0-9]+[^(\.gif)]/;
+    var match = string.match(re);
+    if (match) {
+        var url = "http://i.imgur.com/" + match[0] + ".gif";
+        testImage(url, addGifCallback);
+    }
+}
+
+function addGifCallback(url, message) {
+    if (message === "error" || message === "timeout") {
+        badUrl();
+    } else { goodUrl() }
+
+    function badUrl() {
+        alert("your url is bad and your should feel bad.");
+    }
+
+    function goodUrl() {
+        alert("that's one sexy url");
+    }
+}
+
+function testImage(url, callback, timeout) {
+    timeout = timeout || 5000;
+    var timedOut = false, timer;
+    var img = new Image();
+    img.onerror = img.onabort = function() {
+        if (!timedOut) {
+            clearTimeout(timer);
+            callback(url, "error");
+        }
+    };
+    img.onload = function() {
+        if (!timedOut) {
+            clearTimeout(timer);
+            callback(url, "success");
+        }
+    };
+    img.src = url;
+    timer = setTimeout(function() {
+        timedOut = true;
+        callback(url, "timeout");
+    }, timeout); 
+}
 
 function getCookie(name) {
     var cookieValue = null;
