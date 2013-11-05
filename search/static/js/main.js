@@ -16,7 +16,11 @@ $(document).ready(function(){
     $('button.add-gif').click(function() {
         $('.modal-mask, #add-gif').toggle(0, function(){
             if ($('#add-gif').is(':visible')) { 
-                $('#add-gif input').focus();
+                var add_gif = $('#add-gif input');
+                add_gif.focus();
+                add_gif.on('input', function(){
+                    alert(add_gif.val());
+                });
             } else {
                 $('.search input').focus();
             }

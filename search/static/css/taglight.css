@@ -8,7 +8,7 @@
 
 #lbOverlay {
 	position: fixed;
-	z-index: 999;
+	z-index: 990;
 	left: 0;
 	top: 0;
 	width: 100%;
@@ -19,7 +19,7 @@
 
 #lbCenter, #lbAside, #lbTopContainer, #lbBottomContainer {
 	position: absolute;
-	z-index: 9999;
+	z-index: 995;
 	overflow: visible;
 }
 
