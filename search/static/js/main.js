@@ -13,7 +13,8 @@ $(document).ready(function(){
                 var add_gif = $('#add-gif input');
                 add_gif.focus();
                 add_gif.on('input', function(){
-                    showGifFromUrl(add_gif.val());
+                    if ($(this).val().length > 0)
+                        showGifFromUrl(add_gif.val());
                 });
             } else {
                 $('.search input').focus();
@@ -32,21 +33,22 @@ function showGifFromUrl(string) {
     if (match) {
         var url = "http://i.imgur.com/" + match[0] + ".gif";
         testImage(url, addGifCallback);
-    }
+    } else badUrl();
 }
 
 function addGifCallback(url, message) {
     if (message === "error" || message === "timeout") {
         badUrl();
     } else { goodUrl() }
+}
 
-    function badUrl() {
-        alert("your url is bad and your should feel bad.");
-    }
+function badUrl() {
+    alert("your url is bad and your should feel bad.");
+    $('#add-gif input').select();
+}
 
-    function goodUrl() {
-        alert("that's one sexy url");
-    }
+function goodUrl() {
+    alert("that's one sexy url");
 }
 
 function testImage(url, callback, timeout) {
