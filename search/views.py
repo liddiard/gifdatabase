@@ -198,10 +198,8 @@ def ajaxAddTag(request):
                 return doesNotExist("Could not add tag to gif because gif "
                                     "matching id %s doesn't exist." % gif_id)
             t = Tag.objects.get_or_create(name=tag_name)[0]
-            ti_tuple = TagInstance.objects.get_or_create(tag=t,
+            ti, created = TagInstance.objects.get_or_create(tag=t,
                                                          content_object=gif)
-            ti = ti_tuple[0]
-            created = ti_tuple[1]
             if created:
                 ti.user_added = user
                 ti.save()
