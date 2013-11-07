@@ -21,7 +21,7 @@ def imgFromUrl(url):
 def isAnimated(img):
     try:
         img.seek(1)
-    except EOFError:
+    except: # TODO: lazy catchall (EOFError)
         is_animated = False
     else:
         is_animated = True

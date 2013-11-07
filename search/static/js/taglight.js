@@ -238,16 +238,15 @@ votes = {};
         }
 
         function ajaxInterpretTagVote(response) {
-            data = response.split('|');
-            tag = data[0];
-            v = data[1];
+            var tag = response.tag;
+            var v = response.vote;
             elem = $('.tag[data-tag='+tag+']');
-            if (v !== "0") {
-                if (v === "1") {
+            if (v !== 0) {
+                if (v === 1) {
                     votes[tag] = true;
                     elem.addClass("tag-confirmed");
                 }
-                else if (v === "-1") {
+                else if (v === -1) {
                     votes[tag] = false;
                     elem.addClass("tag-denied");
                 }
@@ -259,7 +258,7 @@ votes = {};
         ajaxGetTagVotes();
 
         function ajaxInterpretStar(response) {
-            if (response === "1")
+            if (response.star === 1)
                 $('#lbTopContainer .star').addClass('selected');
         }
 
@@ -300,7 +299,7 @@ votes = {};
                 tag: tag, // tag.id
                 set: set // -1 for downvote, 0 for no vote, 1 for upvote
             }, "/api/vote/",
-            function(data) {console.log(data);}
+            function(response) { console.log(response) }
             );
         }
 
@@ -394,18 +393,20 @@ votes = {};
             ajaxPost({gif: gif_id,
                       tag: tag
                      }, "/api/tag-add/",
-                     function(data) {
-                         console.log(data);
-                         var comp = data.split('|');
-                         if (comp[0] === "ok") {
+                     function(response) {
+                         console.log(response);
+                         var result = response.result;
+                         var tag_id = response.taginstance;
+                         if (result === 0) {
                              $("[data-gif='" + gif_id + "']").each(function() {
                                  var tag = $(this).parent().find('.tag').last();
-                                 tag.attr('data-tag', comp[1]); // TODO: this is disgusting. find a better way to do this.
+                                 tag.attr('data-tag', tag_id);
                                  tag.find('.erase').click(function(){tagErase($(this));});
                              });
                          } 
                          else {
-                             console.log("Error with data recieved.");
+                             console.error("ResponseError: Error with response recieved from server.");
+                             console.log(response);
                          }
                      }
             );
@@ -420,7 +421,7 @@ votes = {};
         function ajaxTagErase(tag_id) {
             ajaxPost({tag: tag_id},
                      "/api/tag-erase/",
-                     function(data) {console.log(data);}
+                     function(response) { console.log(response) }
                     );
         }
 
@@ -436,7 +437,7 @@ votes = {};
             gif_id = elem.attr('data-gif');
             ajaxPost({gif: gif_id},
                      "/api/star-add/",
-                     function(data) {console.log(data);}
+                     function(response) { console.log(response) }
                     );
         }
 
@@ -444,7 +445,7 @@ votes = {};
             gif_id = elem.attr('data-gif');
             ajaxPost({gif: gif_id},
                      "/api/star-remove/",
-                     function(data) {console.log(data);}
+                     function(response) { console.log(response) }
                     );
         }
 

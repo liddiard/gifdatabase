@@ -25,7 +25,7 @@ urlpatterns = patterns('',
     url(r'^api/tagvote-get/$', ajaxGetTagVote, name="get_tagvote"),
     url(r'^api/tag-add/$', ajaxAddTag, name="tag_add"),
     url(r'^api/tag-erase/$', ajaxEraseTag, name="tag_erase"),
-    url(r'^api/star-get/$', ajaxGetStar, name="star"),
+    url(r'^api/star-get/$', ajaxGetStarView, name="star"),
     url(r'^api/star-add/$', ajaxAddStar, name="star_add"),
     url(r'^api/star-remove/$', ajaxRemoveStar, name="star_remove"),
     

@@ -1,4 +1,4 @@
-import re
+import json, re
 from django.http import HttpResponseRedirect, HttpResponse
 from django.http import Http404
 from django.shortcuts import render_to_response, redirect, get_object_or_404
@@ -10,11 +10,15 @@ from django.utils.datastructures import MultiValueDictKeyError
 
 from taggit.models import Tag
 
-from search import engine
 from gifdb.settings.base import S3_URL
+from search import engine
 from search.models import User, UserFavorite, Gif, TagInstance, UserScore, TagVote 
+from search.image import imgFromUrl, isAnimated
 
 TAG_MAX_LENGTH = 32
+
+
+# pages
 
 def frontPage(request):
     return render_to_response('front.html', {'S3_URL': S3_URL},
@@ -56,6 +60,9 @@ def profile(request, username):
 def profileStarred(request, username):
     pass
 
+
+# state management
+
 def login(request):
     try:
         username = request.POST['username']
@@ -79,6 +86,33 @@ def logout(request):
     except KeyError:
         return redirect('front')
 
+
+# ajax api convenience functions
+
+def jsonResponse(**kwargs):
+    return HttpResponse(json.dumps(kwargs), content_type="application/json")
+
+def error(error_type, message):
+    return jsonResponse(result=1, error=error_type, message=message)
+
+def authenticationError():
+    return error("AuthenticationError", "User is not authenticated.")
+
+def accessError(message):
+    return error("AccessError", message)
+
+def keyError(message):
+    return error("KeyError", message)
+
+def doesNotExist(message):
+    return error("DoesNotExist", message)
+
+def validationError(message):
+    return error("ValidationError", message)
+
+
+# ajax api
+
 def ajaxTagVote(request):
     def safeVote(user, tag, up):
         try: # TODO: enforce m2m uniqueness on model validation as well
@@ -95,15 +129,14 @@ def ajaxTagVote(request):
                 tag_id = request.POST['tag']
                 set = request.POST['set']
             except KeyError:
-                return HttpResponse("KeyError: necessary keys not found")
+                return keyError("Required keys (tag, set) not found in request.")
             try:
                 tag = TagInstance.objects.get(pk=tag_id)
             except TagInstance.DoesNotExist:
-                return HttpResponse("DoesNotExist: tag with id %s was not found"
-                                    % tag_id)
+                return doesNotExist("Tag with id %s was not found." % tag_id)
             if user == tag.user_added:
-                return HttpResponse("AccessError: user cannot vote on a tag "
-                                    "they created themself")
+                return accessError("User cannot vote on a tag they created "
+                                   "themself.")
             set = int(set)
             if set > 0:
                 safeVote(user, tag, True)
@@ -114,11 +147,12 @@ def ajaxTagVote(request):
                     tv = TagVote.objects.filter(user=user).get(tag=tag)
                     tv.delete()
                 except TagVote.DoesNotExist:
-                    return HttpResponse("DoesNotExist: could not unset TagVote "
-                                        "because TagVote doesn't exist")
-            return HttpResponse("user: %s | tag id: %s | tag name: %s | set: %s" % (request.user, tag.pk, tag.tag, set))
+                    return doesNotExist("Could not unset TagVote because "
+                                        "TagVote doesn't exist.")
+            return jsonResponse(result=0, user=request.user, tag_id=tag.pk,
+                                tag_name=tag.tag, set=set)
         else:
-            return HttpResponse("AuthenticationError: user is not authenticated")
+            return authenticationError()
     else:
         raise Http404
 
@@ -129,17 +163,17 @@ def ajaxGetTagVote(request):
             try:
                 tag_id = request.POST['tag']
             except KeyError:
-                return HttpResponse("KeyError: necessary keys not found")
+                return keyError("Required key (tag) not found in request.")
             try:
                 tv = TagVote.objects.filter(user=user).get(tag=tag_id)
             except TagVote.DoesNotExist:
-                return HttpResponse("%s|0" % tag_id)
+                return jsonResponse(result=0, tag=tag_id, vote=0)
             if tv.up:
-                return HttpResponse("%s|1" % tag_id)
+                return jsonResponse(result=0, tag=tag_id, vote=1)
             else:
-                return HttpResponse("%s|-1" % tag_id)
+                return jsonResponse(result=0, tag=tag_id, vote=-1)
         else:
-            return HttpResponse("AuthenticationError: user is not authenticated")
+            return authenticationError()
     else:
         raise Http404
 
@@ -151,20 +185,18 @@ def ajaxAddTag(request):
                 gif_id = request.POST['gif']
                 tag_name = request.POST['tag']
             except KeyError:
-                return HttpResponse("KeyError: necessary keys not found")
+                return keyError("Required keys (gif, tag) not found in request.")
             pattern = re.compile("^[a-zA-Z0-9\. '-]+$")
             if not pattern.match(tag_name):
-                return HttpResponse("ValidationError: tag contains invalid "
-                                    "characters")
+                return validationError("Tag contains invalid characters.")
             if len(tag_name) > TAG_MAX_LENGTH:
-                return HttpResponse("ValidationError: tag length is greater "
-                                    "than max allowed length of %s chars" %
-                                    TAG_MAX_LENGTH)
+                return validationError("Tag length is greater than max allowed "
+                                       "length of %s chars" % TAG_MAX_LENGTH)
             try:
                 gif = Gif.objects.get(pk=gif_id)
             except Gif.DoesNotExist:
-                return HttpResponse("DoesNotExist: could not add tag to gif "
-                                    "because gif matching id doesn't exist")
+                return doesNotExist("Could not add tag to gif because gif "
+                                    "matching id %s doesn't exist." % gif_id)
             t = Tag.objects.get_or_create(name=tag_name)[0]
             ti_tuple = TagInstance.objects.get_or_create(tag=t,
                                                          content_object=gif)
@@ -175,9 +207,9 @@ def ajaxAddTag(request):
                 ti.save()
             else:
                 pass
-            return HttpResponse("ok|%s" % ti.pk)
+            return jsonResponse(result=0, taginstance=ti.pk)
         else:
-            return HttpResponse("AuthenticationError: user is not authenticated")
+            return authenticationError()
     else:
         raise Http404
 
@@ -188,20 +220,20 @@ def ajaxEraseTag(request):
             try:
                 tag_id = request.POST['tag']
             except KeyError:
-                return HttpResponse("KeyError: necessary keys not found")
+                return keyError("Required key (tag) not found in request.")
             try:
                 ti = TagInstance.objects.get(pk=tag_id)
             except TagInstance.DoesNotExist:
-                return HttpResponse("DoesNotExist: could not delete tag "
-                                    "because tag matching id doesn't exist")
+                return doesNotExist("Could not delete tag because tag matching "
+                                    "id %s doesn't exist." % tag_id)
             if ti.user_added == user:
                 ti.delete()
-                return HttpResponse("Deleted tag")
+                return jsonResponse(result=0, message="Deleted tag.")
             else:
-                return HttpResponse("AccessError: the requesting user does "
-                                    "not have permission to delete this tag")
+                return accessError("The requesting user does not have "
+                                   "permission to delete this tag.")
         else:
-            return HttpResponse("AuthenticationError: user is not authenticated")
+            return authenticationError()
     else:
         raise Http404
 
@@ -212,21 +244,21 @@ def ajaxGetStar(request):
             try:
                 gif_id = request.POST['gif']
             except KeyError:
-                return HttpResponse("KeyError: necessary keys not found")
+                return keyError("Required key (gif) not found in request.")
             try:
                 gif = Gif.objects.get(pk=gif_id)
             except Gif.DoesNotExist:
-                return HttpResponse("DoesNotExist: could not get UserFavorite "
-                                    "because Gif matching id does not exist")
+                return doesNotExist("Could not get UserFavorite because Gif "
+                                    "matching id %s does not exist." % gif_id)
             try:
                 UserFavorite.objects.get(user=user, gif=gif)
-                return HttpResponse("1")
+                return jsonResponse(result=0, star=1)
             except UserFavorite.DoesNotExist:
-                return HttpResponse("0")    
+                return jsonResponse(result=0, star=0)    
         else:
-            return HttpResponse("AuthenticationError: user is not authenticated")
+            return authenticationError()
     else:
-        raise Http404
+        return Http404
 
 def ajaxAddStar(request):
     if request.is_ajax():
@@ -235,16 +267,16 @@ def ajaxAddStar(request):
             try:
                 gif_id = request.POST['gif']
             except KeyError:
-                return HttpResponse("KeyError: necessary keys not found")
+                return keyError("Required key (gif) not found in request.")
             try:
                 gif = Gif.objects.get(pk=gif_id)
             except Gif.DoesNotExist:
-                return HttpResponse("DoesNotExist: could not create UserFavorite "
-                                    "because Gif matching id does not exist")
+                return doesNotExist("Could not create UserFavorite because "
+                                    "Gif matching id %s does not exist." % gif_id)
             uf = UserFavorite.objects.get_or_create(user=user, gif=gif)[0]
-            return HttpResponse("ok|%s" % uf.pk)
+            return jsonResponse(result=0, userfavorite=uf.pk)
         else:
-            return HttpResponse("AuthenticationError: user is not authenticated")
+            return authenticationError()
     else:
         return Http404
 
@@ -255,19 +287,57 @@ def ajaxRemoveStar(request):
             try:
                 gif_id = request.POST['gif']
             except KeyError:
-                return HttpResponse("KeyError: necessary keys not found")
+                return keyError("Required key (gif) not found in request.")
             try:
                 uf = UserFavorite.objects.get(user=user, gif=gif_id)
             except Gif.DoesNotExist:
-                return HttpResponse("DoesNotExist: could not delete UserFavorite "
-                                    "because Gif matching id does not exist")
+                return doesNotExist("Could not create UserFavorite because "
+                                    "Gif matching id %s does not exist." % gif_id)
             if uf.user == user:
                 uf.delete()
-                return HttpResponse("Deleted UserFavorite")
+                return jsonResponse(result=0, message="Deleted UserFavorite.")
             else:
-                return HttpResponse("AccessError: requesting user does not "
-                                    "match user who created the UserFavorite") 
+                return accessError("The requesting user does not match the "
+                                   "user who created the UserFavorite.")
         else:
-            return HttpResponse("AuthenticationError: user is not authenticated")
+            return authenticationError()
     else:
         return Http404
+
+def ajaxCheckValidImage(request):
+    if request.is_ajax():
+        if request.user.is_authenticated():
+            user = request.user
+            try:
+                filename = request.POST['filename']
+            except KeyError:
+                return keyError("Required key (filename) not found in request.")
+            try:
+                gif = Gif.objects.get(filename=filename)
+                return error("AlreadyExistsError", "Gif %s already exists" %\
+                             filename)
+            except Gif.DoesNotExist:
+                if isAnimated(imageFromUrl('http://i.imgur.com/%s.gif' %\
+                                           filename)):
+                    return jsonResponse(result=0, is_animated=1)
+                else:
+                    return error("InvalidFileError", "Image %s is not an "
+                                 "animated gif." % filename)
+        else:
+            return authenticationError()
+    else:
+        return Http404
+
+# TODO: currently unused
+def authenticatedAjax(func, request):
+    if request.is_ajax():
+        if request.user.is_authenticated():
+            return func(request)
+        else:
+            return authenticationError()
+    else:
+        return Http404
+
+# TODO: currently unused
+def ajaxGetStarView(request):
+    return authenticatedAjax(ajaxGetStar, request)

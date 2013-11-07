@@ -39,7 +39,7 @@ function showGifFromUrl(string) {
 function addGifCallback(url, message) {
     if (message === "error" || message === "timeout") {
         badUrl();
-    } else { goodUrl() }
+    } else { goodUrl(url) }
 }
 
 function badUrl() {
@@ -47,8 +47,8 @@ function badUrl() {
     $('#add-gif input').select();
 }
 
-function goodUrl() {
-    alert("that's one sexy url");
+function goodUrl(url) {
+    $.slimbox(url);
 }
 
 function testImage(url, callback, timeout) {
