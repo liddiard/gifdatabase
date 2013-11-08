@@ -43,7 +43,7 @@ function addGifCallback(url, message) {
 }
 
 function badUrl() {
-    alert("your url is bad and your should feel bad.");
+    $('#add-gif .error').text("Whoops! That's not a valid imgur image URL.");
     $('#add-gif input').select();
 }
 

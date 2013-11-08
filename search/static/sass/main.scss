@@ -312,6 +312,13 @@ button {
         text-transform: uppercase;
         margin-top: 1em;
     }
+
+    &#add-gif .error {
+        position: absolute;
+        bottom: 58px;
+        right: 10px;
+        font-size: 0.8em;
+    }
 }
 
 .modal-mask {
@@ -338,6 +345,10 @@ button {
         margin: 7px auto;
         text-align: center;
     }
+}
+
+.error {
+    color: #f88;
 }
 
 .thumbs-list {
