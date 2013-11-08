@@ -380,6 +380,22 @@ button {
     }
 }
 
+.profile {
+    h1 {
+        display: inline;
+        font-weight: normal;
+        font-size: 5em;
+        margin: 0;
+    }
+}
+
+h2.profile {
+    font-weight: normal;
+    clear: both;
+    margin: 0;
+    padding: 1.5em 0 0.5em 0;
+}
+
 /* lightbox */
 #lbTopContainer {
     .btn {

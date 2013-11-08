@@ -1,23 +1,28 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{{ username }}</h1>
-<h2>{{ score }}</h2>
+<div class="profile">
+    <h1 class="user"><span class="username">{{ username }}</span> <span class="score">{{ score }}</span></h1>
+</div>
 
-{% for gif in added_recent %}
-    <a href="{{ gif.getUrl }}">
-        <img src="{{ gif.getThumbUrl }}" class="colorup thumb" effect="light" speed="500"/>
-    </a>
-{% endfor %}
-
+<h2 class="profile">Recently starred</h2>
 {% for fav in starred_recent %}
     <a href="{{ fav.gif.getUrl }}">
         <img src="{{ fav.gif.getThumbUrl }}" class="colorup thumb" effect="light" speed="500"/>
     </a>
 {% endfor %}
 
+<h2 class="profile">Recently added</h2>
+{% for gif in added_recent %}
+    <a href="{{ gif.getUrl }}">
+        <img src="{{ gif.getThumbUrl }}" class="colorup thumb" effect="light" speed="500"/>
+    </a>
+{% endfor %}
+
+<!--
 {% for tag in tagged_recent %}
     <a href="{% url 'search_results' %}?q={{ tag.tag }}">{{ tag.tag }}</a>
 {% endfor %}
+-->
 
 {% endblock %}
