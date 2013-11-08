@@ -122,7 +122,17 @@ nav {
     }
 
     .search {
-        display: inline-block;
+        width: 25%;
+        min-width: 110px;
+        margin-right: 28px;
+
+        input {
+            width: 100%;
+        }
+
+        button {
+            margin-right: -33px;
+        }
     }
 
     .user {
@@ -156,6 +166,10 @@ nav {
     padding-top: 70px;
 }
 
+#front-wrap {
+    text-align: center;
+}
+
 section {
     max-width: 800px;
     float: left;
@@ -170,7 +184,7 @@ aside {
 
 form.search {
     position: relative;
-    width: 244px;
+    display: inline-block;
 
     &.main {
         margin: 20px auto;
@@ -250,7 +264,7 @@ button {
     .search & {
         position: absolute;
         top: 0; right: 0;
-        padding: 5px 3px;
+        padding: 5px 2px;
         background: transparent;
         opacity: 0.4;
 
