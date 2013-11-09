@@ -59,9 +59,10 @@ votes = {};
 	// Open Slimbox with the specified parameters
 	$.slimbox = function(_images, startImage, _options) {
 		options = $.extend({
+            is_new: false,            // Is the gif being created, or are we just viewing it? (user-added)
 			loop: false,				// Allows to navigate between first and last images
 			overlayOpacity: 0.8,			// 1 is opaque, 0 is completely transparent (change the color in the CSS file)
-			overlayFadeDuration: 1,		// Duration of the overlay fade-in and fade-out animations (in milliseconds)
+			overlayFadeDuration: 0,		// Duration of the overlay fade-in and fade-out animations (in milliseconds)
 			resizeDuration: 1,			// Duration of each of the box resize animations (in milliseconds)
 			resizeEasing: "swing",			// "swing" is jQuery's default easing
 			initialWidth: 250,			// Initial width of the box (in pixels)
@@ -487,6 +488,10 @@ votes = {};
 	}
 
 	function close() {
+        if (options.is_new) {
+            if (window.confirm("Your GIF has not been added. Are you sure you want to leave?")) { } 
+            else { return }
+        }
 		if (activeImage >= 0) {
 			stop();
 			activeImage = prevImage = nextImage = -1;

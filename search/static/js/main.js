@@ -14,6 +14,7 @@ $(document).ready(function(){
                 add_gif.focus();
                 add_gif.on('input', function(){
                     if ($(this).val().length > 0)
+                        console.log("detected a non-zero input change");
                         showGifFromUrl(add_gif.val());
                 });
             } else {
@@ -28,50 +29,82 @@ $(document).ready(function(){
 });
 
 function showGifFromUrl(string) {
-    var re = /[^(http:\/\/i.imgur.com/gallery)][a-zA-Z0-9]+[^(\.gif)]/;
-    var match = string.match(re);
+    var re = /\s*\/?(?:fig\.)?([a-zA-Z0-9]+)(?:\/|$)/;
+    var match = reverse(string).match(re);
+    /* traverse the string backwards, return the result forwards.
+     * doing this because all the significant data we care about is at the end,
+     * and it's much easier to write a regex to match *until* x rather than try
+     * to account for all the stuff we want to ignore traversing forwards. */
     if (match) {
-        var url = "http://i.imgur.com/" + match[0] + ".gif";
-        testImage(url, addGifCallback);
-    } else badUrl();
+        var filename = reverse(match[1]);
+        console.log("Found match: " + filename);
+        testImage(filename, addGifCallback);
+    } else badUrl("Whoops! That's not a vaild imgur image URL.");
 }
 
-function addGifCallback(url, message) {
+function addGifCallback(filename, url, message) {
     if (message === "error" || message === "timeout") {
-        badUrl();
-    } else { goodUrl(url) }
+        badGif("Whoops! That's not a vaild imgur image URL.");
+    } else { goodUrl(filename) }
 }
 
-function badUrl() {
-    $('#add-gif .error').text("Whoops! That's not a valid imgur image URL.");
+function badGif(message) {
+    $('#add-gif .error').text(message);
     $('#add-gif input').select();
 }
 
-function goodUrl(url) {
-    $.slimbox(url);
+function goodUrl(filename) {
+    console.log("ajax posting with filename: " + filename);
+    ajaxPost(
+        {'filename': filename},
+        "/api/check-gif/",
+        goodGif);
 }
 
-function testImage(url, callback, timeout) {
+function goodGif(response) {
+    if (response.result) {
+        if (response.error === "AlreadyExistsError")
+            badGif("This GIF is already in GIFdatabase. Try another!");
+        else if (response.error === "InvalidFileError")
+            badGif("Whoops! That's not an animated GIF.");
+        else
+            alert("Oh noes! Something went wrong. Please report this error: \n" + response.error + ": " + response.message);
+    } else {
+        $('#add-gif, .modal-mask').hide();
+        var aside_content = "<input class='tag-add'/><button class='disabled medium save'>Save</button>"
+        $.slimbox(response.url, aside_content, {is_new: true});
+    }
+}
+
+function testImage(filename, callback, timeout) {
+    var url = "http://i.imgur.com/" + filename + ".gif";
     timeout = timeout || 5000;
     var timedOut = false, timer;
     var img = new Image();
     img.onerror = img.onabort = function() {
         if (!timedOut) {
             clearTimeout(timer);
-            callback(url, "error");
+            callback(filename, "error");
         }
     };
     img.onload = function() {
         if (!timedOut) {
             clearTimeout(timer);
-            callback(url, "success");
+            callback(filename, "success");
         }
     };
     img.src = url;
     timer = setTimeout(function() {
         timedOut = true;
-        callback(url, "timeout");
+        callback(filename, "timeout");
     }, timeout); 
+}
+
+
+/* utility functions */
+
+function reverse(s){
+    return s.split("").reverse().join("");
 }
 
 function getCookie(name) {
@@ -98,7 +131,7 @@ function ajaxPost(params, endpoint, callback_success) {
         data: params,
         success: callback_success,
         error: function(xhr, textStatus, errorThrown) {
-            alert("Please report this error: "+errorThrown+xhr.status+xhr.responseText);
+            alert("Oh noes! Something went wrong. Please report this error: \n"+errorThrown+xhr.status+xhr.responseText);
         }
     }); 
 }

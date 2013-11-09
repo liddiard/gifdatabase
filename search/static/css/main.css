@@ -256,24 +256,31 @@ button {
   border: 0;
   cursor: pointer;
   padding: 0;
-  outline: none; }
+  margin: 0;
+  outline: none;
+  font-weight: bold; }
   button:hover {
     background-color: #22eeff; }
   button:active {
     background-color: #00aadd; }
+  button.disabled {
+    background-color: #999999;
+    opacity: 0.5;
+    cursor: default; }
   button.medium {
     padding: 5px; }
   button.add-gif {
-    font-weight: bold;
     padding: 3px 6px 0 4px; }
     button.add-gif img {
       vertical-align: middle;
       padding: 0 2px 4px 0; }
+  button.save {
+    margin-top: 5px; }
   .search button {
     position: absolute;
     top: 0;
     right: 0;
-    padding: 5px 2px;
+    padding: 7px 2px;
     background: transparent;
     opacity: 0.4; }
     .search button:hover {

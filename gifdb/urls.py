@@ -28,6 +28,7 @@ urlpatterns = patterns('',
     url(r'^api/star-get/$', ajaxGetStarView, name="star"),
     url(r'^api/star-add/$', ajaxAddStar, name="star_add"),
     url(r'^api/star-remove/$', ajaxRemoveStar, name="star_remove"),
+    url(r'^api/check-gif/$', ajaxCheckValidGif, name="check_gif"),
     
     # pages
     url(r'^search/$', searchResults, name="search_results"),

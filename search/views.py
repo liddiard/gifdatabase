@@ -302,7 +302,7 @@ def ajaxRemoveStar(request):
     else:
         return Http404
 
-def ajaxCheckValidImage(request):
+def ajaxCheckValidGif(request):
     if request.is_ajax():
         if request.user.is_authenticated():
             user = request.user
@@ -315,9 +315,9 @@ def ajaxCheckValidImage(request):
                 return error("AlreadyExistsError", "Gif %s already exists" %\
                              filename)
             except Gif.DoesNotExist:
-                if isAnimated(imageFromUrl('http://i.imgur.com/%s.gif' %\
-                                           filename)):
-                    return jsonResponse(result=0, is_animated=1)
+                url = "http://i.imgur.com/%s.gif" % filename
+                if isAnimated(imgFromUrl(url)):
+                    return jsonResponse(result=0, url=url)
                 else:
                     return error("InvalidFileError", "Image %s is not an "
                                  "animated gif." % filename)
