@@ -371,6 +371,9 @@ button {
   font-weight: normal;
   font-size: 5em;
   margin: 0; }
+.profile img {
+  margin: 0 1px 0 5px;
+  vertical-align: text-bottom; }
 
 h2.profile {
   font-weight: normal;

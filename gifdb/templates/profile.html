@@ -2,7 +2,8 @@
 
 {% block content %}
 <div class="profile">
-    <h1 class="user"><span class="username">{{ username }}</span> <span class="score">{{ score }}</span></h1>
+        <h1><span class="username">{{ username }}</span> <span class="score">{{ score }}</span></h1>
+        <img src="{{ S3_URL }}img/star_selected.png"/>{{ starred_total }}<img src="{{ S3_URL }}img/plus_green.png"/>{{ added_total }}
 </div>
 
 <h2 class="profile">Recently starred</h2>

@@ -39,18 +39,18 @@ def searchResults(request):
 def profile(request, username):
     user_profile = get_object_or_404(User, username=username)
     user_score = UserScore.objects.get(user=user_profile).score
-    starred_recent = UserFavorite.objects\
-                                         .filter(user=user_profile)\
-                                         .order_by('-date_favorited')[:5]
-    added_recent = Gif.objects.filter(user_added=user_profile)\
-                              .order_by('-date_added')[:5]
-    tagged_recent = TagInstance.objects.filter(user_added=user_profile)\
-                                       .order_by('date_added')[:5]
+    starred =  UserFavorite.objects.filter(user=user_profile)
+    starred_total = starred.count()
+    starred_recent = starred.order_by('-date_favorited')[:5]
+    added = Gif.objects.filter(user_added=user_profile)
+    added_total = added.count()
+    added_recent = added.order_by('-date_added')[:5]
     
     template_vars = {'username': user_profile, 
+                     'starred_total': starred_total,
                      'starred_recent': starred_recent,
+                     'added_total': added_total,
                      'added_recent': added_recent,
-                     'tagged_recent': tagged_recent,
                      'score': user_score,
                      'S3_URL': S3_URL}
     
