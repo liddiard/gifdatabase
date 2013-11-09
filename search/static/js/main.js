@@ -57,7 +57,7 @@ function goodUrl(filename) {
     console.log("ajax posting with filename: " + filename);
     ajaxPost(
         {'filename': filename},
-        "/api/check-gif/",
+        "/api/gif-check/",
         goodGif);
 }
 

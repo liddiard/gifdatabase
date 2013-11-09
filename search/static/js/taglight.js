@@ -299,7 +299,7 @@ votes = {};
             ajaxPost({
                 tag: tag, // tag.id
                 set: set // -1 for downvote, 0 for no vote, 1 for upvote
-            }, "/api/vote/",
+            }, "/api/tag-vote/",
             function(response) { console.log(response) }
             );
         }

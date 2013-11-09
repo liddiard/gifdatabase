@@ -21,14 +21,14 @@ urlpatterns = patterns('',
     url(r'^logout/$', logout, name="logout"),
     
     # api
-    url(r'^api/vote/$', ajaxTagVote, name="vote"),
+    url(r'^api/tag-vote/$', ajaxTagVote, name="vote"),
     url(r'^api/tagvote-get/$', ajaxGetTagVote, name="get_tagvote"),
     url(r'^api/tag-add/$', ajaxAddTag, name="tag_add"),
     url(r'^api/tag-erase/$', ajaxEraseTag, name="tag_erase"),
     url(r'^api/star-get/$', ajaxGetStarView, name="star"),
     url(r'^api/star-add/$', ajaxAddStar, name="star_add"),
     url(r'^api/star-remove/$', ajaxRemoveStar, name="star_remove"),
-    url(r'^api/check-gif/$', ajaxCheckValidGif, name="check_gif"),
+    url(r'^api/gif-check/$', ajaxCheckValidGif, name="check_gif"),
     
     # pages
     url(r'^search/$', searchResults, name="search_results"),
