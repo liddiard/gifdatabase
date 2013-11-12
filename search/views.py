@@ -41,10 +41,10 @@ def profile(request, username):
     user_score = UserScore.objects.get(user=user_profile).score
     starred =  UserFavorite.objects.filter(user=user_profile)
     starred_total = starred.count()
-    starred_recent = starred.order_by('-date_favorited')[:5]
+    starred_recent = starred.order_by('-date_favorited')[:8]
     added = Gif.objects.filter(user_added=user_profile)
     added_total = added.count()
-    added_recent = added.order_by('-date_added')[:5]
+    added_recent = added.order_by('-date_added')[:8]
     
     template_vars = {'username': user_profile, 
                      'starred_total': starred_total,

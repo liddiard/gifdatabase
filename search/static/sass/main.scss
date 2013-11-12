@@ -170,16 +170,19 @@ nav {
     text-align: center;
 }
 
+$sidebar_width: 300px;
+aside {
+    position: absolute;
+    right: 0;
+    width: $sidebar_width;
+    height: 600px;
+    background-color: gray;
+}
+
 section {
     max-width: 800px;
     float: left;
-}
-
-aside {
-    float: left;
-    width: 300px;
-    height: 600px;
-    background-color: gray;
+    margin-right: $sidebar_width;
 }
 
 form.search {
@@ -282,6 +285,10 @@ button {
         &:hover {
             opacity: 1;
         }
+    }
+
+    .main.search & {
+        padding: 7px 4px;
     }
 }
 
