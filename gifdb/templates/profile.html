@@ -4,27 +4,21 @@
 <div class="profile">
         <h1><span class="username">{{ username }}</span> <span class="score">{{ score }}</span></h1>
         <a href="{% url 'profile_starred' username %}"><img src="{{ S3_URL }}img/star_selected.png"/>{{ starred_total }}</a>
-        <img src="{{ S3_URL }}img/plus_green.png"/>{{ added_total }}
+        <a href="{% url 'profile_added' username %}"><img src="{{ S3_URL }}img/plus_green.png"/>{{ added_total }}</a>
 </div>
 
 <h2 class="profile">Recently starred</h2>
 {% for fav in starred_recent %}
     <a href="{{ fav.gif.getUrl }}">
-        <img src="{{ fav.gif.getThumbUrl }}" class="colorup thumb" effect="light" speed="500"/>
+        <img src="{{ fav.gif.getThumbUrl }}" class="thumb"/>
     </a>
 {% endfor %}
 
 <h2 class="profile">Recently added</h2>
 {% for gif in added_recent %}
     <a href="{{ gif.getUrl }}">
-        <img src="{{ gif.getThumbUrl }}" class="colorup thumb" effect="light" speed="500"/>
+        <img src="{{ gif.getThumbUrl }}" class="thumb"/>
     </a>
 {% endfor %}
-
-<!--
-{% for tag in tagged_recent %}
-    <a href="{% url 'search_results' %}?q={{ tag.tag }}">{{ tag.tag }}</a>
-{% endfor %}
--->
 
 {% endblock %}

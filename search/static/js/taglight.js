@@ -347,7 +347,8 @@ votes = {};
             }
         }
 
-        function tagAdd(elem) {
+        function tagAdd(elem, is_new) {
+            var is_new = typeof is_new !== 'undefined' ? is_new : false;
             elem.keydown(function(event) {
                 if (event.which == 9) { // tab
                     createTag();
@@ -375,9 +376,14 @@ votes = {};
                 $('<img/>', {
                     class: 'btn erase'
                 }).appendTo(new_tag);
-                var gif_id = elem.attr('data-gif');
-                new_tag.insertBefore($("input[data-gif='" + gif_id + "']"));
-                ajaxTagAdd(gif_id, content);
+                if (is_new) {
+                    new_tag.insertBefore($('#lbCaption input'));
+                    new_tag.find('.erase').click(function(){ tagErase($(this), true); });
+                } else {
+                    var gif_id = elem.attr('data-gif');
+                    new_tag.insertBefore($("input[data-gif='" + gif_id + "']"));
+                    ajaxTagAdd(gif_id, content);
+                }
                 toggleParentOnHover('.tag > .erase', 'tag-deny');
             }
 
@@ -387,8 +393,11 @@ votes = {};
         }
 
         var tag_add = $('#lbCaption .tag-add');
+        var tag_add_new = $('#lbCaption .tag-add-new');
         tag_add.focus();
+        tag_add_new.focus();
         tagAdd(tag_add);
+        tagAdd(tag_add_new, true);
 
         function ajaxTagAdd(gif_id, tag) {
             ajaxPost({gif: gif_id,
@@ -402,7 +411,7 @@ votes = {};
                              $("[data-gif='" + gif_id + "']").each(function() {
                                  var tag = $(this).parent().find('.tag').last();
                                  tag.attr('data-tag', tag_id);
-                                 tag.find('.erase').click(function(){tagErase($(this));});
+                                 tag.find('.erase').click(function(){ tagErase($(this)); });
                              });
                          } 
                          else {
@@ -413,10 +422,15 @@ votes = {};
             );
         }
 
-        function tagErase(elem) {
+        function tagErase(elem, is_new) {
+            var is_new = typeof is_new !== 'undefined' ? is_new : false;
             var tag_id = elem.parent().attr('data-tag');
-            ajaxTagErase(tag_id);
-            $("[data-tag='" + tag_id + "']").remove();
+            if (is_new) {
+                elem.parent().remove();
+            } else {
+                ajaxTagErase(tag_id);
+                $("[data-tag='" + tag_id + "']").remove();
+            }
         }
 
         function ajaxTagErase(tag_id) {

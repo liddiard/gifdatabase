@@ -60,6 +60,8 @@ def profile(request, username):
 def profileStarred(request, username):
     pass
 
+def profileAdded(request, username):
+    pass
 
 # state management
 
