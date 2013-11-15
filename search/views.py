@@ -15,7 +15,7 @@ from search import engine
 from search.models import User, UserFavorite, Gif, TagInstance, UserScore, TagVote 
 from search.image import imgFromUrl, isAnimated
 
-TAG_MAX_LENGTH = 32
+TAG_MAX_LEN = 32
 
 
 # pages
@@ -32,8 +32,10 @@ def searchResults(request):
     results = engine.query(query)
     for result in results:
         result.gif.added_by_user = (result.gif.user_added == request.user)
-    return render_to_response('results.html',
-                              {'results': results, 'S3_URL': S3_URL},
+    context = {'results': results,
+               'S3_URL': S3_URL,
+               'TAG_MAX_LEN': TAG_MAX_LEN}
+    return render_to_response('results.html', context,
                               context_instance=RequestContext(request))
 
 def profile(request, username):
@@ -46,15 +48,15 @@ def profile(request, username):
     added_total = added.count()
     added_recent = added.order_by('-date_added')[:8]
     
-    template_vars = {'username': user_profile, 
-                     'starred_total': starred_total,
-                     'starred_recent': starred_recent,
-                     'added_total': added_total,
-                     'added_recent': added_recent,
-                     'score': user_score,
-                     'S3_URL': S3_URL}
+    context = {'username': user_profile, 
+               'starred_total': starred_total,
+               'starred_recent': starred_recent,
+               'added_total': added_total,
+               'added_recent': added_recent,
+               'score': user_score,
+               'S3_URL': S3_URL}
     
-    return render_to_response('profile.html', template_vars,
+    return render_to_response('profile.html', context,
                               context_instance=RequestContext(request))
 
 def profileStarred(request, username):
@@ -191,9 +193,9 @@ def ajaxAddTag(request):
             pattern = re.compile("^[a-zA-Z0-9\. '-]+$")
             if not pattern.match(tag_name):
                 return validationError("Tag contains invalid characters.")
-            if len(tag_name) > TAG_MAX_LENGTH:
+            if len(tag_name) > TAG_MAX_LEN:
                 return validationError("Tag length is greater than max allowed "
-                                       "length of %s chars" % TAG_MAX_LENGTH)
+                                       "length of %s chars" % TAG_MAX_LEN)
             try:
                 gif = Gif.objects.get(pk=gif_id)
             except Gif.DoesNotExist:

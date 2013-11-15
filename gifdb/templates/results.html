@@ -18,7 +18,7 @@
                         <span class="tag" data-tag="{{ pk }}"><span class="link" onclick="document.location.href='{% url 'search_results' %}?q={{ tag }}';return false">{{ tag }}</span><img class="btn confirm"/><img class="btn deny"/></span>
                     {% endif %}
                 {% endfor %}
-                <input class="tag-add" data-gif="{{ result.gif.pk }}"/>
+                <input class="tag-add" data-gif="{{ result.gif.pk }}" maxlength="{{ TAG_MAX_LEN }}"/>
             </div>
             <div class="bottom-data">
                 <span class="user link" onclick="document.location.href='{% url 'profile' result.gif.user_added %}'"><span class="username">{{ result.gif.user_added }}</span> <span class="score">{{ result.gif.user_added.getUserScore }}</span></span>

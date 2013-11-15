@@ -364,7 +364,7 @@ votes = {};
             function createTag() {
                 event.preventDefault();
                 var content = elem.val();
-                if (!validateTag(content) || content.length > 32) {
+                if (!validateTag(content) || content.length > context.TAG_MAX_LEN) {
                     elem.select();
                     return;
                 }

@@ -71,7 +71,7 @@ function goodGif(response) {
             alert("Oh noes! Something went wrong. Please report this error: \n" + response.error + ": " + response.message);
     } else {
         $('#add-gif, .modal-mask').hide();
-        var aside_content = "<input class='tag-add-new'/><button class='disabled medium save'>Save</button>"
+        var aside_content = "<input class='tag-add-new' maxlength='"+context.TAG_MAX_LEN+"'/><button class='disabled medium save'>Save</button>"
         $.slimbox(response.url, aside_content, {is_new: true});
     }
 }
