@@ -379,6 +379,7 @@ votes = {};
                 if (is_new) {
                     new_tag.insertBefore($('#lbCaption input'));
                     new_tag.find('.erase').click(function(){ tagErase($(this), true); });
+                    checkValidForSave();
                 } else {
                     var gif_id = elem.attr('data-gif');
                     new_tag.insertBefore($("input[data-gif='" + gif_id + "']"));
@@ -389,6 +390,15 @@ votes = {};
 
             function validateTag(input) {
                 return /^[a-zA-Z0-9\. '-]+$/.test(input);
+            }
+        }
+
+        function checkValidForSave() {
+            var save_button = $('#lbCaption .save');
+            if ($('#lbCaption .tag').length > 3) {
+                save_button.removeClass('disabled');
+            } else {
+                save_button.addClass('disabled');
             }
         }
 
@@ -427,6 +437,7 @@ votes = {};
             var tag_id = elem.parent().attr('data-tag');
             if (is_new) {
                 elem.parent().remove();
+                checkValidForSave();
             } else {
                 ajaxTagErase(tag_id);
                 $("[data-tag='" + tag_id + "']").remove();
