@@ -155,6 +155,10 @@ nav {
 
 .score, .emphasis {
     color: $primary_color;
+
+    &.negative {
+        color: red;
+    }
 }
 
 

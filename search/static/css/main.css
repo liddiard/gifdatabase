@@ -165,6 +165,8 @@ nav {
 
 .score, .emphasis {
   color: #00ccff; }
+  .score.negative, .emphasis.negative {
+    color: red; }
 
 #wrap {
   position: relative;
