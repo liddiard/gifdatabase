@@ -53,6 +53,12 @@ $primary_color: #0cf;
     padding-right: 28px;
 }
 
+.nsfw {
+    color: red;
+    border: 1px solid red;
+    text-transform: uppercase;
+}
+
 .tag-confirm {
 	border: 1px solid rgba(0,255,0, 0.5);
 	background-color: rgba(0,255,0, 0.1);

@@ -30,8 +30,8 @@ def searchResults(request):
         return redirect('front')
     results = engine.query(query)
     context = {'results': results,
-               'S3_URL': S3_URL,
-               'TAG_MAX_LEN': TAG_MAX_LEN}
+               'TAG_MAX_LEN': TAG_MAX_LEN,
+               'S3_URL': S3_URL}
     return render_to_response('results.html', context,
                               context_instance=RequestContext(request))
 
@@ -51,6 +51,7 @@ def profile(request, username):
                'added_total': added_total,
                'added_recent': added_recent,
                'score': user_score,
+               'TAG_MAX_LEN': TAG_MAX_LEN,
                'S3_URL': S3_URL}
     
     return render_to_response('profile.html', context,

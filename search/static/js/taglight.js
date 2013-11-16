@@ -231,8 +231,10 @@ votes = {};
 	function animateCaption() {
         
         /* have we already voted on this tag? color tags accordingly. */
-        function ajaxGetTagVotes() {
-            $('.tag').each(function(){
+        function colorTags() {
+            $('#lbCaption .tag').each(function(){
+                if ($(this).text().toLowerCase() === "nsfw")
+                    $(this).addClass('nsfw');
                 var tag_id = $(this).attr('data-tag');
                 ajaxPost({tag: tag_id}, "/api/tagvote-get/", ajaxInterpretTagVote);
             });
@@ -256,7 +258,7 @@ votes = {};
             }
         }
 
-        ajaxGetTagVotes();
+        colorTags();
 
         function ajaxInterpretStar(response) {
             if (response.star === 1)

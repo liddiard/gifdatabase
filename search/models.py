@@ -44,12 +44,12 @@ class Gif(models.Model):
     user_added = models.ForeignKey(User)
     stars = models.PositiveIntegerField(default=0)
     
-    def listTags(self):
+    def tagNames(self):
         return ', '.join(self.tags.names())
-    listTags.short_description = "tags"
+    tagNames.short_description = "tags"
 
-    def pksTags(self):
-        return [(tag.pk, tag.tag) for tag in TagInstance.objects.filter(content_object_id=self.id)]
+    def tagList(self):
+        return [tag for tag in TagInstance.objects.filter(content_object_id=self.id)]
     
     def getHostDomain(self):
         domain_list = {'ig': 'i.imgur.com'}
@@ -128,7 +128,7 @@ class GifAdmin(admin.ModelAdmin):
     fields = (('host', 'filename'), ('displayGif', 'tags'),
               ('user_added','date_added'), ('stars',))
     readonly_fields = ('date_added', 'displayGif', 'stars')
-    list_display = ('adminThumb', 'filename', 'host', 'listTags', 'user_added',
+    list_display = ('adminThumb', 'filename', 'host', 'tagNames', 'user_added',
                     'date_added')
     list_display_links = ('filename', 'adminThumb')
     formfield_overrides = {
@@ -170,6 +170,9 @@ class TagInstance(TaggedItemBase):
             return False
     isVerified.boolean = True
     isVerified.short_description = "v"
+
+    def isNsfw(self):
+        return self.tag.name.lower() == "nsfw"
     
     def __unicode__(self):
         data = {'host': self.content_object.host,
