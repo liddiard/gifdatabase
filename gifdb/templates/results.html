@@ -8,7 +8,7 @@
                 <img class="btn dropdown"/>
                 <img class="btn star" data-gif="{{ result.gif.pk }}"/>
                 <img class="btn copy"/>
-                <input class="copy-text" value="{{ result.gif.getUrl }}"/>
+                <input class="copy-text" value="{{ result.gif.getUrl }}" readonly/>
             </div>
             <div class="aside-data">
                 {% for pk, tag in result.gif.pksTags %}

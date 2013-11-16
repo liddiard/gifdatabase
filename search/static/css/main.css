@@ -204,8 +204,8 @@ form.search {
 
 input {
   color: white;
-  border-color: rgba(255, 255, 255, 0.2);
-  border-style: solid;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.25em;
   background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.05) 100%);
   /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(255, 255, 255, 0.05)));
@@ -402,7 +402,8 @@ h2.profile {
   display: none;
   float: right;
   font-size: 0.6em;
-  margin-right: 2px; }
+  margin-right: 2px;
+  width: 140px; }
 #lbTopContainer .star {
   margin-right: -1px;
   content: url("../img/star.png"); }

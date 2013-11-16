@@ -144,7 +144,8 @@ DJANGO_APPS = (
 THIRD_PARTY_APPS = (
     'south',
     'taggit',
-    'storages'
+    'storages',
+    'registration'
 )
 
 LOCAL_APPS = (
@@ -152,6 +153,10 @@ LOCAL_APPS = (
 )
 
 INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + LOCAL_APPS
+
+# 'registration' settings
+REGISTRATION_OPEN = True
+ACCOUNT_ACTIVATION_DAYS = 7
 
 DJANGO_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",

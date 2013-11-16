@@ -39,6 +39,9 @@ urlpatterns = patterns('',
     url(r'^user/(?P<username>\w+)/added/$', profileAdded,
         name="profile_added"),
 
-   # admin
+    # admin
     url(r'^admin/', include(admin.site.urls)),
+
+    # other
+    (r'^account/', include('registration.backends.default.urls')),
 )

@@ -132,7 +132,7 @@ class GifAdmin(admin.ModelAdmin):
                     'date_added')
     list_display_links = ('filename', 'adminThumb')
     formfield_overrides = {
-        TaggableManager: {'widget': TagWidget(attrs={'size':'200'})},
+        TaggableManager: {'widget': TagWidget(attrs={'size':'100'})},
     }
     date_hierarchy = 'date_added'
 admin.site.register(Gif, GifAdmin)
