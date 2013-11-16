@@ -29,6 +29,7 @@ urlpatterns = patterns('',
     url(r'^api/star-add/$', ajaxAddStar, name="star_add"),
     url(r'^api/star-remove/$', ajaxRemoveStar, name="star_remove"),
     url(r'^api/gif-check/$', ajaxCheckValidGif, name="check_gif"),
+    url(r'^api/gif-add/$', ajaxAddGif, name="add_gif"),
     
     # pages
     url(r'^search/$', searchResults, name="search_results"),

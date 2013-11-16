@@ -36,9 +36,9 @@ function showGifFromUrl(string) {
      * and it's much easier to write a regex to match *until* x rather than try
      * to account for all the stuff we want to ignore traversing forwards. */
     if (match) {
-        var filename = reverse(match[1]);
-        console.log("Found match: " + filename);
-        testImage(filename, addGifCallback);
+        add_gif_filename = reverse(match[1]);
+        console.log("Found match: " + add_gif_filename);
+        testImage(add_gif_filename, addGifCallback);
     } else badUrl("Whoops! That's not a vaild imgur image URL.");
 }
 

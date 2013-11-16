@@ -396,10 +396,25 @@ votes = {};
         function checkValidForSave() {
             var save_button = $('#lbCaption .save');
             if ($('#lbCaption .tag').length > 3) {
+                $('#lbCaption .save:not(.bound)').addClass('bound').click(function(){ saveGif(); });
                 save_button.removeClass('disabled');
             } else {
+                save_button.removeClass('bound').unbind('click');
                 save_button.addClass('disabled');
             }
+        }
+
+        function saveGif() {
+            var tags = [];
+            $('#lbCaption .tag').each(function(){
+                tags.push($(this).text());
+            });
+            console.log("saving gif " + add_gif_filename);
+            ajaxPost(
+                {filename: add_gif_filename, tags: tags},
+                '/api/gif-add/',
+                function(response){ console.log(response); }
+            );
         }
 
         var tag_add = $('#lbCaption .tag-add');

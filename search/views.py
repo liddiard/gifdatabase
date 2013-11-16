@@ -330,6 +330,50 @@ def ajaxCheckValidGif(request):
     else:
         return Http404
 
+def ajaxAddGif(request):
+    if request.is_ajax():
+        if request.user.is_authenticated():
+            user = request.user
+            try:
+                filename = request.POST['filename']
+                tags = request.POST.getlist('tags[]')
+            except KeyError:
+                return keyError("Required keys (filename, tags) not found in "
+                                "request.")
+            try:
+                gif = Gif.objects.get(filename=filename)
+                return error("AlreadyExistsError", "Gif %s already exists" %\
+                             filename)
+            except Gif.DoesNotExist:
+                pattern = re.compile("^[a-zA-Z0-9\. '-]+$")
+                valid_tags = [tag_name for tag_name in tags if 
+                              pattern.match(tag_name) and
+                              len(tag_name) < TAG_MAX_LEN]
+                if len(valid_tags) < 4:
+                    return validationError("Only %s of the tags were valid. "
+                                           "4 are required." % len(valid_tags))
+                url = "http://i.imgur.com/%s.gif" % filename
+                if isAnimated(imgFromUrl(url)):
+                    gif = Gif(filename=filename, user_added=user)
+                    gif.save()
+                    for tag_name in valid_tags:
+                        t = Tag.objects.get_or_create(name=tag_name)[0]
+                        ti, created = TagInstance.objects.get_or_create(tag=t,
+                                                                     content_object=gif)
+                        if created:
+                            ti.user_added = user
+                            ti.save()
+                        else:
+                            pass
+                    return jsonResponse(result=0, gif=gif.pk)
+                else:
+                    return error("InvalidFileError", "Image %s is not an "
+                                 "animated gif." % filename)
+        else:
+            return authenticationError()
+    else:
+        return Http404
+
 # TODO: currently unused
 def authenticatedAjax(func, request):
     if request.is_ajax():

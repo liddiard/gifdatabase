@@ -39,7 +39,7 @@ admin.site.register(UserScore, UserScoreAdmin)
 
 class Gif(models.Model):
     filename = models.CharField(max_length=32, unique=True)
-    host = models.CharField(max_length=2, choices=HOST_CHOICES, default='imgur')
+    host = models.CharField(max_length=2, choices=HOST_CHOICES, default='ig')
     tags = TaggableManager(through='TagInstance')
     date_added = models.DateTimeField(auto_now_add=True)
     user_added = models.ForeignKey(User)
@@ -95,13 +95,14 @@ class Gif(models.Model):
         self.__original_filename = self.filename
     
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
-        if (self.filename != self.__original_filename or
+        if (self.pk is None or self.filename != self.__original_filename or
             self.host != self.__original_host):
             img = image.imgFromUrl(self.getUrl())
             old_thumb_filename = "%s-%s" % (self.__original_host,
                                             self.__original_filename)
             new_thumb_filename = self.getThumbFilename()
             image.saveThumb(img, new_thumb_filename)
+            print "saving thumb!"
             image.deleteThumb(old_thumb_filename)
         is_new = self.pk is None
         if is_new: # only increase user's score if gif is created, not updated
@@ -111,6 +112,7 @@ class Gif(models.Model):
         self.__original_filename = self.filename
     
     def delete(self):
+        print "deleting!"
         modifyUserScore(self.user_added, -2)
         image.deleteThumb(self.getThumbFilename())
         super(Gif, self).delete()
