@@ -1,4 +1,3 @@
-from itertools import izip
 from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
@@ -133,7 +132,7 @@ class GifAdmin(admin.ModelAdmin):
                     'date_added')
     list_display_links = ('filename', 'adminThumb')
     formfield_overrides = {
-        TaggableManager: {'widget': TagWidget(attrs={'size':'400'})},
+        TaggableManager: {'widget': TagWidget(attrs={'size':'200'})},
     }
     date_hierarchy = 'date_added'
 admin.site.register(Gif, GifAdmin)

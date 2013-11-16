@@ -5,7 +5,6 @@ from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.contrib.auth import (authenticate, login as django_login,
                                  logout as django_logout)
 from django.template import RequestContext
-from django.contrib.auth.forms import AuthenticationForm # currently unused
 from django.utils.datastructures import MultiValueDictKeyError
 
 from taggit.models import Tag
