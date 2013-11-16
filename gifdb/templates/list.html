@@ -1,0 +1,22 @@
+<a class="thumb-container" href="{{ gif.getUrl }}" rel="lightbox-results">
+    <img class="thumb" src="{{ gif.getThumbUrl }}" />
+    <div class="top-data">
+        <img class="btn dropdown"/>
+        <img class="btn star" data-gif="{{ gif.pk }}"/>
+        <img class="btn copy"/>
+        <input class="copy-text" value="{{ gif.getUrl }}" readonly/>
+    </div>
+    <div class="aside-data">
+        {% for pk, tag in gif.pksTags %}
+            {% if gif.added_by_user %}
+                <span class="user-added tag" data-tag="{{ pk }}"><span class="link" onclick="document.location.href='{% url 'search_results' %}?q={{ tag }}';return false">{{ tag }}</span><img class="btn erase"/></span>
+            {% else %}
+                <span class="tag" data-tag="{{ pk }}"><span class="link" onclick="document.location.href='{% url 'search_results' %}?q={{ tag }}';return false">{{ tag }}</span><img class="btn confirm"/><img class="btn deny"/></span>
+            {% endif %}
+        {% endfor %}
+        <input class="tag-add" data-gif="{{ gif.pk }}" maxlength="{{ TAG_MAX_LEN }}"/>
+    </div>
+    <div class="bottom-data">
+        <span class="user link" onclick="document.location.href='{% url 'profile' gif.user_added %}'"><span class="username">{{ gif.user_added }}</span> <span class="score">{{ gif.user_added.getUserScore }}</span></span>
+    </div>
+</a>

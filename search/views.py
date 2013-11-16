@@ -40,7 +40,7 @@ def searchResults(request):
 def profile(request, username):
     user_profile = get_object_or_404(User, username=username)
     user_score = UserScore.objects.get(user=user_profile).score
-    starred =  UserFavorite.objects.filter(user=user_profile)
+    starred = UserFavorite.objects.filter(user=user_profile)
     starred_total = starred.count()
     starred_recent = starred.order_by('-date_favorited')[:8]
     added = Gif.objects.filter(user_added=user_profile)
