@@ -100,6 +100,10 @@ function testImage(filename, callback, timeout) {
     }, timeout); 
 }
 
+function loginRequired(action) {
+    ;
+}
+
 
 /* utility functions */
 

@@ -1,11 +1,11 @@
 /*!
-	Taglight - an extension of:
+	Taglight - a custom implementation of:
     Slimbox v2.05 - The ultimate lightweight Lightbox clone for jQuery
 	(c) 2007-2013 Christophe Beyls <http://www.digitalia.be>
 	MIT-style license.
 */
 
-CAPTION_WIDTH = 220; //this makes me cry a little
+CAPTION_WIDTH = 220;
 votes = {};
 
 (function($) {
@@ -345,6 +345,7 @@ votes = {};
                     unset(tag, tag_id, cls_denied);
                 }
             }
+            focusTagInput();
         }
 
         function tagAdd(elem, is_new) {
@@ -419,10 +420,15 @@ votes = {};
 
         var tag_add = $('#lbCaption .tag-add');
         var tag_add_new = $('#lbCaption .tag-add-new');
-        tag_add.focus();
-        tag_add_new.focus();
+
+        function focusTagInput() {
+            tag_add.focus();
+            tag_add_new.focus();
+        }
+
         tagAdd(tag_add);
         tagAdd(tag_add_new, true);
+        focusTagInput();
 
         function ajaxTagAdd(gif_id, tag) {
             ajaxPost({gif: gif_id,
@@ -457,13 +463,14 @@ votes = {};
                 ajaxTagErase(tag_id);
                 $("[data-tag='" + tag_id + "']").remove();
             }
+            focusTagInput();
         }
 
         function ajaxTagErase(tag_id) {
             ajaxPost({tag: tag_id},
                      "/api/tag-erase/",
                      function(response) { console.log(response) }
-                    );
+            );
         }
 
         function ajaxGetStar(elem) {
@@ -471,7 +478,7 @@ votes = {};
             ajaxPost({gif: gif_id},
                      "/api/star-get/",
                      ajaxInterpretStar
-                    );
+            );
         }
 
         function ajaxAddStar(elem) {
@@ -479,7 +486,7 @@ votes = {};
             ajaxPost({gif: gif_id},
                      "/api/star-add/",
                      function(response) { console.log(response) }
-                    );
+            );
         }
 
         function ajaxRemoveStar(elem) {
@@ -487,7 +494,7 @@ votes = {};
             ajaxPost({gif: gif_id},
                      "/api/star-remove/",
                      function(response) { console.log(response) }
-                    );
+            );
         }
 
         function toggleStar(elem) {
@@ -498,6 +505,7 @@ votes = {};
                 ajaxAddStar(elem);
                 elem.addClass('selected');
             }
+            focusTagInput();
         }
 
         function toggleCopyText(elem) {
@@ -505,6 +513,7 @@ votes = {};
             if (elem.hasClass('selected')) {
                 elem.removeClass('selected');
                 copy_text.hide();
+                focusTagInput();
             } else {
                 elem.addClass('selected');
                 copy_text.show();
@@ -539,6 +548,7 @@ votes = {};
 			$(overlay).stop().fadeOut(options.overlayFadeDuration, setup);
 		}
 
+        $('.search input').focus();
 		return false;
 	}
 
