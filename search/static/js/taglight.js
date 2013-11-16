@@ -233,11 +233,15 @@ votes = {};
         /* have we already voted on this tag? color tags accordingly. */
         function colorTags() {
             $('#lbCaption .tag').each(function(){
-                if ($(this).text().toLowerCase() === "nsfw")
-                    $(this).addClass('nsfw');
+                colorSpecialTags($(this));
                 var tag_id = $(this).attr('data-tag');
                 ajaxPost({tag: tag_id}, "/api/tagvote-get/", ajaxInterpretTagVote);
             });
+        }
+
+        function colorSpecialTags(tag) {
+            if (tag.text().toLowerCase() === "nsfw")
+                tag.addClass('nsfw');
         }
 
         function ajaxInterpretTagVote(response) {
@@ -379,6 +383,7 @@ votes = {};
                 $('<img/>', {
                     class: 'btn erase'
                 }).appendTo(new_tag);
+                colorSpecialTags(new_tag); 
                 if (is_new) {
                     new_tag.insertBefore($('#lbCaption input'));
                     new_tag.find('.erase').click(function(){ tagErase($(this), true); });
