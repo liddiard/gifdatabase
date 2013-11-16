@@ -38,10 +38,11 @@ function showGifFromUrl(string) {
     if (match) {
         add_gif_filename = reverse(match[1]);
         console.log("Found match: " + add_gif_filename);
-        testImage(add_gif_filename, addGifCallback);
+        goodUrl(add_gif_filename);
     } else badUrl("Whoops! That's not a vaild imgur image URL.");
 }
 
+/* currently bypassed */
 function addGifCallback(filename, url, message) {
     if (message === "error" || message === "timeout") {
         badGif("Whoops! That's not a vaild imgur image URL.");
@@ -76,6 +77,7 @@ function goodGif(response) {
     }
 }
 
+/* currently bypassed */
 function testImage(filename, callback, timeout) {
     var url = "http://i.imgur.com/" + filename + ".gif";
     timeout = timeout || 5000;

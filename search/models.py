@@ -86,34 +86,21 @@ class Gif(models.Model):
         return "[%s-%s]  %s" % (self.host, self.filename,
                             ', '.join(self.tags.names()))
     
-    __original_filename = None
-    __original_host = None
-    def __init__(self, *args, **kwargs):
-        super(Gif, self).__init__(*args, **kwargs)
-        self.__original_host = self.host
-        self.__original_filename = self.filename
-    
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
-        if (self.pk is None or self.filename != self.__original_filename or
-            self.host != self.__original_host):
+        is_new = self.pk is None
+        if is_new:
             img = image.imgFromUrl(self.getUrl())
             old_thumb_filename = "%s-%s" % (self.__original_host,
                                             self.__original_filename)
             new_thumb_filename = self.getThumbFilename()
             image.saveThumb(img, new_thumb_filename)
-            print "saving thumb!"
-            image.deleteThumb(old_thumb_filename)
-        is_new = self.pk is None
-        if is_new: # only increase user's score if gif is created, not updated
-            modifyUserScore(self.user_added, 1)
+            modifyUserScore(self.user_added, 1) # only increase user's score 
+                                                # if gif is created, not updated
         super(Gif, self).save(force_insert, force_update, *args, **kwargs)
-        self.__original_host = self.host
-        self.__original_filename = self.filename
     
     def delete(self):
-        print "deleting!"
-        modifyUserScore(self.user_added, -2)
         image.deleteThumb(self.getThumbFilename())
+        modifyUserScore(self.user_added, -2)
         super(Gif, self).delete()
     
     class Meta:
