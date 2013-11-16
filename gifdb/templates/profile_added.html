@@ -8,12 +8,10 @@
             {% else %}
                 <span class="username">{{ username }}</span></a>&rsquo;
             {% endif %}
-             starred <span class="emphasis">GIFs</span> ({{ starred_total }})
+             added <span class="emphasis">GIFs</span> ({{ added_total }})
     </h2>
 
-    {% for fav in starred %}
-        {% with fav.gif as gif %}
-            {% include "list.html" %}
-        {% endwith %}
+    {% for gif in added %}
+        {% include "list.html" %}
     {% endfor %}
 {% endblock %}

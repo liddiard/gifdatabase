@@ -46,11 +46,11 @@ def profile(request, username):
     added_recent = added.order_by('-date_added')[:8]
     
     context = {'username': user_profile, 
+               'score': user_score,
                'starred_total': starred_total,
                'starred_recent': starred_recent,
                'added_total': added_total,
                'added_recent': added_recent,
-               'score': user_score,
                'TAG_MAX_LEN': TAG_MAX_LEN,
                'S3_URL': S3_URL}
     
@@ -58,10 +58,34 @@ def profile(request, username):
                               context_instance=RequestContext(request))
 
 def profileStarred(request, username):
-    pass
+    user_profile = get_object_or_404(User, username=username)
+    starred = UserFavorite.objects.filter(user=user_profile)\
+                          .order_by('date_favorited')
+    starred_total = starred.count()
+    
+    context = {'username': user_profile, 
+               'starred_total': starred_total,
+               'starred': starred,
+               'TAG_MAX_LEN': TAG_MAX_LEN,
+               'S3_URL': S3_URL}
+    
+    return render_to_response('profile_starred.html', context,
+                              context_instance=RequestContext(request))
 
 def profileAdded(request, username):
-    pass
+    user_profile = get_object_or_404(User, username=username)
+    added = Gif.objects.filter(user_added=user_profile).order_by('date_added')
+    added_total = added.count()
+    
+    context = {'username': user_profile, 
+               'added_total': added_total,
+               'added': added,
+               'TAG_MAX_LEN': TAG_MAX_LEN,
+               'S3_URL': S3_URL}
+    
+    return render_to_response('profile_added.html', context,
+                              context_instance=RequestContext(request))
+
 
 # state management
 
