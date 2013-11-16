@@ -29,8 +29,6 @@ def searchResults(request):
     except MultiValueDictKeyError:
         return redirect('front')
     results = engine.query(query)
-    for result in results:
-        result.gif.added_by_user = (result.gif.user_added == request.user)
     context = {'results': results,
                'S3_URL': S3_URL,
                'TAG_MAX_LEN': TAG_MAX_LEN}
