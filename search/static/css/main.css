@@ -365,8 +365,7 @@ button {
 .thumb {
   margin: 0;
   display: block;
-  float: left;
-  -webkit-transition: -webkit-filter 0.2s; }
+  float: left; }
   .thumb:hover {
     -webkit-filter: brightness(1.15); }
 
