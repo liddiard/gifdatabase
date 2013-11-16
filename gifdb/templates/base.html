@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/taglight.css">
     <script>
         var context = {
-            user_is_authenticated: '{{ user.is_authenticated }}',
+            user_is_authenticated: "{{ user.is_authenticated }}" === "True" ? true : false,
             TAG_MAX_LEN: {{ TAG_MAX_LEN }},
         }
     </script>
