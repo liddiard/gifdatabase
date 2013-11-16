@@ -121,7 +121,8 @@ nav {
   /* IE6-9 */ }
   nav .contents {
     max-width: 1100px;
-    margin: 0 auto; }
+    margin: 0 auto;
+    padding: 0 5px; }
     nav .contents:before {
       content: '';
       display: inline-block;
@@ -138,7 +139,6 @@ nav {
     float: right;
     margin: 3px 2px 0 0; }
   nav .banner {
-    padding-left: 2px;
     margin-right: 0.5em; }
   nav .search {
     width: 25%;

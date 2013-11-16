@@ -92,6 +92,7 @@ nav {
     .contents {
         max-width: 1100px;
         margin: 0 auto;
+        padding: 0 5px;
 
         &:before {
             content: '';
@@ -117,7 +118,6 @@ nav {
     }
 
     .banner {
-        padding-left: 2px;
         margin-right: 0.5em;
     }
 
