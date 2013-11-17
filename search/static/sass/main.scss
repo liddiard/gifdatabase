@@ -188,6 +188,18 @@ section {
     margin-right: $sidebar_width;
 }
 
+@media (max-width: 520px) {
+    aside {
+        position: relative;
+        display: block;
+        clear: both;
+    }
+
+    section {
+        margin-right: 0;
+    }
+}
+
 form.search {
     position: relative;
     display: inline-block;
