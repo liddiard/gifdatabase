@@ -5,6 +5,7 @@ $(document).ready(function(){
         inputs[i].autocomplete = "off";
     }
 
+    colorScore();
     $('.search input').focus();
 
     $('button.add-gif').click(function() {
@@ -100,6 +101,19 @@ function testImage(filename, callback, timeout) {
         timedOut = true;
         callback(filename, "timeout");
     }, timeout); 
+}
+
+function colorScore(score_elem) {
+    function colorScoreElement(score_elem) {
+        if (parseInt(score_elem.text()) < 0) {
+            score_elem.addClass('negative');
+        }
+    }
+    if (score_elem === undefined) {
+        $('.score').each(function(){
+            colorScoreElement($(this));
+        });
+    } else colorScoreElement(score_elem);
 }
 
 function loginRequired(action) {

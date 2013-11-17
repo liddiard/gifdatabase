@@ -39,7 +39,7 @@
             <div class="user-actions">
                 {% if user.is_authenticated %}
                     <button class="add-gif"><img src="{{ STATIC_URL }}img/plus_black.png"/>Add GIF</button>
-                    <a class="user" href="{% url 'profile' user %}"><span class="username">{{ user.username }}</span> <span class="score{% if user.getUserScore < 0 %} negative{% endif %}">{{ user.getUserScore }}</span></a>
+                    <a class="user" href="{% url 'profile' user %}"><span class="username">{{ user.username }}</span> <span class="score">{{ user.getUserScore }}</span></a>
                     <a class="star" href="{% url 'profile_starred' user %}"><img src="{{ STATIC_URL }}img/star_selected.png"/></a>
                     <a class="logout" href="/logout/">Logout</a>
                 {% else %}
