@@ -106,6 +106,7 @@ a, .link {
 
 nav {
   position: fixed;
+  top: 0;
   width: 100%;
   padding: 2px 0;
   z-index: 1005;

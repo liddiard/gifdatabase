@@ -31,7 +31,7 @@
 }
 
 .lbLoading {
-	background: transparent url(loading.gif) no-repeat center;
+	background: transparent url(../img/spinner_large.png) no-repeat center;
 }
 
 #lbImage {

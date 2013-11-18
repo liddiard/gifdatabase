@@ -90,10 +90,8 @@ class Gif(models.Model):
         is_new = self.pk is None
         if is_new:
             img = image.imgFromUrl(self.getUrl())
-            old_thumb_filename = "%s-%s" % (self.__original_host,
-                                            self.__original_filename)
-            new_thumb_filename = self.getThumbFilename()
-            image.saveThumb(img, new_thumb_filename)
+            thumb_filename = self.getThumbFilename()
+            image.saveThumb(img, thumb_filename)
             modifyUserScore(self.user_added, 1) # only increase user's score 
                                                 # if gif is created, not updated
         super(Gif, self).save(force_insert, force_update, *args, **kwargs)

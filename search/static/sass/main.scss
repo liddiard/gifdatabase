@@ -17,6 +17,16 @@ $light_gray: #ccc;
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bf000000', endColorstr='#40000000',GradientType=0 ); /* IE6-9 */
 }
 
+@mixin horizontal_gradient_image($start_color, $end_color, $background_image) {
+    background: -moz-linear-gradient(top,  $start_color 0%, $end_color 100%), $background_image; /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$start_color), color-stop(100%,$end_color)), $background_image; /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  $start_color 0%,$end_color 100%), $background_image; /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  $start_color 0%,$end_color 100%), $background_image; /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  $start_color 0%,$end_color 100%), $background_image; /* IE10+ */
+    background: linear-gradient(to bottom,  $start_color 0%,$end_color 100%), $background_image; /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bf000000', endColorstr='#40000000',GradientType=0 ); /* IE6-9 */
+}
+
 @mixin placeholder_color($color) {
     ::-webkit-input-placeholder {
         color: $color;
@@ -83,6 +93,7 @@ a, .link {
 
 nav {
     position: fixed;
+    top: 0;
     width: 100%;
     padding: 2px 0;
     z-index: 1005;

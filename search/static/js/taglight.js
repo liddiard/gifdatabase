@@ -65,8 +65,8 @@ votes = {};
 			overlayFadeDuration: 0,		// Duration of the overlay fade-in and fade-out animations (in milliseconds)
 			resizeDuration: 1,			// Duration of each of the box resize animations (in milliseconds)
 			resizeEasing: "swing",			// "swing" is jQuery's default easing
-			initialWidth: 250,			// Initial width of the box (in pixels)
-			initialHeight: 250,			// Initial height of the box (in pixels)
+			initialWidth: 48,			// Initial width of the box (in pixels)
+			initialHeight: 48,			// Initial height of the box (in pixels)
 			imageFadeDuration: 0,			// Duration of the image fade-in animation (in milliseconds)
 			captionAnimationDuration: 0,		// Duration of the caption animation (in milliseconds)
 			counterText: false, // "gif {x} of {y}",	// Translate or change as you wish, or set it to false to disable counter text for image groups
@@ -188,6 +188,10 @@ votes = {};
 			stop();
 			center.className = "lbLoading";
 
+            var spinner_top = parseInt($(center).css('height'))/2 - options.initialHeight/2;
+            $(center).css({'top': "+="+spinner_top, 'height': options.initialHeight+'px'});
+            lb_spinner_id = typeof lb_spinner_id === 'undefined' ? animateSpinner(options.initialWidth, 12) : lb_spinner_id;
+
 			preload = new Image();
 			preload.onload = animateBox;
 			preload.src = activeURL;
@@ -195,6 +199,20 @@ votes = {};
 
 		return false;
 	}
+
+    function animateSpinner(size, steps) {
+        var height = size * steps;
+        var offset = 0;
+        $('.lbLoading').css('background-position-y', offset+'px');
+        var interval_id = setInterval(function(){
+            $('.lbLoading').css('background-position-y', offset+'px');
+            console.log(offset);
+            offset -= size;
+            if (offset <= -height)
+                offset = 0;
+        }, 100);
+        return interval_id;
+    }
 
 	function animateBox() {
 		center.className = "";
@@ -229,7 +247,7 @@ votes = {};
 	}
 
 	function animateCaption() {
-        
+ 
         /* have we already voted on this tag? color tags accordingly. */
         function colorTags() {
             $('#lbCaption .tag').each(function(){
@@ -536,7 +554,7 @@ votes = {};
         $('#lbTopContainer .copy').click(function(){ toggleCopyText($(this)); });
 	}
 
-	function stop() {
+	function stop(interval_id) {
 		preload.onload = null;
 		preload.src = preloadPrev.src = preloadNext.src = activeURL;
 		$([center, image, bottom]).stop(true);
@@ -562,10 +580,10 @@ votes = {};
 })(jQuery);
 
 // AUTOLOAD CODE BLOCK (MAY BE CHANGED OR REMOVED)
-if (!/android|iphone|ipod|series60|symbian|windows ce|blackberry/i.test(navigator.userAgent)) {
+// if (!/android|iphone|ipod|series60|symbian|windows ce|blackberry/i.test(navigator.userAgent)) {
 	jQuery(function($) {
 		$("a[rel^='lightbox']").slimbox({/* Put custom options here */}, null, function(el) {
 			return (this == el) || ((this.rel.length > 8) && (this.rel == el.rel));
 		});
 	});
-}
+// }
