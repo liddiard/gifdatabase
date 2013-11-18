@@ -34,6 +34,18 @@
 	background: transparent url(../img/spinner_large.png) no-repeat center;
 }
 
+    .lbLoading.small {
+        background: transparent url(../img/spinner_small.png) no-repeat center;
+        width: 22px; height: 22px;
+    }
+
+        .lbLoading.small.save {
+            display: block;
+            display: none;
+            float: left;
+            margin: 7px 0 0 5px;
+        }
+
 #lbImage {
 	position: absolute;
 	left: 0;

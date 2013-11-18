@@ -190,7 +190,7 @@ votes = {};
 
             var spinner_top = parseInt($(center).css('height'))/2 - options.initialHeight/2;
             $(center).css({'top': "+="+spinner_top, 'height': options.initialHeight+'px'});
-            lb_spinner_id = typeof lb_spinner_id === 'undefined' ? animateSpinner(options.initialWidth, 12) : lb_spinner_id;
+            lb_spinner_id = typeof lb_spinner_id === 'undefined' ? animateSpinner($('.lbLoading'), options.initialWidth, 12) : lb_spinner_id;
 
 			preload = new Image();
 			preload.onload = animateBox;
@@ -199,20 +199,6 @@ votes = {};
 
 		return false;
 	}
-
-    function animateSpinner(size, steps) {
-        var height = size * steps;
-        var offset = 0;
-        $('.lbLoading').css('background-position-y', offset+'px');
-        var interval_id = setInterval(function(){
-            $('.lbLoading').css('background-position-y', offset+'px');
-            console.log(offset);
-            offset -= size;
-            if (offset <= -height)
-                offset = 0;
-        }, 100);
-        return interval_id;
-    }
 
 	function animateBox() {
 		center.className = "";
@@ -422,15 +408,29 @@ votes = {};
         function checkValidForSave() {
             var save_button = $('#lbCaption .save');
             if ($('#lbCaption .tag').length > 3) {
-                $('#lbCaption .save:not(.bound)').addClass('bound').click(function(){ saveGif(); });
-                save_button.removeClass('disabled');
+                enableGifSave();
             } else {
-                save_button.removeClass('bound').unbind('click');
-                save_button.addClass('disabled');
+                disableGifSave();
             }
         }
 
+        function enableGifSave() {
+            var save_button = $('#lbCaption .save');
+            $('#lbCaption .save:not(.bound)').addClass('bound').click(function(){ saveGif(); });
+            save_button.removeClass('disabled');
+        }
+
+        function disableGifSave() {
+            var save_button = $('#lbCaption .save');
+            save_button.removeClass('bound').unbind('click');
+            save_button.addClass('disabled');
+        }
+
         function saveGif() {
+            disableGifSave();
+            var save_spinner = $('.lbLoading.save');
+            save_spinner_id = typeof save_spinner_id === 'undefined' ? animateSpinner(save_spinner, 22, 8) : save_spinner_id;
+            save_spinner.show();
             var tags = [];
             $('#lbCaption .tag').each(function(){
                 tags.push($(this).text());

@@ -293,6 +293,8 @@ button {
       vertical-align: middle;
       padding: 0 2px 4px 0; }
   button.save {
+    display: block;
+    float: left;
     margin-top: 5px; }
   .search button {
     position: absolute;
