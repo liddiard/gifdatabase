@@ -164,9 +164,9 @@ nav {
     nav .logout:hover {
       color: #cccccc; }
 
-.score, .emphasis {
+.score, .highlight {
   color: #00ccff; }
-  .score.negative, .emphasis.negative {
+  .score.negative, .highlight.negative {
     color: red; }
 
 #wrap {
