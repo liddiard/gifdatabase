@@ -379,6 +379,10 @@ button {
     margin: 7px auto;
     text-align: center; }
 
+.external-link {
+  padding-left: 5px;
+  margin-top: -3px; }
+
 .error {
   color: #f88; }
 
