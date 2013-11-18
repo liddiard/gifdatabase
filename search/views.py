@@ -60,7 +60,7 @@ def profile(request, username):
 def profileStarred(request, username):
     user_profile = get_object_or_404(User, username=username)
     starred = UserFavorite.objects.filter(user=user_profile)\
-                          .order_by('date_favorited')
+                          .order_by('-date_favorited')
     starred_total = starred.count()
     
     context = {'username': user_profile, 
@@ -74,7 +74,7 @@ def profileStarred(request, username):
 
 def profileAdded(request, username):
     user_profile = get_object_or_404(User, username=username)
-    added = Gif.objects.filter(user_added=user_profile).order_by('date_added')
+    added = Gif.objects.filter(user_added=user_profile).order_by('-date_added')
     added_total = added.count()
     
     context = {'username': user_profile, 
