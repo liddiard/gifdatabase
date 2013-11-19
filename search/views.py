@@ -175,8 +175,8 @@ def ajaxTagVote(request):
                 except TagVote.DoesNotExist:
                     return doesNotExist("Could not unset TagVote because "
                                         "TagVote doesn't exist.")
-            return jsonResponse(result=0, user=request.user, tag_id=tag.pk,
-                                tag_name=tag.tag, set=set)
+            return jsonResponse(result=0, tag_id=tag.pk, tag_name=tag.tag.name,
+                                set=set)
         else:
             return authenticationError()
     else:

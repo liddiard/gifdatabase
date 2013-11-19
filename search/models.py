@@ -156,6 +156,9 @@ class TagInstance(TaggedItemBase):
     isVerified.boolean = True
     isVerified.short_description = "v"
 
+    def hasBeenVotedOn(self):
+        return self.ups + self.downs > 0
+
     def isNsfw(self):
         return self.tag.name.lower() == "nsfw"
     
