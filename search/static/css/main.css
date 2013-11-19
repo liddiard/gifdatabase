@@ -11,7 +11,30 @@
   border: 1px solid rgba(255, 255, 255, 0.25);
   font-size: 1.6em; }
   .tag.unverified {
-    color: rgba(255, 255, 255, 0.5); }
+    color: rgba(255, 255, 255, 0.6); }
+  .tag.user-added {
+    color: white;
+    border: 1px solid rgba(0, 204, 255, 0.5);
+    background: rgba(0, 204, 255, 0.1);
+    padding-right: 28px; }
+  .tag.nsfw {
+    color: red;
+    border: 1px solid red;
+    text-transform: uppercase; }
+  .tag.confirm {
+    border: 1px solid rgba(0, 255, 0, 0.5);
+    background-color: rgba(0, 255, 0, 0.1); }
+  .tag.deny {
+    border: 1px solid rgba(255, 0, 0, 0.5);
+    background-color: rgba(255, 0, 0, 0.1); }
+  .tag.confirmed {
+    color: white;
+    border: 1px solid #0f0;
+    background-color: rgba(0, 255, 0, 0.2); }
+  .tag.denied {
+    color: rgba(255, 255, 255, 0.6);
+    border: 1px solid #f00;
+    background-color: rgba(255, 0, 0, 0.2); }
   .tag .btn {
     position: absolute;
     bottom: 0;
@@ -34,35 +57,6 @@
   .tag .disabled {
     opacity: 0.2 !important;
     cursor: default; }
-
-.user-added {
-  color: white;
-  border: 1px solid rgba(0, 204, 255, 0.5);
-  background: rgba(0, 204, 255, 0.1);
-  padding-right: 28px; }
-
-.nsfw {
-  color: red;
-  border: 1px solid red;
-  text-transform: uppercase; }
-
-.tag-confirm {
-  border: 1px solid rgba(0, 255, 0, 0.5);
-  background-color: rgba(0, 255, 0, 0.1); }
-
-.tag-deny {
-  border: 1px solid rgba(255, 0, 0, 0.5);
-  background-color: rgba(255, 0, 0, 0.1); }
-
-.tag-confirmed {
-  color: white;
-  border: 1px solid #0f0;
-  background-color: rgba(0, 255, 0, 0.2); }
-
-.tag-denied {
-  color: rgba(255, 255, 255, 0.5);
-  border: 1px solid #f00;
-  background-color: rgba(255, 0, 0, 0.2); }
 
 .tag-add, .tag-add-new {
   display: block;

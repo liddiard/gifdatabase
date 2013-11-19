@@ -131,16 +131,19 @@ class TagInstance(TaggedItemBase):
     date_added = models.DateTimeField(auto_now_add=True)
     user_added = models.ForeignKey(User, default=DEFAULT_USER_ID)
     
+    def totalVotes(self):
+        return self.ups + self.downs
+
     def score(self):
         try:
-            total = self.ups + self.downs
-            return round(self.ups / float(total), 2)
+            return round(self.ups / float(self.totalVotes()), 2)
         except ZeroDivisionError:
             return 0.5
     
     def isBad(self):
         threshold = 0.4
-        if self.score() < threshold:
+        min_votes = 2
+        if self.score() < threshold and self.totalVotes() >= min_votes:
             return True
         else:
             return False
@@ -148,8 +151,7 @@ class TagInstance(TaggedItemBase):
     def isVerified(self):
         threshold = 0.6
         min_votes = 2
-        total_votes = self.ups + self.downs
-        if self.score() >= threshold and total_votes >= min_votes:
+        if self.score() > threshold and self.totalVotes() >= min_votes:
             return True
         else:
             return False

@@ -255,11 +255,11 @@ votes = {};
             if (v !== 0) {
                 if (v === 1) {
                     votes[tag] = true;
-                    elem.addClass("tag-confirmed");
+                    elem.addClass("confirmed");
                 }
                 else if (v === -1) {
                     votes[tag] = false;
-                    elem.addClass("tag-denied");
+                    elem.addClass("denied");
                 }
                 else
                     console.error("GetTagVoteError: server did not return a valid TagVote");
@@ -299,9 +299,9 @@ votes = {};
         }
 
         /* Bind hover events */
-        toggleParentOnHover('.tag > .confirm', 'tag-confirm');
-        toggleParentOnHover('.tag > .deny', 'tag-deny');
-        toggleParentOnHover('.tag > .erase', 'tag-deny');
+        toggleParentOnHover('.tag > .confirm', 'confirm');
+        toggleParentOnHover('.tag > .deny', 'deny');
+        toggleParentOnHover('.tag > .erase', 'deny');
         toggleClassOnHover('#lbTopContainer .star', 'hover');
         toggleClassOnHover('#lbTopContainer .copy', 'hover');
 
@@ -322,8 +322,8 @@ votes = {};
             }
             var tag = instance.parent();
             var tag_id = tag.attr('data-tag');
-            var cls_confirmed = "tag-confirmed";
-            var cls_denied = "tag-denied";
+            var cls_confirmed = "confirmed";
+            var cls_denied = "denied";
             var is_confirmed = votes[tag_id];
             if (is_confirmed === undefined) { // currently neither confirmed nor denied
                 if (up) {
@@ -397,7 +397,7 @@ votes = {};
                     new_tag.insertBefore($("input[data-gif='" + gif_id + "']"));
                     ajaxTagAdd(gif_id, content);
                 }
-                toggleParentOnHover('.tag > .erase', 'tag-deny');
+                toggleParentOnHover('.tag > .erase', 'deny');
             }
 
             function validateTag(input) {

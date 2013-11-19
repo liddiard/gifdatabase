@@ -1,5 +1,5 @@
 $primary_color: #0cf;
-$unverified_color: rgba(255,255,255, 0.5);
+$unverified_color: rgba(255,255,255, 0.6);
 
 .tag {
 	position: relative;
@@ -16,6 +16,41 @@ $unverified_color: rgba(255,255,255, 0.5);
 
     &.unverified {
         color: $unverified_color;
+    }
+
+    &.user-added {
+        color: white;
+        border: 1px solid rgba($primary_color, 0.5);
+        background: rgba($primary_color, 0.1);
+        padding-right: 28px;
+    }
+
+    &.nsfw {
+        color: red;
+        border: 1px solid red;
+        text-transform: uppercase;
+    }
+
+    &.confirm {
+        border: 1px solid rgba(0,255,0, 0.5);
+        background-color: rgba(0,255,0, 0.1);
+    }
+
+    &.deny {
+        border: 1px solid rgba(255,0,0, 0.5);
+        background-color: rgba(255,0,0, 0.1);
+    }
+
+    &.confirmed {
+        color: white;
+        border: 1px solid #0f0;
+        background-color: rgba(0,255,0, 0.2);
+    }
+
+    &.denied {
+        color: $unverified_color;
+        border: 1px solid #f00;
+        background-color: rgba(255,0,0, 0.2);
     }
 
     .btn {
@@ -52,41 +87,6 @@ $unverified_color: rgba(255,255,255, 0.5);
     }
 }
 
-.user-added {
-    color: white;
-    border: 1px solid rgba($primary_color, 0.5);
-    background: rgba($primary_color, 0.1);
-    padding-right: 28px;
-}
-
-.nsfw {
-    color: red;
-    border: 1px solid red;
-    text-transform: uppercase;
-}
-
-.tag-confirm {
-	border: 1px solid rgba(0,255,0, 0.5);
-	background-color: rgba(0,255,0, 0.1);
-}
-
-.tag-deny {
-	border: 1px solid rgba(255,0,0, 0.5);
-	background-color: rgba(255,0,0, 0.1);
-}
-
-.tag-confirmed {
-    color: white;
-	border: 1px solid #0f0;
-	background-color: rgba(0,255,0, 0.2);
-}
-
-.tag-denied {
-    color: $unverified_color;
-	border: 1px solid #f00;
-	background-color: rgba(255,0,0, 0.2);
-}
-
 .tag-add, .tag-add-new {
     display: block;
     clear: both;
@@ -97,4 +97,3 @@ $unverified_color: rgba(255,255,255, 0.5);
     margin: 0;
     width: 120px;
 }
-
