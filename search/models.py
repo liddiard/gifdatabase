@@ -143,18 +143,12 @@ class TagInstance(TaggedItemBase):
     def isBad(self):
         threshold = 0.4
         min_votes = 2
-        if self.score() < threshold and self.totalVotes() >= min_votes:
-            return True
-        else:
-            return False
+        return self.totalVotes() >= min_vote and self.score() < threshold
     
     def isVerified(self):
         threshold = 0.6
         min_votes = 2
-        if self.score() > threshold and self.totalVotes() >= min_votes:
-            return True
-        else:
-            return False
+        return self.totalVotes() >= min_vote and self.score() > threshold
     isVerified.boolean = True
     isVerified.short_description = "v"
 
