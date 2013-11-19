@@ -415,21 +415,22 @@ votes = {};
         }
 
         function enableGifSave() {
-            var save_button = $('#lbCaption .save');
+            var save_button = $('#lbCaption button.save');
             $('#lbCaption .save:not(.bound)').addClass('bound').click(function(){ saveGif(); });
             save_button.removeClass('disabled');
         }
 
         function disableGifSave() {
-            var save_button = $('#lbCaption .save');
+            var save_button = $('#lbCaption button.save');
             save_button.removeClass('bound').unbind('click');
             save_button.addClass('disabled');
         }
 
         function saveGif() {
             disableGifSave();
+            $('#lbCaption button.save').text('Saving...');
             var save_spinner = $('.lbLoading.save');
-            save_spinner_id = typeof save_spinner_id === 'undefined' ? animateSpinner(save_spinner, 22, 8) : save_spinner_id;
+            animateSpinner(save_spinner, 22, 8);
             save_spinner.show();
             var tags = [];
             $('#lbCaption .tag').each(function(){

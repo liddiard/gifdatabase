@@ -8,13 +8,6 @@ $(document).ready(function(){
     colorScore();
     $('.search input').focus();
 
-    $(".spinner-large").each(function(i){
-        var s = new SpriteSpinner(this, {
-        interval:50
-        });
-        s.start();
-    });
-
     $('button.add-gif').click(function() {
         $('.modal-mask, #add-gif').toggle(0, function(){
             if ($('#add-gif').is(':visible')) { 
@@ -66,6 +59,9 @@ function badGif(message) {
 
 function goodUrl(filename) {
     console.log("ajax posting with filename: " + filename);
+    var check_spinner = $('.lbLoading.check-gif');
+    check_spinner_id = typeof check_spinner_id === 'undefined' ? animateSpinner(check_spinner, 22, 8) : check_spinner_id;
+    check_spinner.show();
     ajaxPost(
         {'filename': filename},
         "/api/gif-check/",
@@ -73,6 +69,7 @@ function goodUrl(filename) {
 }
 
 function goodGif(response) {
+    $('.lbLoading.check-gif').hide();
     $('#add-gif input').prop('disabled', false);
     if (response.result) {
         if (response.error === "AlreadyExistsError")

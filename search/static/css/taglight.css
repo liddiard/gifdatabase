@@ -40,10 +40,16 @@
     }
 
         .lbLoading.small.save {
-            display: block;
             display: none;
             float: left;
             margin: 7px 0 0 5px;
+        }
+
+        .lbLoading.small.check-gif {
+           display: none;
+           float: right;
+           margin-top: -28px;
+           margin-right: 4px; 
         }
 
 #lbImage {
