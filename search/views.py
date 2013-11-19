@@ -250,12 +250,16 @@ def ajaxEraseTag(request):
             except TagInstance.DoesNotExist:
                 return doesNotExist("Could not delete tag because tag matching "
                                     "id %s doesn't exist." % tag_id)
-            if ti.user_added == user:
-                ti.delete()
-                return jsonResponse(result=0, message="Deleted tag.")
+            if ti.hasBeenVotedOn():
+                return accessError("This tag has already been voted on and "
+                                   "thus cannot be user-erased.")
             else:
-                return accessError("The requesting user does not have "
-                                   "permission to delete this tag.")
+                if ti.user_added == user:
+                    ti.delete()
+                    return jsonResponse(result=0, message="Deleted tag.")
+                else:
+                    return accessError("The requesting user does not have "
+                                       "permission to delete this tag.")
         else:
             return authenticationError()
     else:

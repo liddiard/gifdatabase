@@ -280,8 +280,8 @@ votes = {};
 		$(bottom).css("marginTop", -bottom.offsetHeight).animate({marginTop: 0}, options.captionAnimationDuration);
 		aside.style.visibility = topContainer.style.visibility = bottomContainer.style.visibility = "";
        
-        function toggleParentOnHover(selector, cls) {
-            $(selector).hover(
+        function toggleParentOnHover(elem, cls) {
+            elem.hover(
                 function(){
                     $(this).parent().addClass(cls);},
                 function(){
@@ -289,8 +289,8 @@ votes = {};
             );
         }
 
-        function toggleClassOnHover(selector, cls) {
-            $(selector).hover(
+        function toggleClassOnHover(elem, cls) {
+            elem.hover(
                 function(){
                     $(this).addClass(cls);},
                 function(){
@@ -299,11 +299,11 @@ votes = {};
         }
 
         /* Bind hover events */
-        toggleParentOnHover('.tag > .confirm', 'confirm');
-        toggleParentOnHover('.tag > .deny', 'deny');
-        toggleParentOnHover('.tag > .erase', 'deny');
-        toggleClassOnHover('#lbTopContainer .star', 'hover');
-        toggleClassOnHover('#lbTopContainer .copy', 'hover');
+        toggleParentOnHover($('#lbCaption .tag > .confirm'), 'confirm');
+        toggleParentOnHover($('#lbCaption .tag > .deny'), 'deny');
+        toggleParentOnHover($('#lbCaption .tag > .erase').not('.disabled'), 'deny');
+        toggleClassOnHover($('#lbTopContainer .star'), 'hover');
+        toggleClassOnHover($('#lbTopContainer .copy'), 'hover');
 
         function ajaxTagVote(tag, set) {
             ajaxPost({
@@ -397,7 +397,7 @@ votes = {};
                     new_tag.insertBefore($("input[data-gif='" + gif_id + "']"));
                     ajaxTagAdd(gif_id, content);
                 }
-                toggleParentOnHover('.tag > .erase', 'deny');
+                toggleParentOnHover(new_tag.find('.erase'), 'deny');
             }
 
             function validateTag(input) {
@@ -548,9 +548,9 @@ votes = {};
         }
 
         /* Bind click events */
-        $('.tag > .confirm').click(function(){ vote($(this), true); });
-        $('.tag > .deny').click(function(){ vote($(this), false); });
-        $('.tag > .erase').click(function(){ tagErase($(this)); });
+        $('#lbCaption .tag > .confirm').click(function(){ vote($(this), true); });
+        $('#lbCaption .tag > .deny').click(function(){ vote($(this), false); });
+        $('#lbCaption .tag > .erase').not('.disabled').click(function(){ tagErase($(this)); });
         $('#lbTopContainer .star').click(function(){ toggleStar($(this)); });
         $('#lbTopContainer .copy').click(function(){ toggleCopyText($(this)); });
 	}
