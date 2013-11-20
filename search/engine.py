@@ -39,7 +39,7 @@ def query(query_string):
 
 def commonWord(word):
     '''checks if word passed is common or not'''
-    return word in common_words:
+    return word in common_words
 
 def synonym(word):
     '''checks if word is a synonym. returns a list or a boolean'''
