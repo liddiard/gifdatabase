@@ -76,7 +76,7 @@ function goodGif(response) {
     add_gif_input.prop('disabled', false);
     if (response.result) {
         if (response.error === "AlreadyExistsError")
-            badGif("This GIF is already in GIFdatabase. Try another!");
+            badGif("Sorry, that GIF is already in GIFdatabase. Try another!");
         else if (response.error === "InvalidFileError")
             badGif("Whoops! That's not an animated GIF.");
         else
