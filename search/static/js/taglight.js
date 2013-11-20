@@ -451,7 +451,7 @@ votes = {};
             if (response.result === 0) {
                 options.is_unsaved = false;
                 var save_button = $('#lbCaption button.save');
-                save_button.addClass('success').text('Saved');
+                save_button.addClass('success').text('Saved!');
                 $('.lbLoading.save').hide();
                 $('<button/>', {
                     text: 'Add Another',
