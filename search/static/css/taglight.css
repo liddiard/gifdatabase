@@ -97,7 +97,7 @@
 	float: right;
 	width: 66px;
 	height: 22px;
-	background: transparent url(closelabel.gif) no-repeat center;
+	/* background: transparent url(../img/closelabel.gif) no-repeat center; */
 	margin: 5px 0;
 	outline: none;
 }
