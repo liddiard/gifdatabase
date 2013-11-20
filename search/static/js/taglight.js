@@ -1,4 +1,4 @@
-/*!
+
 	Taglight - a custom implementation of:
     Slimbox v2.05 - The ultimate lightweight Lightbox clone for jQuery
 	(c) 2007-2013 Christophe Beyls <http://www.digitalia.be>
@@ -59,7 +59,7 @@ votes = {};
 	// Open Slimbox with the specified parameters
 	$.slimbox = function(_images, startImage, _options) {
 		options = $.extend({
-            is_new: false,            // Is the gif being created, or are we just viewing it? (user-added)
+            is_unsaved: false,            // Is the gif being created, or are we just viewing it? (user-added)
 			loop: false,				// Allows to navigate between first and last images
 			overlayOpacity: 0.8,			// 1 is opaque, 0 is completely transparent (change the color in the CSS file)
 			overlayFadeDuration: 0,		// Duration of the overlay fade-in and fade-out animations (in milliseconds)
@@ -428,11 +428,14 @@ votes = {};
 
         function saveGif() {
             disableGifSave();
-            $('#lbCaption button.save').text('Saving...');
+            var save_button = $('#lbCaption button.save');
+            var add_tag = $('#lbCaption .tag-add-new')
             var save_spinner = $('.lbLoading.save');
+            var tags = [];
+            save_button.text('Saving...');
             animateSpinner(save_spinner, 22, 8);
             save_spinner.show();
-            var tags = [];
+            add_tag.slideUp('fast');
             $('#lbCaption .tag').each(function(){
                 tags.push($(this).text());
             });
@@ -440,8 +443,22 @@ votes = {};
             ajaxPost(
                 {filename: add_gif_filename, tags: tags},
                 '/api/gif-add/',
-                function(response){ console.log(response); }
+                gifSaved
             );
+        }
+
+        function gifSaved(response) {
+            if (response.result === 0) {
+                options.is_unsaved = false;
+                var save_button = $('#lbCaption button.save');
+                save_button.addClass('success').text('Saved');
+                $('.lbLoading.save').hide();
+                $('<button/>', {
+                    text: 'Add Another',
+                    class: 'medium',
+                    id: 'add-another'
+                }).click(addGifModal).insertAfter(save_button);
+            } else alert(response);
         }
 
         var tag_add = $('#lbCaption .tag-add');
@@ -563,7 +580,7 @@ votes = {};
 	}
 
 	function close() {
-        if (options.is_new) {
+        if (options.is_unsaved) {
             if (window.confirm("Your GIF has not been added. Are you sure you want to leave?")) { } 
             else { return }
         }

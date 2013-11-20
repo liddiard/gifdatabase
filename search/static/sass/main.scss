@@ -280,6 +280,18 @@ button {
         cursor: default;
     }
 
+    &.success {
+        color: white;
+        background-color: rgba(0,255,0, 0.2);
+        opacity: 1;
+        box-shadow: 0 0 0 1px #0f0 inset;
+    }
+
+    &#add-another {
+        float: left;
+        margin: 5px 0 0 5px;
+    }
+
     &.medium {
         padding: 5px;
     }
@@ -296,6 +308,7 @@ button {
     &.save {
         display: block;
         float: left;
+        clear: both;
         margin-top: 5px;
     }
 

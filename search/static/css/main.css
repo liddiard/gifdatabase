@@ -284,6 +284,14 @@ button {
     background-color: #999999;
     opacity: 0.5;
     cursor: default; }
+  button.success {
+    color: white;
+    background-color: rgba(0, 255, 0, 0.2);
+    opacity: 1;
+    box-shadow: 0 0 0 1px #0f0 inset; }
+  button#add-another {
+    float: left;
+    margin: 5px 0 0 5px; }
   button.medium {
     padding: 5px; }
   button.add-gif {
@@ -294,6 +302,7 @@ button {
   button.save {
     display: block;
     float: left;
+    clear: both;
     margin-top: 5px; }
   .search button {
     position: absolute;

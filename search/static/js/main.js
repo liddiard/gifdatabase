@@ -8,28 +8,30 @@ $(document).ready(function(){
     colorScore();
     $('.search input').focus();
 
-    $('button.add-gif').click(function() {
-        $('.modal-mask, #add-gif').toggle(0, function(){
-            if ($('#add-gif').is(':visible')) { 
-                var add_gif = $('#add-gif input');
-                add_gif.focus();
-                add_gif.on('input', function(){
-                    if ($(this).val().length > 0) {
-                        console.log("detected a non-zero input change");
-                        add_gif.prop('disabled', true);
-                        showGifFromUrl(add_gif.val());
-                    } else add_gif.prop('disabled', false);
-                });
-            } else {
-                $('.search input').focus();
-            }
-        });
-        $('.modal-mask').click(function() {
-            $('.modal-mask, #add-gif').hide();
-            $('.search input').focus();
-        });
-    });
+    $('button.add-gif').click(addGifModal);
 });
+
+function addGifModal() {
+    $('.modal-mask, #add-gif').toggle(0, function(){
+        if ($('#add-gif').is(':visible')) { 
+            var add_gif = $('#add-gif input');
+            add_gif.focus();
+            add_gif.on('input', function(){
+                if ($(this).val().length > 0) {
+                    console.log("detected a non-zero input change");
+                    add_gif.prop('disabled', true);
+                    showGifFromUrl(add_gif.val());
+                } else add_gif.prop('disabled', false);
+            });
+        } else {
+            $('.search input').focus();
+        }
+    });
+    $('.modal-mask').click(function() {
+        $('.modal-mask, #add-gif').hide();
+        $('.search input').focus();
+    });
+}
 
 function showGifFromUrl(string) {
     var re = /\s*\/?(?:fig\.)?([a-zA-Z0-9]+)(?:\/|$)/;
@@ -70,18 +72,20 @@ function goodUrl(filename) {
 
 function goodGif(response) {
     $('.lbLoading.check-gif').hide();
-    $('#add-gif input').prop('disabled', false);
+    var add_gif_input = $('#add-gif input');
+    add_gif_input.prop('disabled', false);
     if (response.result) {
         if (response.error === "AlreadyExistsError")
             badGif("This GIF is already in GIFdatabase. Try another!");
         else if (response.error === "InvalidFileError")
             badGif("Whoops! That's not an animated GIF.");
         else
-            alert("Oh noes! Something went wrong. Please report this error: \n" + response.error + ": " + response.message);
+            alert("Oh no! Something went wrong. Please report this error: \n" + response.error + ": " + response.message);
     } else {
+        add_gif_input.val('');
         $('#add-gif, .modal-mask').hide();
         var aside_content = "<input class='tag-add-new' placeholder='+ add tags' maxlength='"+context.TAG_MAX_LEN+"'/><button class='disabled medium save'>Save</button><div class='lbLoading small save'></div>"
-        $.slimbox(response.url, aside_content, {is_new: true});
+        $.slimbox(response.url, aside_content, {is_unsaved: true});
     }
 }
 
@@ -158,7 +162,7 @@ function ajaxPost(params, endpoint, callback_success) {
         data: params,
         success: callback_success,
         error: function(xhr, textStatus, errorThrown) {
-            alert("Oh noes! Something went wrong. Please report this error: \n"+errorThrown+xhr.status+xhr.responseText);
+            alert("Oh no! Something went wrong. Please report this error: \n"+errorThrown+xhr.status+xhr.responseText);
         }
     }); 
 }
