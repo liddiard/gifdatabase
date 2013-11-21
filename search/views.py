@@ -212,12 +212,15 @@ def ajaxAddTag(request):
                 tag_name = request.POST['tag']
             except KeyError:
                 return keyError("Required keys (gif, tag) not found in request.")
+            if ti.content_object.tags.count() > 11:
+                return accessError("The gif associated with this tag already "
+                                   "has the maximum number of tags.")
             pattern = re.compile("^[a-zA-Z0-9\. '-]+$")
             if not pattern.match(tag_name):
                 return validationError("Tag contains invalid characters.")
             if len(tag_name) > TAG_MAX_LEN:
                 return validationError("Tag length is greater than max allowed "
-                                       "length of %s chars" % TAG_MAX_LEN)
+                                       "length of %s chars." % TAG_MAX_LEN)
             try:
                 gif = Gif.objects.get(pk=gif_id)
             except Gif.DoesNotExist:
@@ -253,6 +256,9 @@ def ajaxEraseTag(request):
             if ti.hasBeenVotedOn():
                 return accessError("This tag has already been voted on and "
                                    "thus cannot be user-erased.")
+            if ti.content_object.tags.count() < 5:
+                return accessError("The gif associated with this tag has the "
+                                   "already has the minimum number of tags.")
             else:
                 if ti.user_added == user:
                     ti.delete()
