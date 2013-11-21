@@ -7,7 +7,11 @@ from django.core.files.storage import default_storage as storage
 import boto
 from gifdb.settings.base import AWS_STORAGE_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 
-THUMB_DIR = "thumb"
+try:
+    from gifdb.settings.local import THUMB_DIR
+except ImportError:
+    from gifdb.settings.base import THUMB_DIR
+
 THUMB_SIZE = 200,200
 
 def imgFromUrl(url):
