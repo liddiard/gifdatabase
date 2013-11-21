@@ -248,6 +248,31 @@ votes = {};
                 tag.addClass('nsfw');
         }
 
+        function constrainNumTags() {
+            var num_tags = $('#lbCaption .tag').length;
+            console.log(num_tags);
+            var input = $('#lbCaption input');
+            if (num_tags > 11) {
+                input.prop('disabled', true);
+            } else if (num_tags < 5) {
+                allowTagErase(false);
+                input.prop('disabled', false);
+            } else {
+                allowTagErase(true);
+                input.prop('disabled', false);
+            }
+        }
+
+        function allowTagErase(allowed) {
+            var erase_buttons = $('#lbCaption .tag > .erase');
+            if (allowed) {
+                erase_buttons.removeClass('disabled-tmp');
+                erase_buttons.not('.bound, .disabled').click(function(){ tagErase($(this)); }).addClass('bound');
+            } else {
+                erase_buttons.unbind('click').removeClass('bound').addClass('disabled-tmp');
+            }
+        }
+
         function ajaxInterpretTagVote(response) {
             var tag = response.tag;
             var v = response.vote;
@@ -363,12 +388,14 @@ votes = {};
             elem.keydown(function(event) {
                 if (event.which == 9) { // tab
                     createTag();
+                    constrainNumTags();
                 }
             });
 
             elem.keypress(function(event) {
                 if (event.which == 13 || event.which == 44) { // enter and comma, respectively
                     createTag();
+                    constrainNumTags();
                 }
             });
 
@@ -505,6 +532,7 @@ votes = {};
             } else {
                 ajaxTagErase(tag_id);
                 $("[data-tag='" + tag_id + "']").remove();
+                constrainNumTags();
             }
             focusTagInput();
         }
@@ -567,7 +595,8 @@ votes = {};
         /* Bind click events */
         $('#lbCaption .tag > .confirm').click(function(){ vote($(this), true); });
         $('#lbCaption .tag > .deny').click(function(){ vote($(this), false); });
-        $('#lbCaption .tag > .erase').not('.disabled').click(function(){ tagErase($(this)); });
+        $('#lbCaption .tag > .erase').not('.disabled').click(function(){ tagErase($(this)); }).addClass('bound');
+        constrainNumTags();
         $('#lbTopContainer .star').click(function(){ toggleStar($(this)); });
         $('#lbTopContainer .copy').click(function(){ toggleCopyText($(this)); });
 	}

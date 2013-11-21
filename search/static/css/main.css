@@ -54,7 +54,7 @@
   .tag .erase {
     content: url("../img/tag-erase.png");
     padding: 2px 2px 2px 4px; }
-  .tag .disabled {
+  .tag .disabled, .tag .disabled-tmp {
     opacity: 0.2 !important;
     cursor: default; }
 
