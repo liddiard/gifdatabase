@@ -248,26 +248,27 @@ votes = {};
                 tag.addClass('nsfw');
         }
 
-        function constrainNumTags() {
+        function constrainNumTags(is_new) {
             var num_tags = $('#lbCaption .tag').length;
             console.log(num_tags);
             var input = $('#lbCaption input');
             if (num_tags > 11) {
                 input.prop('disabled', true);
             } else if (num_tags < 5) {
-                allowTagErase(false);
+                if (!is_new)
+                    allowTagErase(false, is_new);
                 input.prop('disabled', false);
             } else {
-                allowTagErase(true);
+                allowTagErase(true, is_new);
                 input.prop('disabled', false);
             }
         }
 
-        function allowTagErase(allowed) {
+        function allowTagErase(allowed, is_new) {
             var erase_buttons = $('#lbCaption .tag > .erase');
             if (allowed) {
                 erase_buttons.removeClass('disabled-tmp');
-                erase_buttons.not('.bound, .disabled').click(function(){ tagErase($(this)); }).addClass('bound');
+                erase_buttons.not('.bound, .disabled').click(function(){ tagErase($(this), is_new); }).addClass('bound');
             } else {
                 erase_buttons.unbind('click').removeClass('bound').addClass('disabled-tmp');
             }
@@ -388,14 +389,14 @@ votes = {};
             elem.keydown(function(event) {
                 if (event.which == 9) { // tab
                     createTag();
-                    constrainNumTags();
+                    constrainNumTags(is_new);
                 }
             });
 
             elem.keypress(function(event) {
                 if (event.which == 13 || event.which == 44) { // enter and comma, respectively
                     createTag();
-                    constrainNumTags();
+                    constrainNumTags(is_new);
                 }
             });
 
@@ -532,8 +533,8 @@ votes = {};
             } else {
                 ajaxTagErase(tag_id);
                 $("[data-tag='" + tag_id + "']").remove();
-                constrainNumTags();
             }
+            constrainNumTags(is_new);
             focusTagInput();
         }
 
@@ -596,7 +597,7 @@ votes = {};
         $('#lbCaption .tag > .confirm').click(function(){ vote($(this), true); });
         $('#lbCaption .tag > .deny').click(function(){ vote($(this), false); });
         $('#lbCaption .tag > .erase').not('.disabled').click(function(){ tagErase($(this)); }).addClass('bound');
-        constrainNumTags();
+        constrainNumTags(false);
         $('#lbTopContainer .star').click(function(){ toggleStar($(this)); });
         $('#lbTopContainer .copy').click(function(){ toggleCopyText($(this)); });
 	}
