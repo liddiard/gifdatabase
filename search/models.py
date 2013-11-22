@@ -59,6 +59,10 @@ class Gif(models.Model):
         domain = self.getHostDomain()
         return "http://%s/%s.gif" % (domain, self.filename)
     
+    def getImgurThumb(self):
+        domain = self.getHostDomain()
+        return "http://%s/%ss.jpg" % (domain, self.filename)
+
     def getThumbFilename(self):
         return "%s-%s" % (self.host, self.filename)
 
