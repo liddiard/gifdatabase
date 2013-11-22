@@ -184,7 +184,7 @@ aside {
   height: 600px;
   background-color: gray; }
 
-section {
+#main {
   max-width: 800px;
   float: left;
   margin-right: 300px; }
@@ -405,20 +405,22 @@ button {
   .thumb:hover {
     -webkit-filter: brightness(1.15); }
 
-.profile h1 {
+div.profile h1 {
   display: inline;
   font-weight: normal;
   font-size: 5em;
   margin: 0; }
-.profile img {
+div.profile img {
   margin: 0 1px 0 5px;
   vertical-align: text-bottom; }
 
-h2.profile {
+section.profile h2 {
   font-weight: normal;
   clear: both;
   margin: 0;
   padding: 1.5em 0 0.5em 0; }
+  section.profile h2 img {
+    margin-right: -2px; }
 
 /* lightbox */
 #lbTopContainer .btn {

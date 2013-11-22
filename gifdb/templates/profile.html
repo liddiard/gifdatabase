@@ -7,15 +7,20 @@
         <a href="{% url 'profile_added' username %}"><img src="{{ S3_URL }}img/plus_green.png"/>{{ added_total }}</a>
     </div>
 
-    <h2 class="profile">Recently <a class="highlight" href="{% url 'profile_starred' username %}">starred</a></h2>
-    {% for fav in starred_recent %}
-        {% with fav.gif as gif %}
-            {% include "list.html" %}
-        {% endwith %}
-    {% endfor %}
+    <section class="profile">
+        <h2>Recently <a class="highlight" href="{% url 'profile_starred' username %}">starred</a></h2>
+        {% for fav in starred_recent %}
+            {% with fav.gif as gif %}
+                {% include "list.html" %}
+            {% endwith %}
+        {% endfor %}
+    </section>
 
-    <h2 class="profile">Recently <a class="highlight" href="{% url 'profile_added' username %}">added</a></h2>
-    {% for gif in added_recent %}
-        {% include "list.html" %}
-    {% endfor %}
+    <section class="profile">
+        <h2>Recently <a class="highlight" href="{% url 'profile_added' username %}">added</a></h2>
+        {% for gif in added_recent %}
+            {% include "list.html" %}
+        {% endfor %}
+    </section>
+
 {% endblock %}

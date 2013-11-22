@@ -193,7 +193,7 @@ aside {
     background-color: gray;
 }
 
-section {
+#main {
     max-width: 800px;
     float: left;
     margin-right: $sidebar_width;
@@ -451,7 +451,7 @@ button {
     }
 }
 
-.profile {
+div.profile {
     h1 {
         display: inline;
         font-weight: normal;
@@ -465,11 +465,17 @@ button {
     }
 }
 
-h2.profile {
-    font-weight: normal;
-    clear: both;
-    margin: 0;
-    padding: 1.5em 0 0.5em 0;
+section.profile {
+    h2 {
+        font-weight: normal;
+        clear: both;
+        margin: 0;
+        padding: 1.5em 0 0.5em 0;
+
+        img {
+            margin-right: -2px;
+        }
+    }
 }
 
 /* lightbox */

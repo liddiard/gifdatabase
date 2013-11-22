@@ -1,19 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2 class="profile">
-        <a href="{% url 'profile' username %}">
-            {% if user == username %}
-                Your</a>
-            {% else %}
-                <span class="username">{{ username }}</span></a>&rsquo;s
-            {% endif %}
-             <span class="highlight">starred</span> GIFs <small>({{ starred_total }})</small>
-    </h2>
+    <section class="profile">
+        <h2>
+            <img src="{{ S3_URL }}img/star_selected.png"/>
+            <a href="{% url 'profile' username %}">
+                {% if user == username %}
+                    Your</a>
+                {% else %}
+                    <span class="username">{{ username }}</span></a>&rsquo;s
+                {% endif %}
+                 <span class="highlight">starred</span> <small>({{ starred_total }})</small>
+        </h2>
 
-    {% for fav in starred %}
-        {% with fav.gif as gif %}
-            {% include "list.html" %}
-        {% endwith %}
-    {% endfor %}
+        {% for fav in starred %}
+            {% with fav.gif as gif %}
+                {% include "list.html" %}
+            {% endwith %}
+        {% endfor %}
+    </section>
 {% endblock %}
