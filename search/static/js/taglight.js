@@ -403,7 +403,7 @@ votes = {};
             });
 
             function createTag() {
-                if (loginrequired('tag_add'))
+                if (loginRequired('tag_add'))
                     return;
                 event.preventDefault();
                 var content = elem.val();

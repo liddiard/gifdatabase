@@ -212,9 +212,6 @@ def ajaxAddTag(request):
                 tag_name = request.POST['tag']
             except KeyError:
                 return keyError("Required keys (gif, tag) not found in request.")
-            if ti.content_object.tags.count() > 11:
-                return accessError("The gif associated with this tag already "
-                                   "has the maximum number of tags.")
             pattern = re.compile("^[a-zA-Z0-9\. '-]+$")
             if not pattern.match(tag_name):
                 return validationError("Tag contains invalid characters.")
@@ -226,6 +223,9 @@ def ajaxAddTag(request):
             except Gif.DoesNotExist:
                 return doesNotExist("Could not add tag to gif because gif "
                                     "matching id %s doesn't exist." % gif_id)
+            if gif.tags.count() > 11:
+                return accessError("The gif associated with this tag already "
+                                   "has the maximum number of tags.")
             t = Tag.objects.get_or_create(name=tag_name)[0]
             ti, created = TagInstance.objects.get_or_create(tag=t,
                                                          content_object=gif)
