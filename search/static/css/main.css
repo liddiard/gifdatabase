@@ -125,6 +125,7 @@ nav {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf000000', endColorstr='#40000000',GradientType=0 );
   /* IE6-9 */ }
   nav .contents {
+    position: relative;
     max-width: 1100px;
     margin: 0 auto;
     padding: 0 6px; }
@@ -162,17 +163,20 @@ nav {
     font-size: 0.8em; }
     nav .logout:hover {
       color: #cccccc; }
-
-.score, .highlight {
-  color: #00ccff; }
-  .score.negative, .highlight.negative {
-    color: red; }
+  nav .login-required {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 2px 6px;
+    margin-top: 2px;
+    font-size: 0.8em; }
 
 #wrap {
   position: relative;
   max-width: 1100px;
   margin: 0 auto;
-  padding-top: 70px; }
+  padding-top: 65px; }
 
 #front-wrap {
   text-align: center; }
@@ -394,6 +398,14 @@ button {
 
 .error {
   color: #f88; }
+
+.alert {
+  color: yellow; }
+
+.score, .highlight {
+  color: #00ccff; }
+  .score.negative, .highlight.negative {
+    color: red; }
 
 .thumbs-list {
   max-width: 800px; }

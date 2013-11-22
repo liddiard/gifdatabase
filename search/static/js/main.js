@@ -129,7 +129,20 @@ function colorScore(score_elem) {
 }
 
 function loginRequired(action) {
-    ;
+    if (context.user_is_authenticated)
+        return false;
+    else {
+        var actions = {'tag_add': "Create an account or log in to add tags.",
+                       'tag_vote': "Create an account or log in to vote on tags.",
+                       'star': "Create an account or log in to star GIFs as your favorites."};
+        var message = actions[action];
+        message = message || "Create an account or log in to do that.";
+        var banner = $('.login-required');
+        banner.text(message);
+        banner.show();
+        $('form#login input:nth-child(2)').focus();
+        return true;
+    }
 }
 
 

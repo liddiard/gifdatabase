@@ -101,6 +101,7 @@ nav {
     @include horizontal_gradient(rgba(25,25,25, 0.8), rgba(10,10,10, 0.8));
 
     .contents {
+        position: relative;
         max-width: 1100px;
         margin: 0 auto;
         padding: 0 6px;
@@ -162,22 +163,23 @@ nav {
             color: $light_gray;
         }
     }
-}
-
-.score, .highlight {
-    color: $primary_color;
-
-    &.negative {
-        color: red;
+    
+    .login-required {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: rgba(0,0,0, 0.5);
+        padding: 2px 6px;
+        margin-top: 2px;
+        font-size: 0.8em;
     }
 }
-
 
 #wrap {
     position: relative;
     max-width: 1100px;
     margin: 0 auto;
-    padding-top: 70px;
+    padding-top: 65px;
 }
 
 #front-wrap {
@@ -435,6 +437,18 @@ button {
 
 .error {
     color: #f88;
+}
+
+.alert {
+    color: yellow;
+}
+
+.score, .highlight {
+    color: $primary_color;
+
+    &.negative {
+        color: red;
+    }
 }
 
 .thumbs-list {

@@ -341,6 +341,8 @@ votes = {};
         }
 
         function vote(instance, up) {
+            if (loginRequired('tag_vote'))
+                return;
             function unset(tag, id, cls) {
                 ajaxTagVote(id, 0);
                 delete votes[tag_id];
@@ -401,6 +403,8 @@ votes = {};
             });
 
             function createTag() {
+                if (loginrequired('tag_add'))
+                    return;
                 event.preventDefault();
                 var content = elem.val();
                 if (!validateTag(content) || content.length > context.TAG_MAX_LEN) {
@@ -570,6 +574,8 @@ votes = {};
         }
 
         function toggleStar(elem) {
+            if (loginRequired('star'))
+                return;
             if (elem.hasClass('selected')) {
                 ajaxRemoveStar(elem);
                 elem.removeClass('selected');
