@@ -132,11 +132,11 @@ function loginRequired(action) {
     if (context.user_is_authenticated)
         return false;
     else {
-        var actions = {'tag_add': "Create an account or log in to add tags.",
-                       'tag_vote': "Create an account or log in to vote on tags.",
-                       'star': "Create an account or log in to star GIFs as your favorites."};
-        var message = actions[action];
-        message = message || "Create an account or log in to do that.";
+        var actions = {'tag_add': "add tags.",
+                       'tag_vote': "vote on tags.",
+                       'star': "star GIFs as your favorites."};
+        var nut = actions[action] || "do that.";
+        var message = "Log in or create an account to " + nut;
         var banner = $('.login-required');
         banner.text(message);
         banner.show();

@@ -67,6 +67,11 @@
 
         <aside>
         {% block sidebar %}
+            <div class="widget">
+                {% for gif in recent_gifs %}
+                    {% include 'list_small.html' %}
+                {% endfor %}
+            </div>
         {% endblock %}
         </aside>
     </div>

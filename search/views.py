@@ -1,4 +1,5 @@
 import json, re
+from itertools import izip
 from django.http import HttpResponseRedirect, HttpResponse
 from django.http import Http404
 from django.shortcuts import render_to_response, redirect, get_object_or_404
@@ -16,6 +17,10 @@ from search.image import imgFromUrl, isAnimated
 
 TAG_MAX_LEN = 32
 
+def makeGroup(queryset, group):
+    for obj in queryset:
+        obj.group = group
+    return queryset
 
 # pages
 
@@ -29,23 +34,30 @@ def searchResults(request):
     except MultiValueDictKeyError:
         return redirect('front')
     results = engine.query(query)
-    context = {'results': results,
+    for result in results:
+        result.gif.group = "results"
+    recent_gifs = makeGroup(Gif.objects.order_by('-date_added')[:9], "recent")
+    context = {'recent_gifs': recent_gifs,
+               'results': results,
                'TAG_MAX_LEN': TAG_MAX_LEN,
                'S3_URL': S3_URL}
     return render_to_response('results.html', context,
                               context_instance=RequestContext(request))
 
 def profile(request, username):
+    recent_gifs = makeGroup(Gif.objects.order_by('-date_added')[:9], "recent")
     user_profile = get_object_or_404(User, username=username)
     user_score = UserScore.objects.get(user=user_profile).score
     starred = UserFavorite.objects.filter(user=user_profile)
     starred_total = starred.count()
-    starred_recent = starred.order_by('-date_favorited')[:8]
+    starred_recent = makeGroup(starred.order_by('-date_favorited')[:8],
+                               "starred")
     added = Gif.objects.filter(user_added=user_profile)
     added_total = added.count()
-    added_recent = added.order_by('-date_added')[:8]
+    added_recent = makeGroup(added.order_by('-date_added')[:8], "added")
     
-    context = {'username': user_profile, 
+    context = {'recent_gifs': recent_gifs,
+               'username': user_profile, 
                'score': user_score,
                'starred_total': starred_total,
                'starred_recent': starred_recent,
@@ -59,11 +71,13 @@ def profile(request, username):
 
 def profileStarred(request, username):
     user_profile = get_object_or_404(User, username=username)
-    starred = UserFavorite.objects.filter(user=user_profile)\
-                          .order_by('-date_favorited')
+    recent_gifs = makeGroup(Gif.objects.order_by('-date_added')[:9], "recent")
+    starred = makeGroup(UserFavorite.objects.filter(user=user_profile)\
+                        .order_by('-date_favorited'), "starred")
     starred_total = starred.count()
     
-    context = {'username': user_profile, 
+    context = {'recent_gifs': recent_gifs,
+               'username': user_profile, 
                'starred_total': starred_total,
                'starred': starred,
                'TAG_MAX_LEN': TAG_MAX_LEN,
@@ -74,10 +88,12 @@ def profileStarred(request, username):
 
 def profileAdded(request, username):
     user_profile = get_object_or_404(User, username=username)
+    recent_gifs = makeGroup(Gif.objects.order_by('-date_added')[:9], "recent")
     added = Gif.objects.filter(user_added=user_profile).order_by('-date_added')
     added_total = added.count()
     
-    context = {'username': user_profile, 
+    context = {'recent_gifs': recent_gifs,
+               'username': user_profile, 
                'added_total': added_total,
                'added': added,
                'TAG_MAX_LEN': TAG_MAX_LEN,

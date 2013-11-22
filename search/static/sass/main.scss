@@ -193,6 +193,17 @@ aside {
     width: $sidebar_width;
     height: 600px;
     background-color: #222;
+
+    .widget {
+        background-color: rgba(0,0,0, 0.5);
+        width: 286px; height: 286px;
+        padding: 2px;
+        margin: 6px auto;
+
+        .thumb {
+            padding: 4px 0 0 4px;
+        }
+    }
 }
 
 #main {
