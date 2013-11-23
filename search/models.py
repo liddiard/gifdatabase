@@ -10,6 +10,7 @@ from taggit.models import TaggedItemBase
 from taggit.forms import TagWidget
 
 DEFAULT_USER_ID = 1
+TAG_MAX_LEN = 32
 HOST_CHOICES = (('ig', 'imgur'),) # keys are ideally 2 letters,
                                   # cannot start with a number
 

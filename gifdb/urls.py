@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.views.generic import TemplateView
-from search.views import * # bad practice
+from search import views
 
 admin.autodiscover()
 
@@ -14,29 +14,30 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # front page
-    url(r'^$', frontPage, name="front"),
+    url(r'^$', views.FrontPageView.as_view(), name="front"),
 
     # state modification
-    url(r'^login/$', login, name="login"),
-    url(r'^logout/$', logout, name="logout"),
+    url(r'^login/$', views.login, name="login"),
+    url(r'^logout/$', views.logout, name="logout"),
     
     # api
-    url(r'^api/tag-vote/$', ajaxTagVote, name="vote"),
-    url(r'^api/tagvote-get/$', ajaxGetTagVote, name="get_tagvote"),
-    url(r'^api/tag-add/$', ajaxAddTag, name="tag_add"),
-    url(r'^api/tag-erase/$', ajaxEraseTag, name="tag_erase"),
-    url(r'^api/star-get/$', ajaxGetStarView, name="star"),
-    url(r'^api/star-add/$', ajaxAddStar, name="star_add"),
-    url(r'^api/star-remove/$', ajaxRemoveStar, name="star_remove"),
-    url(r'^api/gif-check/$', ajaxCheckValidGif, name="check_gif"),
-    url(r'^api/gif-add/$', ajaxAddGif, name="add_gif"),
+    url(r'^api/tag-vote/$', views.ajaxTagVote, name="vote"),
+    url(r'^api/tagvote-get/$', views.ajaxGetTagVote, name="get_tagvote"),
+    url(r'^api/tag-add/$', views.ajaxAddTag, name="tag_add"),
+    url(r'^api/tag-erase/$', views.ajaxEraseTag, name="tag_erase"),
+    url(r'^api/star-get/$', views.ajaxGetStarView, name="star"),
+    url(r'^api/star-add/$', views.ajaxAddStar, name="star_add"),
+    url(r'^api/star-remove/$', views.ajaxRemoveStar, name="star_remove"),
+    url(r'^api/gif-check/$', views.ajaxCheckValidGif, name="check_gif"),
+    url(r'^api/gif-add/$', views.ajaxAddGif, name="add_gif"),
     
     # pages
-    url(r'^search/$', searchResults, name="search_results"),
-    url(r'^user/(?P<username>\w+)/$', profile, name="profile"),
-    url(r'^user/(?P<username>\w+)/starred/$', profileStarred,
+    url(r'^search/$', views.SearchResultsView.as_view(), name="search_results"),
+    url(r'^user/(?P<username>\w+)/$', views.ProfileView.as_view(),
+        name="profile"),
+    url(r'^user/(?P<username>\w+)/starred/$', views.ProfileStarredView.as_view(),
         name="profile_starred"),
-    url(r'^user/(?P<username>\w+)/added/$', profileAdded,
+    url(r'^user/(?P<username>\w+)/added/$', views.ProfileAddedView.as_view(),
         name="profile_added"),
 
     # admin

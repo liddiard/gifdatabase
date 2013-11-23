@@ -1,5 +1,5 @@
 import json, re
-from itertools import izip
+from datetime import datetime, timedelta
 from django.http import HttpResponseRedirect, HttpResponse
 from django.http import Http404
 from django.shortcuts import render_to_response, redirect, get_object_or_404
@@ -7,100 +7,122 @@ from django.contrib.auth import (authenticate, login as django_login,
                                  logout as django_logout)
 from django.template import RequestContext
 from django.utils.datastructures import MultiValueDictKeyError
+from django.views.generic.base import TemplateView
 
 from taggit.models import Tag
 
 from gifdb.settings.base import S3_URL
 from search import engine
-from search.models import User, UserFavorite, Gif, TagInstance, UserScore, TagVote 
+from search.models import TAG_MAX_LEN, User, UserFavorite, Gif, TagInstance, UserScore, TagVote 
 from search.image import imgFromUrl, isAnimated
 
-TAG_MAX_LEN = 32
+
+# page utility functions
 
 def makeGroup(queryset, group):
     for obj in queryset:
         obj.group = group
     return queryset
 
+
 # pages
 
-def frontPage(request):
-    return render_to_response('front.html', {'S3_URL': S3_URL},
-                              context_instance=RequestContext(request))
+class BasePageView(TemplateView):
 
-def searchResults(request):
-    try:
-        query = request.GET['q']
-    except MultiValueDictKeyError:
-        return redirect('front')
-    results = engine.query(query)
-    for result in results:
-        result.gif.group = "results"
-    recent_gifs = makeGroup(Gif.objects.order_by('-date_added')[:9], "recent")
-    context = {'recent_gifs': recent_gifs,
-               'results': results,
-               'TAG_MAX_LEN': TAG_MAX_LEN,
-               'S3_URL': S3_URL}
-    return render_to_response('results.html', context,
-                              context_instance=RequestContext(request))
+    def get_context_data(self, **kwargs):
+        context = super(BasePageView, self).get_context_data(**kwargs)
+        context['S3_URL'] = S3_URL
+        context['TAG_MAX_LEN'] = TAG_MAX_LEN
+        context['recent_gifs'] = makeGroup(Gif.objects.order_by('-date_added')[:9], "recent")
+        # context['recommended_gifs'] = makeGroup(Gif.objects.filter(date_added__gt=datetime.now()+timedelta(days=1)).order_by('-stars')[:9], "recommended")
+        return context
 
-def profile(request, username):
-    recent_gifs = makeGroup(Gif.objects.order_by('-date_added')[:9], "recent")
-    user_profile = get_object_or_404(User, username=username)
-    user_score = UserScore.objects.get(user=user_profile).score
-    starred = UserFavorite.objects.filter(user=user_profile)
-    starred_total = starred.count()
-    starred_recent = makeGroup(starred.order_by('-date_favorited')[:8],
-                               "starred")
-    added = Gif.objects.filter(user_added=user_profile)
-    added_total = added.count()
-    added_recent = makeGroup(added.order_by('-date_added')[:8], "added")
-    
-    context = {'recent_gifs': recent_gifs,
-               'username': user_profile, 
-               'score': user_score,
-               'starred_total': starred_total,
-               'starred_recent': starred_recent,
-               'added_total': added_total,
-               'added_recent': added_recent,
-               'TAG_MAX_LEN': TAG_MAX_LEN,
-               'S3_URL': S3_URL}
-    
-    return render_to_response('profile.html', context,
-                              context_instance=RequestContext(request))
 
-def profileStarred(request, username):
-    user_profile = get_object_or_404(User, username=username)
-    recent_gifs = makeGroup(Gif.objects.order_by('-date_added')[:9], "recent")
-    starred = makeGroup(UserFavorite.objects.filter(user=user_profile)\
-                        .order_by('-date_favorited'), "starred")
-    starred_total = starred.count()
-    
-    context = {'recent_gifs': recent_gifs,
-               'username': user_profile, 
-               'starred_total': starred_total,
-               'starred': starred,
-               'TAG_MAX_LEN': TAG_MAX_LEN,
-               'S3_URL': S3_URL}
-    
-    return render_to_response('profile_starred.html', context,
-                              context_instance=RequestContext(request))
+class FrontPageView(TemplateView):
 
-def profileAdded(request, username):
-    user_profile = get_object_or_404(User, username=username)
-    recent_gifs = makeGroup(Gif.objects.order_by('-date_added')[:9], "recent")
-    added = Gif.objects.filter(user_added=user_profile).order_by('-date_added')
-    added_total = added.count()
+    template_name = "front.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(FrontPageView, self).get_context_data(**kwargs)
+        context['S3_URL'] = S3_URL
+        return context
+
+
+class SearchResultsView(BasePageView):
+
+    template_name = "results.html"
+
+    def getResults(self, request):
+        query = request.GET.get('q')
+        results = engine.query(query)
+        for result in results:
+            result.gif.group = "results"
+        return results
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.GET.get('q'):
+            return redirect('front')
+        return super(SearchResultsView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchResultsView, self).get_context_data(**kwargs)
+        context['results'] = self.getResults(self.request)
+        return context
+
+
+class ProfileView(BasePageView):
     
-    context = {'recent_gifs': recent_gifs,
-               'username': user_profile, 
-               'added_total': added_total,
-               'added': added,
-               'TAG_MAX_LEN': TAG_MAX_LEN,
-               'S3_URL': S3_URL}
-    
-    return render_to_response('profile_added.html', context,
-                              context_instance=RequestContext(request))
+    template_name = "profile.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileView, self).get_context_data(**kwargs)
+        user_profile = get_object_or_404(User, username=self.kwargs\
+                                                            .get('username'))
+        context['username'] = user_profile
+        print user_profile
+        context['score'] = UserScore.objects.get(user=user_profile).score
+        starred = UserFavorite.objects.filter(user=user_profile)
+        context['starred_total'] = starred.count()
+        context['starred_recent'] = makeGroup(starred
+                                              .order_by('-date_favorited')[:8],
+                                              "starred")
+        added = Gif.objects.filter(user_added=user_profile)
+        context['added_total'] = added.count()
+        context['added_recent'] = makeGroup(added.order_by('-date_added')[:8],
+                                            "added")
+        return context
+
+
+class ProfileStarredView(BasePageView):
+
+    template_name = "profile_starred.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileStarredView, self).get_context_data(**kwargs)
+        user_profile = get_object_or_404(User, username=self.kwargs\
+                                                   .get('username'))
+        context['username'] = user_profile
+        starred = makeGroup(UserFavorite.objects.filter(user=user_profile)\
+                            .order_by('-date_favorited'), "starred")
+        context['starred'] = starred
+        context['starred_total'] = starred.count()
+        return context
+
+
+class ProfileAddedView(BasePageView):
+
+    template_name = "profile_added.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileAddedView, self).get_context_data(**kwargs)
+        user_profile = get_object_or_404(User, username=self.kwargs\
+                                                   .get('username'))
+        context['username'] = user_profile
+        added = Gif.objects.filter(user_added=user_profile)\
+                                    .order_by('-date_added')
+        context['added'] = added
+        context['added_total'] = added.count()
+        return context
 
 
 # state management
