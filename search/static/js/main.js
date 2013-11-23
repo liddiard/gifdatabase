@@ -9,6 +9,8 @@ $(document).ready(function(){
     $('.search input').focus();
 
     $('button.add-gif').click(addGifModal);
+
+    $('.user-actions .user, .user-actions .star').tipsy({gravity: 'n'});
 });
 
 function addGifModal() {

@@ -5,6 +5,7 @@
     <title>GIFdatabase: the internet's finest animated GIF search</title>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/main.css">
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/taglight.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/tipsy.css">
     <script>
         var context = {
             user_is_authenticated: "{{ user.is_authenticated }}" === "True" ? true : false,
@@ -14,6 +15,7 @@
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="{{ STATIC_URL }}js/main.js"></script>
     <script src="{{ STATIC_URL }}js/taglight.js"></script>
+    <script src="{{ STATIC_URL }}js/tipsy.js"></script>
 </head>
 <body>
     <div class="modal-mask"></div>
@@ -40,8 +42,8 @@
             <div class="user-actions">
                 {% if user.is_authenticated %}
                     <button class="add-gif"><img src="{{ STATIC_URL }}img/plus_black.png"/>Add GIF</button>
-                    <a class="user" href="{% url 'profile' user %}"><span class="username">{{ user.username }}</span> <span class="score">{{ user.getUserScore }}</span></a>
-                    <a class="star" href="{% url 'profile_starred' user %}"><img src="{{ STATIC_URL }}img/star_selected.png"/></a>
+                    <a class="user" title="Your profile" href="{% url 'profile' user %}"><span class="username">{{ user.username }}</span> <span class="score">{{ user.getUserScore }}</span></a>
+                    <a class="star" title="Your starred GIFs" href="{% url 'profile_starred' user %}"><img src="{{ STATIC_URL }}img/star_selected.png"/></a>
                     <a class="logout" href="/logout/">Logout</a>
                 {% else %}
                     <form method="post" action="{% url 'login' %}" id="login">{% csrf_token %}

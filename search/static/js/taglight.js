@@ -587,6 +587,7 @@ votes = {};
         }
 
         function toggleCopyText(elem) {
+            elem.tipsy('hide');
             var copy_text = elem.parent().find('.copy-text');
             if (elem.hasClass('selected')) {
                 elem.removeClass('selected');
@@ -606,6 +607,9 @@ votes = {};
         constrainNumTags(false);
         $('#lbTopContainer .star').click(function(){ toggleStar($(this)); });
         $('#lbTopContainer .copy').click(function(){ toggleCopyText($(this)); });
+
+        $('#lbTopContainer .star').tipsy({gravity: 's'});
+        $('#lbTopContainer .copy').tipsy({gravity: 'e'});
 	}
 
 	function stop(interval_id) {
