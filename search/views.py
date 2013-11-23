@@ -44,7 +44,7 @@ class BasePageView(TemplateView):
             for tag in user_added_tags:
                 remaining = spots - len(recommended_gifs)
                 recommended_gifs += tag.content_object.tags\
-                                        .similar_objects()[:remaining]
+                                       .similar_objects()[:remaining]
                 if len(recommended_gifs) == spots:
                     break # stop looping if all spots are filled
         else: # get the most starred gifs added within the last week

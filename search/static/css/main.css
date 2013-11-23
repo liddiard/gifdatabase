@@ -199,10 +199,17 @@ aside {
     margin: 0 auto 10px auto;
     padding-bottom: 5px; }
     aside .widget h3 {
-      margin: 0 0 2px 5px;
-      padding-top: 5px; }
+      margin: 0 0 2px 6px;
+      padding-top: 7px; }
+      aside .widget h3 img {
+        vertical-align: top;
+        margin-right: 3px; }
     aside .widget .thumb {
       padding: 5px 0 0 5px; }
+    aside .widget .no-results {
+      color: #999999;
+      margin: 0.5em;
+      font-size: 0.9em; }
     aside .widget:after {
       content: ".";
       display: block;

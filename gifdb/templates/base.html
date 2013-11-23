@@ -70,20 +70,24 @@
         <aside>
         {% block sidebar %}
             <div class="widget">
-                <h3>Just <span class="highlight">added</span></h3>
+                <h3><img src="{{ STATIC_URL }}img/recent_white.png"/>Just <span class="highlight">added</span></h3>
                 {% for gif in recent_gifs %}
                     {% include 'list_small.html' %}
                 {% endfor %}
             </div>
             <div class="widget">
                 {% if user.is_authenticated %}
-                <h3>Recommended for <span class="highlight">you</span></h3>
+                    <h3><img src="{{ STATIC_URL }}img/bookmark_white.png"/>Recommended for <span class="highlight">you</span></h3>
                 {% else %}
-                <h3><span class="highlight">Popular</span> right now</h3>
+                    <h3><img src="{{ STATIC_URL }}img/star_white.png"/><span class="highlight">Popular</span> right now</h3>
                 {% endif %}
-                {% for gif in recommended_gifs %}
-                    {% include 'list_small.html' %}
-                {% endfor %}
+                {% if recommended_gifs %}
+                    {% for gif in recommended_gifs %}
+                        {% include 'list_small.html' %}
+                    {% endfor %}
+                {% else %}
+                    <div class="no-results">No recommendations yet! Add some GIFs or tags and your recommendations will show up here.</div>
+                {% endif %}
             </div>
         {% endblock %}
         </aside>

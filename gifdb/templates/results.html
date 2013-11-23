@@ -2,9 +2,13 @@
 
 {% block content %}
     <h2><span class="highlight">Results for</span> {{ query }}</h2>
-    {% for result in results %}
-        {% with result.gif as gif %}
-            {% include "list.html" %}
-        {% endwith %}
-    {% endfor %}
+    {% if results %}
+        {% for result in results %}
+            {% with result.gif as gif %}
+                {% include "list.html" %}
+            {% endwith %}
+        {% endfor %}
+    {% else %}
+        <span class="no-results search">No results. :( Try a different search or <a class="add-gif highlight">add a GIF</a>.</span>
+    {% endif %}
 {% endblock %}

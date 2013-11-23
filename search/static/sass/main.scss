@@ -217,12 +217,23 @@ aside {
         padding-bottom: 5px;
         
         h3 {
-            margin: 0 0 2px 5px;
-            padding-top: 5px;
+            margin: 0 0 2px 6px;
+            padding-top: 7px;
+
+            img {
+                vertical-align: top;
+                margin-right: 3px;
+            }
         }
 
         .thumb {
             padding: 5px 0 0 5px;
+        }
+
+        .no-results {
+            color: $neutral_gray;
+            margin: 0.5em;
+            font-size: 0.9em;
         }
 
         &:after {
