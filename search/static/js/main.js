@@ -134,7 +134,7 @@ function loginRequired(action) {
     else {
         var actions = {'tag_add': "add tags.",
                        'tag_vote': "vote on tags.",
-                       'star': "star GIFs as your favorites."};
+                       'star': "star your favorite GIFs."};
         var nut = actions[action] || "do that.";
         var message = "Log in or create an account to " + nut;
         var banner = $('.login-required');

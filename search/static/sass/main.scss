@@ -30,18 +30,22 @@ $light_gray: #ccc;
 @mixin placeholder_color($color) {
     ::-webkit-input-placeholder {
         color: $color;
+        font-family: $helvetica;
     }
 
     :-moz-placeholder { /* Firefox 18- */
         color: $color;
+        font-family: $helvetica;
     }
 
     ::-moz-placeholder {  /* Firefox 19+ */
         color: $color;
+        font-family: $helvetica;
     }
 
     :-ms-input-placeholder {  
         color: $color;
+        font-family: $helvetica;
     }
 }
 
