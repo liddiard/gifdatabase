@@ -5,7 +5,6 @@ from django.http import Http404
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.contrib.auth import (authenticate, login as django_login,
                                  logout as django_logout)
-from django.template import RequestContext
 from django.utils.datastructures import MultiValueDictKeyError
 from django.views.generic.base import TemplateView
 
@@ -19,7 +18,7 @@ from search.image import imgFromUrl, isAnimated
 
 # page utility functions
 
-def makeGroup(queryset, group):
+def group(queryset, group):
     for obj in queryset:
         obj.group = group
     return queryset
@@ -31,10 +30,29 @@ class BasePageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(BasePageView, self).get_context_data(**kwargs)
+        user = self.request.user
         context['S3_URL'] = S3_URL
         context['TAG_MAX_LEN'] = TAG_MAX_LEN
-        context['recent_gifs'] = makeGroup(Gif.objects.order_by('-date_added')[:9], "recent")
-        # context['recommended_gifs'] = makeGroup(Gif.objects.filter(date_added__gt=datetime.now()+timedelta(days=1)).order_by('-stars')[:9], "recommended")
+        context['recent_gifs'] = group(Gif.objects\
+                                       .order_by('-date_added')[:9], "recent")
+        if user.is_authenticated(): # get gifs similar to the ones on which
+                                    # user has added tags
+            spots = 9
+            recommended_gifs = []
+            user_added_tags = TagInstance.objects.filter(user_added=user)\
+                                                        .order_by('?')[:4]
+            for tag in user_added_tags:
+                remaining = spots - len(recommended_gifs)
+                recommended_gifs += tag.content_object.tags\
+                                        .similar_objects()[:remaining]
+                if len(recommended_gifs) == spots:
+                    break # stop looping if all spots are filled
+        else: # get the most starred gifs added within the last week
+            recommended_gifs = group(Gif.objects\
+                                     .filter(date_added__gt=datetime.now()-
+                                     timedelta(days=7)).order_by('-stars')[:9],
+                                     "recommended")
+        context['recommended_gifs'] = recommended_gifs 
         return context
 
 
@@ -83,12 +101,12 @@ class ProfileView(BasePageView):
         context['score'] = UserScore.objects.get(user=user_profile).score
         starred = UserFavorite.objects.filter(user=user_profile)
         context['starred_total'] = starred.count()
-        context['starred_recent'] = makeGroup(starred
+        context['starred_recent'] = group(starred
                                               .order_by('-date_favorited')[:8],
                                               "starred")
         added = Gif.objects.filter(user_added=user_profile)
         context['added_total'] = added.count()
-        context['added_recent'] = makeGroup(added.order_by('-date_added')[:8],
+        context['added_recent'] = group(added.order_by('-date_added')[:8],
                                             "added")
         return context
 
@@ -102,7 +120,7 @@ class ProfileStarredView(BasePageView):
         user_profile = get_object_or_404(User, username=self.kwargs\
                                                    .get('username'))
         context['username'] = user_profile
-        starred = makeGroup(UserFavorite.objects.filter(user=user_profile)\
+        starred = group(UserFavorite.objects.filter(user=user_profile)\
                             .order_by('-date_favorited'), "starred")
         context['starred'] = starred
         context['starred_total'] = starred.count()

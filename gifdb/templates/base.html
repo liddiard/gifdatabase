@@ -68,7 +68,18 @@
         <aside>
         {% block sidebar %}
             <div class="widget">
+                <h3>Just <span class="highlight">added</span></h3>
                 {% for gif in recent_gifs %}
+                    {% include 'list_small.html' %}
+                {% endfor %}
+            </div>
+            <div class="widget">
+                {% if user.is_authenticated %}
+                <h3>Recommended for <span class="highlight">you</span></h3>
+                {% else %}
+                <h3><span class="highlight">Popular</span> right now</h3>
+                {% endif %}
+                {% for gif in recommended_gifs %}
                     {% include 'list_small.html' %}
                 {% endfor %}
             </div>
