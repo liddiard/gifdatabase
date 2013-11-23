@@ -296,7 +296,7 @@ votes = {};
 
         function ajaxInterpretStar(response) {
             if (response.star === 1)
-                $('#lbTopContainer .star').addClass('selected');
+                $('#lbTopContainer .star').addClass('selected').prop('title', "Remove from starred");
         }
 
         ajaxGetStar($('#lbTopContainer .star'));
@@ -579,9 +579,11 @@ votes = {};
             if (elem.hasClass('selected')) {
                 ajaxRemoveStar(elem);
                 elem.removeClass('selected');
+                elem.prop('title', "Add to starred");
             } else {
                 ajaxAddStar(elem);
                 elem.addClass('selected');
+                elem.prop('title', "Remove from starred");
             }
             focusTagInput();
         }
