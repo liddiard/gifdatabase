@@ -22,7 +22,7 @@ def query(query_string):
     match_list = []
     query_string = query_string.lower()
     # split the query into a list of individual words
-    query_words = query_string.split(' ')
+    query_words = query_string.split(' ')[:10] # limit the query to 10 words
     query_words = removeSynonyms(query_words)
     for word in query_words:
         if commonWord(word):
