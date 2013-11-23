@@ -84,6 +84,7 @@ class SearchResultsView(BasePageView):
 
     def get_context_data(self, **kwargs):
         context = super(SearchResultsView, self).get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('q')
         context['results'] = self.getResults(self.request)
         return context
 

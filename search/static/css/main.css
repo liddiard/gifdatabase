@@ -179,7 +179,7 @@ nav {
   position: relative;
   max-width: 1110px;
   margin: 0 auto;
-  padding-top: 65px; }
+  padding-top: 60px; }
 
 #front-wrap {
   text-align: center; }
@@ -223,7 +223,7 @@ aside {
     clear: both;
     margin: 0 auto;
     width: 100%;
-    padding-top: 15px; }
+    border-top: 10px solid black; }
 
   #main {
     margin-right: 0; } }

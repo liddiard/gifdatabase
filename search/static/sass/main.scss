@@ -187,7 +187,7 @@ nav {
     position: relative;
     max-width: 1110px;
     margin: 0 auto;
-    padding-top: 65px;
+    padding-top: 60px;
 }
 
 #front-wrap {
@@ -249,7 +249,7 @@ aside {
         clear: both;
         margin: 0 auto;
         width: 100%;
-        padding-top: 15px;
+        border-top: 10px solid black; // bit of a hack; should really be 'margin' but clearfix screws things up
     }
 
     #main {
