@@ -10,7 +10,7 @@
         var context = {
             user_is_authenticated: "{{ user.is_authenticated }}" === "True" ? true : false,
             TAG_MAX_LEN: {{ TAG_MAX_LEN }},
-            login_result: {% for message in messages %}{{ message }}{% endfor %}
+            login_result: {% if messages %}{% for message in messages %}{{ message }}{% endfor %}{% else %}0{% endif %}
         }
     </script>
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
