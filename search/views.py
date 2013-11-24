@@ -4,6 +4,7 @@ from string import ascii_lowercase
 from django.http import HttpResponseRedirect, HttpResponse
 from django.http import Http404
 from django.shortcuts import render_to_response, redirect, get_object_or_404
+from django.contrib import messages
 from django.contrib.auth import (authenticate, login as django_login,
                                  logout as django_logout)
 from django.utils.datastructures import MultiValueDictKeyError
@@ -45,6 +46,7 @@ class BasePageView(TemplateView):
         context = super(BasePageView, self).get_context_data(**kwargs)
         user = self.request.user
         context['S3_URL'] = S3_URL
+        context['login_result'] = self.request.POST.get('login', 0)
         context['TAG_MAX_LEN'] = TAG_MAX_LEN
         context['recent_gifs'] = group(Gif.objects\
                                        .order_by('-date_added')[:9], "recent")
@@ -76,6 +78,8 @@ class FrontPageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(FrontPageView, self).get_context_data(**kwargs)
         context['S3_URL'] = S3_URL
+        context['TAG_MAX_LEN'] = TAG_MAX_LEN
+        context['login_result'] = self.request.POST.get('login', 0)
         return context
 
 
@@ -173,9 +177,11 @@ def login(request):
             django_login(request, user)
             return redirect(request.META['HTTP_REFERER'])
         else:
-            return render_to_response("Disabled account.")
+            messages.success(request, 1)
+            return redirect(request.META['HTTP_REFERER'])
     else:
-        return render_to_response("Your login is bad and you should feel bad.")
+        messages.success(request, 2)
+        return redirect(request.META['HTTP_REFERER'])
 
 def logout(request):
     django_logout(request)

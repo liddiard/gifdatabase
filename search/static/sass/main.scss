@@ -167,9 +167,13 @@ nav {
         position: absolute;
         right: 0;
         background-color: rgba(0,0,0, 0.5);
-        padding: 2px 6px;
+        padding: 1px 6px 2px 6px;
         margin-top: 2px;
         font-size: 0.8em;
+
+        &.front {
+            margin-top: 35px;
+        }
     }
 
     &.front {
@@ -516,12 +520,12 @@ button {
     color: $neutral_gray;
 }
 
-.error {
-    color: #f88;
-}
-
 .alert {
     color: yellow;
+}
+
+.error {
+    color: #f88;
 }
 
 .score, .highlight {

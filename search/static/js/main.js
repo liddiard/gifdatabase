@@ -13,6 +13,13 @@ $(document).ready(function(){
     $('.user-actions .user, .user-actions .star').tipsy({gravity: 'n'});
     $('#imgur-link').tipsy({gravity:'w'}).click(function(){ $('#add-gif input').focus() });
     $('.list-next').tipsy({gravity:'w'});
+
+    if (context.login_result) {
+        if (context.login_result === 1)
+            loginNotification("error", "Your account is not currently active. Have you clicked the link in the activation email?");
+        else
+            loginNotification("error", "Invalid username or password.");
+    }
 });
 
 function addGifModal() {
@@ -132,6 +139,13 @@ function colorScore(score_elem) {
     } else colorScoreElement(score_elem);
 }
 
+function loginNotification(type, message) {
+    var banner = $('.login-required');
+    banner.text(message);
+    banner.addClass(type);
+    banner.show();
+}
+
 function loginRequired(action) {
     if (context.user_is_authenticated)
         return false;
@@ -141,9 +155,7 @@ function loginRequired(action) {
                        'star': "star your favorite GIFs."};
         var nut = actions[action] || "do that.";
         var message = "Log in or create an account to " + nut;
-        var banner = $('.login-required');
-        banner.text(message);
-        banner.show();
+        loginNotification("alert", message);
         $('form#login input:nth-child(2)').focus();
         return true;
     }

@@ -171,9 +171,11 @@ nav {
     position: absolute;
     right: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    padding: 2px 6px;
+    padding: 1px 6px 2px 6px;
     margin-top: 2px;
     font-size: 0.8em; }
+    nav .login-required.front {
+      margin-top: 35px; }
   nav.front {
     background: none;
     box-shadow: none; }
@@ -457,11 +459,11 @@ button {
 .no-results {
   color: #999999; }
 
-.error {
-  color: #f88; }
-
 .alert {
   color: yellow; }
+
+.error {
+  color: #f88; }
 
 .score, .highlight {
   color: #00ccff; }
