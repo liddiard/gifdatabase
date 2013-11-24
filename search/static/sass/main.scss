@@ -231,7 +231,6 @@ aside {
         }
 
         .no-results {
-            color: $neutral_gray;
             margin: 0.5em;
             font-size: 0.9em;
         }
@@ -490,6 +489,10 @@ button {
     margin-top: -3px;
 }
 
+.no-results {
+    color: $neutral_gray;
+}
+
 .error {
     color: #f88;
 }
@@ -545,15 +548,21 @@ div.profile {
     }
 }
 
-section.profile {
-    h2 {
-        clear: both;
-        margin: 0;
-        padding: 1.5em 0 0.5em 0;
+section {
+    &.profile {
+        h2 {
+            clear: both;
+            margin: 0;
+            padding: 1.5em 0 0.5em 0;
 
-        img {
-            margin-right: -2px;
+            img {
+                margin-right: -2px;
+            }
         }
+    }
+
+    .no-results {
+        margin-left: 1.8em;
     }
 }
 

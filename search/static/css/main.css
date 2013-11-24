@@ -207,7 +207,6 @@ aside {
     aside .widget .thumb {
       padding: 5px 0 0 5px; }
     aside .widget .no-results {
-      color: #999999;
       margin: 0.5em;
       font-size: 0.9em; }
     aside .widget:after {
@@ -433,6 +432,9 @@ button {
   padding-left: 5px;
   margin-top: -3px; }
 
+.no-results {
+  color: #999999; }
+
 .error {
   color: #f88; }
 
@@ -477,6 +479,8 @@ section.profile h2 {
   padding: 1.5em 0 0.5em 0; }
   section.profile h2 img {
     margin-right: -2px; }
+section .no-results {
+  margin-left: 1.8em; }
 
 /* lightbox */
 #lbTopContainer .btn {

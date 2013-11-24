@@ -14,13 +14,17 @@
                  <span class="highlight">starred</span> <small>({{ starred_total }})</small>
         </h2>
 
-        {% for fav in starred %}
-            {% with fav.gif as gif %}
-                {% include "list.html" %}
-            {% endwith %}
-        {% endfor %}
-        {% if starred.has_next %}
-            <a class="list-next" title="Next page" href="{% append_to_get page=starred.next_page_number %}"></a>
+        {% if starred %}
+            {% for fav in starred %}
+                {% with fav.gif as gif %}
+                    {% include "list.html" %}
+                {% endwith %}
+            {% endfor %}
+            {% if starred.has_next %}
+                <a class="list-next" title="Next page" href="{% append_to_get page=starred.next_page_number %}"></a>
+            {% endif %}
+        {% else %}
+            <span class="no-results">{{ username }} hasn&rsquo;t added any GIFs yet.</span>
         {% endif %}
     </section>
 {% endblock %}

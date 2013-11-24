@@ -9,18 +9,26 @@
 
     <section class="profile">
         <h2>Recently <a class="highlight" href="{% url 'profile_starred' username %}">starred</a></h2>
-        {% for fav in starred_recent %}
-            {% with fav.gif as gif %}
-                {% include "list.html" %}
-            {% endwith %}
-        {% endfor %}
+        {% if starred_recent %}
+            {% for fav in starred_recent %}
+                {% with fav.gif as gif %}
+                    {% include "list.html" %}
+                {% endwith %}
+            {% endfor %}
+        {% else %}
+            <span class="no-results">{{ username }} hasn&rsquo;t starred any GIFs yet.</span>            
+        {% endif %}
     </section>
 
     <section class="profile">
         <h2>Recently <a class="highlight" href="{% url 'profile_added' username %}">added</a></h2>
-        {% for gif in added_recent %}
-            {% include "list.html" %}
-        {% endfor %}
+        {% if added_recent %}
+            {% for gif in added_recent %}
+                {% include "list.html" %}
+            {% endfor %}
+        {% else %}
+            <span class="no-results">{{ username }} hasn&rsquo;t added any GIFs yet.</span>
+        {% endif %}
     </section>
 
 {% endblock %}

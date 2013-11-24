@@ -14,11 +14,15 @@
                  <span class="highlight">added</span> <small>({{ added_total }})</small>
         </h2>
 
-        {% for gif in added %}
-            {% include "list.html" %}
-        {% endfor %}
-        {% if added.has_next %}
-            <a class="list-next" title="Next page" href="{% append_to_get page=added.next_page_number %}"></a>
+        {% if added %}
+            {% for gif in added %}
+                {% include "list.html" %}
+            {% endfor %}
+            {% if added.has_next %}
+                <a class="list-next" title="Next page" href="{% append_to_get page=added.next_page_number %}"></a>
+            {% endif %}
+        {% else %}
+            <span class="no-results">{{ username }} hasn&rsquo;t added any GIFs yet.</span>
         {% endif %}
     </section>
 {% endblock %}
