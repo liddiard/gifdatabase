@@ -171,6 +171,15 @@ nav {
         margin-top: 2px;
         font-size: 0.8em;
     }
+
+    &.front {
+        background: none;
+        box-shadow: none;
+
+        .user-actions {
+            margin-right: 6px;
+        }
+    }
 }
 
 #wrap {

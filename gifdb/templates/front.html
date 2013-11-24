@@ -1,6 +1,24 @@
 {% extends 'base.html' %}
 
-{% block top_bar %}{% endblock %}
+{% block top_bar %}
+<nav class="front">
+    <div class="user-actions">
+        {% if user.is_authenticated %}
+            <button class="add-gif"><img src="{{ STATIC_URL }}img/plus_black.png"/>Add GIF</button>
+            <a class="user" title="Your profile" href="{% url 'profile' user %}"><span class="username">{{ user.username }}</span> <span class="score">{{ user.getUserScore }}</span></a>
+            <a class="star" title="Your starred GIFs" href="{% url 'profile_starred' user %}"><img src="{{ STATIC_URL }}img/star_selected.png"/></a>
+            <a class="logout" href="/logout/">Logout</a>
+        {% else %}
+            <form method="post" action="{% url 'login' %}" id="login">{% csrf_token %}
+                <input type="text" name="username" placeholder="username"/>
+                <input type="password" name="password" placeholder="password"/>
+                <input type="submit" value="Login"/>
+            </form>
+        {% endif %}
+    </div>
+    <div class="login-required alert"></div>
+</nav>
+{% endblock %}
 
 {% block extra_wrap %}
     <div id="front-wrap">
