@@ -327,7 +327,7 @@ votes = {};
         /* Bind hover events */
         toggleParentOnHover($('#lbCaption .tag > .confirm'), 'confirm');
         toggleParentOnHover($('#lbCaption .tag > .deny'), 'deny');
-        toggleParentOnHover($('#lbCaption .tag > .erase').not('.disabled'), 'deny');
+        toggleParentOnHover($('#lbCaption .tag > .erase').not('.disabled, .disabled-tmp'), 'deny');
         toggleClassOnHover($('#lbTopContainer .star'), 'hover');
         toggleClassOnHover($('#lbTopContainer .copy'), 'hover');
 
@@ -612,6 +612,7 @@ votes = {};
 
         $('#lbTopContainer .star').tipsy({gravity: 's'});
         $('#lbTopContainer .copy').tipsy({gravity: 'e'});
+        $('#lbCaption .disabled').tipsy({gravity: 's'});
 	}
 
 	function stop(interval_id) {
