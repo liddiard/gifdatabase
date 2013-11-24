@@ -68,8 +68,8 @@
         {% endblock %}
         </div>
 
-        <aside>
         {% block sidebar %}
+        <aside>
             <div class="widget">
                 <h3><img src="{{ STATIC_URL }}img/recent_white.png"/>Just <span class="highlight">added</span></h3>
                 {% for gif in recent_gifs %}
@@ -90,8 +90,14 @@
                     <div class="no-results">No recommendations yet! Add some GIFs or tags and your recommendations will show up here.</div>
                 {% endif %}
             </div>
-        {% endblock %}
+            <footer>
+                <a href="">About</a>
+                <a href="">Terms</a>
+                <a href="">Legal</a>
+                <span class="copyright">&copy; 2013 Harrison Liddiard</span>
+            </footer>
         </aside>
+        {% endblock %}
     </div>
     {% endblock %}
 

@@ -203,7 +203,7 @@ aside {
     width: $sidebar_width;
     margin-left: $sidebar_margin;
     background-color: #222;
-    padding: 10px $sidebar_padding;
+    padding: 10px $sidebar_padding 0 $sidebar_padding;
 
     h3 {
         margin: 0 0 0 6px;
@@ -242,6 +242,29 @@ aside {
             line-height: 0;
             height: 0; 
         }
+    }
+}
+
+footer {
+    background-color: black;
+    text-align: center;
+    color: $neutral_gray;
+    font-size: 0.7em;
+    padding-top: 12px;
+
+    a {
+        padding: 0 3px;
+
+        &:hover {
+            text-decoration: none;
+            color: $light_gray;
+        }
+    }
+
+    .copyright {
+        display: block;
+        margin-top: 3px;
+        color: $dark_gray;
     }
 }
 

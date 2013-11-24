@@ -195,7 +195,7 @@ aside {
   width: 300px;
   margin-left: 10px;
   background-color: #222;
-  padding: 10px 0; }
+  padding: 10px 0 0 0; }
   aside h3 {
     margin: 0 0 0 6px; }
   aside .widget {
@@ -221,6 +221,22 @@ aside {
       visibility: hidden;
       line-height: 0;
       height: 0; }
+
+footer {
+  background-color: black;
+  text-align: center;
+  color: #999999;
+  font-size: 0.7em;
+  padding-top: 12px; }
+  footer a {
+    padding: 0 3px; }
+    footer a:hover {
+      text-decoration: none;
+      color: #cccccc; }
+  footer .copyright {
+    display: block;
+    margin-top: 3px;
+    color: #666666; }
 
 #main {
   max-width: 800px;
