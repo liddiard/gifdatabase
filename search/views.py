@@ -1,5 +1,6 @@
 import json, re
 from datetime import datetime, timedelta
+from string import ascii_lowercase
 from django.http import HttpResponseRedirect, HttpResponse
 from django.http import Http404
 from django.shortcuts import render_to_response, redirect, get_object_or_404
@@ -90,8 +91,10 @@ class SearchResultsView(BasePageView):
     def getResults(self, request):
         query = request.GET.get('q')
         results = engine.query(query)
-        for result in results:
-            result.gif.group = "results"
+        # alphabet = list(ascii_lowercase)
+        for result in enumerate(results):
+            result[1].gif.group = "results"
+            # result[1].gif.letter = alphabet[result[0]]
         return results
 
     def get_context_data(self, **kwargs):
@@ -111,7 +114,6 @@ class ProfileView(BasePageView):
         user_profile = get_object_or_404(User, username=self.kwargs\
                                                             .get('username'))
         context['username'] = user_profile
-        print user_profile
         context['score'] = UserScore.objects.get(user=user_profile).score
         starred = UserFavorite.objects.filter(user=user_profile)
         context['starred_total'] = starred.count()

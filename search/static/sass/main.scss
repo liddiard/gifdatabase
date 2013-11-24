@@ -258,6 +258,7 @@ aside {
         clear: both;
         margin: 0 auto;
         width: 100%;
+        padding-top: 20px;
         border-top: 10px solid black; // bit of a hack; should really be 'margin' but clearfix screws things up
     }
 
