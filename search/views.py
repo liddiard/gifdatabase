@@ -46,7 +46,6 @@ class BasePageView(TemplateView):
         context = super(BasePageView, self).get_context_data(**kwargs)
         user = self.request.user
         context['S3_URL'] = S3_URL
-        context['login_result'] = self.request.POST.get('login', 0)
         context['TAG_MAX_LEN'] = TAG_MAX_LEN
         context['recent_gifs'] = group(Gif.objects\
                                        .order_by('-date_added')[:9], "recent")
@@ -79,7 +78,6 @@ class FrontPageView(TemplateView):
         context = super(FrontPageView, self).get_context_data(**kwargs)
         context['S3_URL'] = S3_URL
         context['TAG_MAX_LEN'] = TAG_MAX_LEN
-        context['login_result'] = self.request.POST.get('login', 0)
         return context
 
 
