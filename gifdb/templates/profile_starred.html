@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load get_append %}
 
 {% block content %}
     <section class="profile">
@@ -18,5 +19,8 @@
                 {% include "list.html" %}
             {% endwith %}
         {% endfor %}
+        {% if starred.has_next %}
+            <a class="list-next" title="Next page" href="{% append_to_get page=starred.next_page_number %}"></a>
+        {% endif %}
     </section>
 {% endblock %}

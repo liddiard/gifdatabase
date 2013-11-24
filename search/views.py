@@ -7,6 +7,7 @@ from django.contrib.auth import (authenticate, login as django_login,
                                  logout as django_logout)
 from django.utils.datastructures import MultiValueDictKeyError
 from django.views.generic.base import TemplateView
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from taggit.models import Tag
 
@@ -22,6 +23,17 @@ def group(queryset, group):
     for obj in queryset:
         obj.group = group
     return queryset
+
+def paginate(request, queryset):
+    paginator = Paginator(queryset, 19)
+    page = request.GET.get('page')
+    try:
+        qp = paginator.page(page)
+    except PageNotAnInteger:
+        qp = paginator.page(1)
+    except EmptyPage:
+        qp = paginator.page(paginator.num_pages)
+    return qp
 
 
 # pages
@@ -70,6 +82,11 @@ class SearchResultsView(BasePageView):
 
     template_name = "results.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.GET.get('q'):
+            return redirect('front')
+        return super(SearchResultsView, self).dispatch(request, *args, **kwargs)
+
     def getResults(self, request):
         query = request.GET.get('q')
         results = engine.query(query)
@@ -77,15 +94,11 @@ class SearchResultsView(BasePageView):
             result.gif.group = "results"
         return results
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.GET.get('q'):
-            return redirect('front')
-        return super(SearchResultsView, self).dispatch(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
         context = super(SearchResultsView, self).get_context_data(**kwargs)
         context['query'] = self.request.GET.get('q')
-        context['results'] = self.getResults(self.request)
+        context['results'] = paginate(self.request,
+                             self.getResults(self.request))
         return context
 
 
@@ -123,7 +136,7 @@ class ProfileStarredView(BasePageView):
         context['username'] = user_profile
         starred = group(UserFavorite.objects.filter(user=user_profile)\
                             .order_by('-date_favorited'), "starred")
-        context['starred'] = starred
+        context['starred'] = paginate(self.request, starred)
         context['starred_total'] = starred.count()
         return context
 
@@ -137,9 +150,9 @@ class ProfileAddedView(BasePageView):
         user_profile = get_object_or_404(User, username=self.kwargs\
                                                    .get('username'))
         context['username'] = user_profile
-        added = Gif.objects.filter(user_added=user_profile)\
-                                    .order_by('-date_added')
-        context['added'] = added
+        added = group(Gif.objects.filter(user_added=user_profile)\
+                                    .order_by('-date_added'), "added")
+        context['added'] = paginate(self.request, added)
         context['added_total'] = added.count()
         return context
 

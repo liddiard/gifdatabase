@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load get_append %}
 
 {% block content %}
     <section class="profile">
@@ -16,5 +17,8 @@
         {% for gif in added %}
             {% include "list.html" %}
         {% endfor %}
+        {% if added.has_next %}
+            <a class="list-next" title="Next page" href="{% append_to_get page=added.next_page_number %}"></a>
+        {% endif %}
     </section>
 {% endblock %}

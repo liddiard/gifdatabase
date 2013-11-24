@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load get_append %}
 
 {% block content %}
     <h2><span class="highlight">Results for</span> {{ query }}</h2>
@@ -8,6 +9,9 @@
                 {% include "list.html" %}
             {% endwith %}
         {% endfor %}
+        {% if results.has_next %}
+            <a class="list-next" title="Next page" href="{% append_to_get page=results.next_page_number %}"></a>
+        {% endif %}
     {% else %}
         <span class="no-results search">No results. :( Try a different search or <a class="add-gif highlight">add a GIF</a>.</span>
     {% endif %}

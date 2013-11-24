@@ -520,6 +520,18 @@ button {
     }
 }
 
+.list-next {
+    display: block;
+    float: left;
+    width: 200px; height: 200px;
+    background: rgba(255,255,255, 0.0625) url(../img/arrow_right_black_huge.png) no-repeat;
+    // box-shadow: 0 0 0 1px rgba(255,255,255, 0.1) inset;
+
+    &:hover {
+        background-color: rgba(255,255,255, 0.125);
+    }
+}
+
 div.profile {
     h1 {
         display: inline;
