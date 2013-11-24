@@ -456,6 +456,9 @@ button {
   .thumb:hover {
     -webkit-filter: brightness(1.15); }
 
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .thumb {
+    width: 100px; } }
 .list-next {
   display: block;
   float: left;
