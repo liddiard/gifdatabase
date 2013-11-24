@@ -88,7 +88,11 @@ img {
   border: 0; }
 
 h1, h2, h3, h4, h5, h6 {
-  font-weight: normal; }
+  font-weight: normal;
+  margin-bottom: 0; }
+
+p {
+  line-height: 1.428; }
 
 a, .link {
   color: inherit;
@@ -458,6 +462,11 @@ button {
 
 .no-results {
   color: #999999; }
+
+.credits {
+  color: #666666; }
+  .credits a {
+    color: #cccccc; }
 
 .alert {
   color: yellow; }

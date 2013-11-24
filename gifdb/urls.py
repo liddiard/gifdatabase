@@ -39,6 +39,9 @@ urlpatterns = patterns('',
         name="profile_starred"),
     url(r'^user/(?P<username>\w+)/added/$', views.ProfileAddedView.as_view(),
         name="profile_added"),
+    url(r'^about/$', views.AboutPageView.as_view(), name="about"),
+    url(r'^terms/$', views.TermsPageView.as_view(), name="terms"),
+    url(r'^legal/$', views.LegalPageView.as_view(), name="legal"),
 
     # admin
     url(r'^admin/', include(admin.site.urls)),

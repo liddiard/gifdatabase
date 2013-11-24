@@ -161,6 +161,21 @@ class ProfileAddedView(BasePageView):
         return context
 
 
+class AboutPageView(BasePageView):
+
+    template_name = "about.html"
+
+
+class TermsPageView(BasePageView):
+
+    template_name = "terms.html"
+
+
+class LegalPageView(BasePageView):
+
+    template_name = "legal.html"
+
+
 # state management
 
 def login(request):
