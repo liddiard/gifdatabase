@@ -16,9 +16,9 @@ $(document).ready(function(){
 
     if (context.login_result) {
         if (context.login_result === 1)
-            loginNotification("error", "Your account is not currently active. Have you clicked the link in the activation email?");
+            bannerNotification("error", "Your account is not currently active. Have you clicked the link in the activation email?");
         else
-            loginNotification("error", "Invalid username or password.");
+            bannerNotification("error", "Invalid username or password.");
     }
 });
 
@@ -139,8 +139,8 @@ function colorScore(score_elem) {
     } else colorScoreElement(score_elem);
 }
 
-function loginNotification(type, message) {
-    var banner = $('.login-required');
+function bannerNotification(type, message) {
+    var banner = $('.notification');
     banner.text(message);
     banner.addClass(type);
     banner.show();
@@ -155,7 +155,7 @@ function loginRequired(action) {
                        'star': "star your favorite GIFs."};
         var nut = actions[action] || "do that.";
         var message = "Log in or create an account to " + nut;
-        loginNotification("alert", message);
+        bannerNotification("alert", message);
         $('form#login input:nth-child(2)').focus();
         return true;
     }

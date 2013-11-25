@@ -9,7 +9,7 @@
     <div class="aside-data">
         {% for tag in gif.tagList %}
             {% if tag.user_added == user %}
-                <span class="user-added tag" data-tag="{{ tag.pk }}"><span class="link" onclick="document.location.href=&quot;{% url 'search_results' %}?q={{ tag.tag }}&quot;;return false">{{ tag.tag }}</span><img class="btn erase{% if tag.hasBeenVotedOn %} disabled{% endif %}"{% if tag.hasBeenVotedOn %} title="This tag can't be erase because it's been voted on."{% endif %}/></span>
+                <span class="user-added tag" data-tag="{{ tag.pk }}"><span class="link" onclick="document.location.href=&quot;{% url 'search_results' %}?q={{ tag.tag }}&quot;;return false">{{ tag.tag }}</span><img class="btn erase{% if tag.hasBeenVotedOn %} disabled{% endif %}"{% if tag.hasBeenVotedOn %} title="This tag can't be erased because it's been voted on."{% endif %}/></span>
             {% else %}
                 <span class="tag{% if not tag.isVerified %} unverified{% endif %}" data-tag="{{ tag.pk }}"><span class="link" onclick="document.location.href='{% url 'search_results' %}?q={{ tag.tag }}';return false">{{ tag.tag }}</span><img class="btn confirm"/><img class="btn deny"/></span>
             {% endif %}

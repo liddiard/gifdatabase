@@ -169,7 +169,7 @@ nav {
     font-size: 0.8em; }
     nav .logout:hover {
       color: #cccccc; }
-  nav .login-required {
+  nav .notification {
     display: none;
     position: absolute;
     right: 0;
@@ -177,7 +177,7 @@ nav {
     padding: 1px 6px 2px 6px;
     margin-top: 2px;
     font-size: 0.8em; }
-    nav .login-required.front {
+    nav .notification.front {
       margin-top: 35px; }
   nav.front {
     background: none;
