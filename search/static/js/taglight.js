@@ -391,14 +391,12 @@ votes = {};
             elem.keydown(function(event) {
                 if (event.which == 9) { // tab
                     createTag();
-                    constrainNumTags(is_new);
                 }
             });
 
             elem.keypress(function(event) {
                 if (event.which == 13 || event.which == 44) { // enter and comma, respectively
                     createTag();
-                    constrainNumTags(is_new);
                 }
             });
 
@@ -468,6 +466,7 @@ votes = {};
             animateSpinner(save_spinner, 22, 8);
             save_spinner.show();
             add_tag.slideUp('fast');
+            $('#lbCaption .erase').addClass('disabled').unbind('click');
             $('#lbCaption .tag').each(function(){
                 tags.push($(this).text());
             });
