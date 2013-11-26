@@ -570,6 +570,10 @@ button {
 (min-resolution: 192dpi) {
     .thumb {
         width: 100px;
+
+        &.small {
+            width: initial;
+        }
     }
 }
 

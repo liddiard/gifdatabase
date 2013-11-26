@@ -493,7 +493,9 @@ button {
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .thumb {
-    width: 100px; } }
+    width: 100px; }
+    .thumb.small {
+      width: initial; } }
 .list-next {
   display: block;
   float: left;
