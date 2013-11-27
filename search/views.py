@@ -1,8 +1,6 @@
 import json, re
 from datetime import datetime, timedelta
-from string import ascii_lowercase
-from django.http import HttpResponseRedirect, HttpResponse
-from django.http import Http404
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import (authenticate, login as django_login,
@@ -12,6 +10,7 @@ from django.views.generic.base import TemplateView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from taggit.models import Tag
+from registration.forms import RegistrationFormUniqueEmail
 
 from gifdb.settings.base import S3_URL
 from search import engine
@@ -21,9 +20,13 @@ from search.image import imgFromUrl, isAnimated
 
 # page utility functions
 
-def group(queryset, group):
-    for obj in queryset:
-        obj.group = group
+def group(queryset, group, intermediate=False):
+    if intermediate:
+        for obj in queryset:
+            obj.gif.group = group
+    else:
+        for obj in queryset:
+            obj.group = group
     return queryset
 
 def paginate(request, queryset):
@@ -57,8 +60,9 @@ class BasePageView(TemplateView):
                                                         .order_by('?')[:4]
             for tag in user_added_tags:
                 remaining = spots - len(recommended_gifs)
-                recommended_gifs += tag.content_object.tags\
-                                       .similar_objects()[:remaining]
+                recommended_gifs += group(tag.content_object.tags\
+                                          .similar_objects()[:remaining],
+                                          "recommended")
                 if len(recommended_gifs) == spots:
                     break # stop looping if all spots are filled
         else: # get the most starred gifs added within the last week
@@ -78,6 +82,7 @@ class FrontPageView(TemplateView):
         context = super(FrontPageView, self).get_context_data(**kwargs)
         context['S3_URL'] = S3_URL
         context['TAG_MAX_LEN'] = TAG_MAX_LEN
+        context['form'] = RegistrationFormUniqueEmail()
         return context
 
 
@@ -93,11 +98,7 @@ class SearchResultsView(BasePageView):
     def getResults(self, request):
         query = request.GET.get('q')
         results = engine.query(query)
-        # alphabet = list(ascii_lowercase)
-        for result in enumerate(results):
-            result[1].gif.group = "results"
-            # result[1].gif.letter = alphabet[result[0]]
-        return results
+        return group(results, "results", True)
 
     def get_context_data(self, **kwargs):
         context = super(SearchResultsView, self).get_context_data(**kwargs)
@@ -121,7 +122,7 @@ class ProfileView(BasePageView):
         context['starred_total'] = starred.count()
         context['starred_recent'] = group(starred
                                               .order_by('-date_favorited')[:8],
-                                              "starred")
+                                              "starred", True)
         added = Gif.objects.filter(user_added=user_profile)
         context['added_total'] = added.count()
         context['added_recent'] = group(added.order_by('-date_added')[:8],
@@ -139,7 +140,7 @@ class ProfileStarredView(BasePageView):
                                                    .get('username'))
         context['username'] = user_profile
         starred = group(UserFavorite.objects.filter(user=user_profile)\
-                            .order_by('-date_favorited'), "starred")
+                            .order_by('-date_favorited'), "starred", True)
         context['starred'] = paginate(self.request, starred)
         context['starred_total'] = starred.count()
         return context
