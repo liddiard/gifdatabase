@@ -147,14 +147,27 @@ function bannerNotification(type, message) {
 }
 
 function loginRequired(action) {
-    if (context.user_is_authenticated)
-        return false;
+    var actions = {'tag_add': "add tags",
+                   'tag_vote': "vote on tags",
+                   'star': "star your favorite GIFs"};
+    var nut = actions[action] || "do that";
+    if (context.user_is_authenticated) {
+        if (context.user_can_add)
+            var message = "You can't currently "+nut+" because your score is low. Add some GIFs to improve your score!";
+        else
+            var message = "You can't "+nut+" because your score is low."
+        if (action === 'tag_add' || action === 'tag_vote') {
+            if (context.user_can_tag)
+                return false;
+            else {
+                bannerNotification("error", message);
+                return true;
+            }
+        }
+        else return false;
+    }
     else {
-        var actions = {'tag_add': "add tags.",
-                       'tag_vote': "vote on tags.",
-                       'star': "star your favorite GIFs."};
-        var nut = actions[action] || "do that.";
-        var message = "Log in or create an account to " + nut;
+        var message = "Log in or create an account to "+nut+".";
         bannerNotification("alert", message);
         $('form#login input:nth-child(2)').focus();
         return true;

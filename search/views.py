@@ -242,6 +242,9 @@ def ajaxTagVote(request):
     if request.is_ajax():
         if request.user.is_authenticated():
             user = request.user
+            if not user.canTag():
+                return accessError("This user doesn't have the permission to "
+                                   "vote on tags.")
             try:
                 tag_id = request.POST['tag']
                 set = request.POST['set']
@@ -298,6 +301,9 @@ def ajaxAddTag(request):
     if request.is_ajax():
         if request.user.is_authenticated():
             user = request.user
+            if not user.canTag():
+                return accessError("This user doesn't have the permission to "
+                                   "add tags.")
             try:
                 gif_id = request.POST['gif']
                 tag_name = request.POST['tag']
@@ -457,6 +463,9 @@ def ajaxAddGif(request):
     if request.is_ajax():
         if request.user.is_authenticated():
             user = request.user
+            if not user.canAddGif():
+                return accessError("This user doesn't have the permission to "
+                                   "add GIFs.")
             try:
                 filename = request.POST['filename']
                 tags = request.POST.getlist('tags[]')

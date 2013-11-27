@@ -9,6 +9,8 @@
     <script>
         var context = {
             user_is_authenticated: "{{ user.is_authenticated }}" === "True" ? true : false,
+            user_can_tag: {% if user.canTag %}true{% else %}false{% endif %},
+            user_can_add: {% if user.canAddGif %}true{% else %}false{% endif %},
             TAG_MAX_LEN: {{ TAG_MAX_LEN }},
             login_result: {% if messages %}{% for message in messages %}{{ message }}{% endfor %}{% else %}0{% endif %}
         }
@@ -43,7 +45,7 @@
             </form>
             <div class="user-actions">
                 {% if user.is_authenticated %}
-                    <button class="add-gif"><img src="{{ STATIC_URL }}img/plus_black.png"/>Add GIF</button>
+                    {% if user.canAddGif %}<button class="add-gif"><img src="{{ STATIC_URL }}img/plus_black.png"/>Add GIF</button>{% endif %}
                     <a class="user" title="Your profile" href="{% url 'profile' user %}"><span class="username">{{ user.username }}</span> <span class="score">{{ user.getUserScore }}</span></a>
                     <a class="star" title="Your starred GIFs" href="{% url 'profile_starred' user %}"><img src="{{ STATIC_URL }}img/star_selected.png"/></a>
                     <a class="logout" href="/logout/">Logout</a>

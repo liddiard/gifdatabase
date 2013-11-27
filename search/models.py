@@ -27,11 +27,25 @@ class UserScore(models.Model):
         return "%s (%s)" % (self.user, self.score)
 
 def getUserScore(user):
-    try:
+    if not user.is_authenticated:
+        return None
+    else:
         return UserScore.objects.get(user=user).score
-    except UserScore.DoesNotExist:
-        return ""
 User.getUserScore = getUserScore
+
+def canTag(user):
+    if getUserScore(user) > -10:
+        return True
+    else:
+        return None
+User.canTag = canTag
+
+def canAddGif(user):
+    if getUserScore(user) > -20:
+        return True
+    else:
+        return None
+User.canAddGif = canAddGif
 
 class UserScoreAdmin(admin.ModelAdmin):
     list_display = ('user', 'score')

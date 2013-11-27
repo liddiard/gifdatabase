@@ -13,6 +13,6 @@
             <a class="list-next" title="Next page" href="{% append_to_get page=results.next_page_number %}"></a>
         {% endif %}
     {% else %}
-        <p class="no-results search">No results. :( Try a different search{% if user.is_authenticated %} or <a class="add-gif highlight">add a GIF</a>{% endif %}.</p>
+        <p class="no-results search">No results. :/ Try a different search{% if user.is_authenticated and user.canAddGif %} or <a class="add-gif highlight">add a GIF</a>{% endif %}!</p>
     {% endif %}
 {% endblock %}
