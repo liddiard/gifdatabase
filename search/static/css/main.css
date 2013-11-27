@@ -466,9 +466,9 @@ button {
   color: #999999; }
 
 .credits {
-  color: #666666; }
+  color: #999999; }
   .credits a {
-    color: #cccccc; }
+    color: white; }
 
 .alert {
   color: yellow; }
