@@ -82,7 +82,7 @@ class FrontPageView(TemplateView):
         context = super(FrontPageView, self).get_context_data(**kwargs)
         context['S3_URL'] = S3_URL
         context['TAG_MAX_LEN'] = TAG_MAX_LEN
-        context['form'] = RegistrationFormUniqueEmail()
+        context['register'] = RegistrationFormUniqueEmail()
         return context
 
 
