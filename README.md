@@ -1,7 +1,7 @@
 #Colors
 - primary: `#0cf`
-- black: `#000`
-- white: `#fff`
+- warning: yellow
+- error: #f88
 
 #Model Interactions
 - Gif created: User += 1
