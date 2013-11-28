@@ -140,6 +140,7 @@ DJANGO_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'django.contrib.humanize',
 )
 
 THIRD_PARTY_APPS = (

@@ -16,9 +16,9 @@ $(document).ready(function(){
 
     if (context.login_result) {
         if (context.login_result === 1)
-            bannerNotification("error", "Your account is not currently active. Have you clicked the link in the activation email?");
+            bannerNotification("error", "Your account is not active. Have you clicked the link in the verification email?");
         else
-            bannerNotification("error", "Invalid username or password.");
+            bannerNotification("error", "Invalid username or password!");
     }
 });
 
