@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     # password change
     url(r'^password/change/$', views.PasswordChangeView.as_view(), 
         name="password_change"), # form
-    url(r'^password/change/done/$', 'django.contrib.auth.views.password_change_done',
+    url(r'^password/change/done/$', views.PasswordChangeDoneView.as_view(),
         name="password_change_done"),
 
     # password reset
@@ -26,8 +26,8 @@ urlpatterns = patterns('',
         name="password_reset"), # form
     url(r'^password/reset/done/$', views.PasswordResetDoneView.as_view(), 
         name="password_reset_done"),
-    url(r'^password/reset/confirm/$', views.PasswordResetConfirmView.as_view(), 
-        name="password_reset_confirm"),
+    url(r'^password/reset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', 
+        views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
     url(r'^password/reset/complete/$', views.PasswordResetCompleteView.as_view(), 
         name="password_reset_complete"),
 )

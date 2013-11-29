@@ -10,6 +10,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from django.views.generic import View
 from django.views.generic.base import TemplateView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.urlresolvers import reverse
 
 from taggit.models import Tag
 from registration.forms import RegistrationFormUniqueEmail
@@ -19,7 +20,8 @@ from registration.backends.default.views import (ActivationView as
                                                  BaseRegistrationView)
 
 from search import engine
-from search.models import TAG_MAX_LEN, User, UserFavorite, Gif, TagInstance, UserScore, TagVote 
+from search.models import (TAG_MAX_LEN, User, UserFavorite, Gif, TagInstance, 
+                           UserScore, TagVote)
 from search.image import imgFromUrl, isAnimated
 
 
@@ -209,39 +211,55 @@ class ActivationCompleteView(BasePageView):
 
 
 class PasswordChangeView(BasePageView):
-    
-    def get(self, request):
-        return auth_views.password_change(request, extra_context=self.get_context_data())
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return auth_views.password_change(request, 
+                         post_change_redirect=reverse('password_change_done'),
+                         extra_context=self.get_context_data())
+        else:
+            return redirect('front')
+    
 
 class PasswordChangeDoneView(BasePageView):
     
     def get(self, request):
-        return auth_views.password_change_done(request, extra_context=self.get_context_data())
+        if request.user.is_authenticated():
+            return auth_views.password_change_done(request, 
+                                         extra_context=self.get_context_data())
+        else:
+            return redirect('front')
 
 
 class PasswordResetView(BasePageView):
     
-    def get(self, request):
-        return auth_views.password_reset(request, post_reset_redirect='password_reset_done', extra_context=self.get_context_data())
+    def dispatch(self, request, *args, **kwargs):
+        return auth_views.password_reset(request, 
+                             post_reset_redirect=reverse('password_reset_done'), 
+                             extra_context=self.get_context_data())
 
 
 class PasswordResetDoneView(BasePageView):
     
-    def post(self, request):
-        return auth_views.password_reset_done(request, extra_context=self.get_context_data())
+    def get(self, request):
+        return auth_views.password_reset_done(request, 
+                                         extra_context=self.get_context_data())
 
 
 class PasswordResetConfirmView(BasePageView):
     
-    def get(self, request):
-        return auth_views.password_reset_confirm(request, extra_context=self.get_context_data())
+    def dispatch(self, request, uidb36=None, token=None):
+        return auth_views.password_reset_confirm(request, uidb36=uidb36, 
+                       token=token,
+                       post_reset_redirect=reverse('password_reset_complete'), 
+                       extra_context=self.get_context_data())
 
 
 class PasswordResetCompleteView(BasePageView):
     
     def get(self, request):
-        return auth_views.password_reset_complete(request, extra_context=self.get_context_data())
+        return auth_views.password_reset_complete(request, 
+                                         extra_context=self.get_context_data())
 
 
 # state management
