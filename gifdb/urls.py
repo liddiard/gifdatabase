@@ -46,6 +46,6 @@ urlpatterns = patterns('',
     # admin
     url(r'^admin/', include(admin.site.urls)),
 
-    # other
-    (r'^account/', include('registration.backends.default.urls')),
+    # accounts
+    (r'^account/', include('gifdb.urls_account')),
 )

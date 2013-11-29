@@ -5,14 +5,19 @@ from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import (authenticate, login as django_login,
                                  logout as django_logout)
+from django.contrib.auth import views as auth_views
 from django.utils.datastructures import MultiValueDictKeyError
+from django.views.generic import View
 from django.views.generic.base import TemplateView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from taggit.models import Tag
 from registration.forms import RegistrationFormUniqueEmail
+from registration.backends.default.views import (ActivationView as
+                                                 BaseActivationView,
+                                                 RegistrationView as
+                                                 BaseRegistrationView)
 
-from gifdb.settings.base import S3_URL
 from search import engine
 from search.models import TAG_MAX_LEN, User, UserFavorite, Gif, TagInstance, UserScore, TagVote 
 from search.image import imgFromUrl, isAnimated
@@ -43,12 +48,13 @@ def paginate(request, queryset):
 
 # pages
 
+## inheritable
+
 class BasePageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(BasePageView, self).get_context_data(**kwargs)
         user = self.request.user
-        context['S3_URL'] = S3_URL
         context['TAG_MAX_LEN'] = TAG_MAX_LEN
         context['recent_gifs'] = group(Gif.objects\
                                        .order_by('-date_added')[:9], "recent")
@@ -74,13 +80,14 @@ class BasePageView(TemplateView):
         return context
 
 
+## core application
+
 class FrontPageView(TemplateView):
 
     template_name = "front.html"
 
     def get_context_data(self, **kwargs):
         context = super(FrontPageView, self).get_context_data(**kwargs)
-        context['S3_URL'] = S3_URL
         context['TAG_MAX_LEN'] = TAG_MAX_LEN
         context['register'] = RegistrationFormUniqueEmail()
         return context
@@ -162,6 +169,8 @@ class ProfileAddedView(BasePageView):
         return context
 
 
+## auxiliary
+
 class AboutPageView(BasePageView):
 
     template_name = "about.html"
@@ -177,6 +186,64 @@ class LegalPageView(BasePageView):
     template_name = "legal.html"
 
 
+## accounts
+
+class RegistrationView(BaseRegistrationView, BasePageView):
+    
+    template_name="registration/registration_form.html"
+    
+
+class RegistrationCompleteView(BasePageView):
+    
+    template_name = "registration/registration_complete.html"
+
+
+class ActivationView(BaseActivationView, BasePageView):
+
+    pass
+
+
+class ActivationCompleteView(BasePageView):
+    
+    template_name = "registration/activation_complete.html"
+
+
+class PasswordChangeView(BasePageView):
+    
+    def get(self, request):
+        return auth_views.password_change(request, extra_context=self.get_context_data())
+
+
+class PasswordChangeDoneView(BasePageView):
+    
+    def get(self, request):
+        return auth_views.password_change_done(request, extra_context=self.get_context_data())
+
+
+class PasswordResetView(BasePageView):
+    
+    def get(self, request):
+        return auth_views.password_reset(request, post_reset_redirect='password_reset_done', extra_context=self.get_context_data())
+
+
+class PasswordResetDoneView(BasePageView):
+    
+    def post(self, request):
+        return auth_views.password_reset_done(request, extra_context=self.get_context_data())
+
+
+class PasswordResetConfirmView(BasePageView):
+    
+    def get(self, request):
+        return auth_views.password_reset_confirm(request, extra_context=self.get_context_data())
+
+
+class PasswordResetCompleteView(BasePageView):
+    
+    def get(self, request):
+        return auth_views.password_reset_complete(request, extra_context=self.get_context_data())
+
+
 # state management
 
 def login(request):
@@ -190,10 +257,10 @@ def login(request):
         if user.is_active:
             django_login(request, user)
             return redirect(request.META['HTTP_REFERER'])
-        else:
+        else: # user is not active
             messages.success(request, 1)
             return redirect(request.META['HTTP_REFERER'])
-    else:
+    else: # user did not sucessfully authenticate
         messages.success(request, 2)
         return redirect(request.META['HTTP_REFERER'])
 
