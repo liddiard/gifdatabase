@@ -4,7 +4,7 @@
 {% block content %}
     <section>
         <h2>
-            <img src="{{ S3_URL }}img/star_selected.png"/>
+            <img src="{{ STATIC_URL }}img/star_selected.png"/>
             <a href="{% url 'profile' username %}">
                 {% if user == username %}
                     Your</a>

@@ -3,8 +3,8 @@
 {% block content %}
     <div class="profile">
         <h1><span class="username">{{ username }}</span> <span class="score">{{ score }}</span></h1>
-        <a href="{% url 'profile_starred' username %}"><img src="{{ S3_URL }}img/star_selected.png"/>{{ starred_total }}</a>
-        <a href="{% url 'profile_added' username %}"><img src="{{ S3_URL }}img/plus_green.png"/>{{ added_total }}</a>
+        <a href="{% url 'profile_starred' username %}"><img src="{{ STATIC_URL }}img/star_selected.png"/>{{ starred_total }}</a>
+        <a href="{% url 'profile_added' username %}"><img src="{{ STATIC_URL }}img/plus_green.png"/>{{ added_total }}</a>
     </div>
 
     <section class="profile">
