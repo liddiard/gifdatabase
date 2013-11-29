@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from search import image
 from gifdb.settings.base import S3_URL
 
+from registration.signals import user_activated
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
 from taggit.forms import TagWidget
@@ -13,6 +14,16 @@ DEFAULT_USER_ID = 1
 TAG_MAX_LEN = 32
 HOST_CHOICES = (('ig', 'imgur'),) # keys are ideally 2 letters,
                                   # cannot start with a number
+
+
+def createUserScore(sender, **kwargs):
+    u = kwargs.get('user')
+    if u is not None:
+        us = UserScore(user=u)
+        us.save()
+    else:
+        print "user_activated signal caught, but UserScore not created"
+user_activated.connect(createUserScore)
 
 def modifyUserScore(userObject, delta):
     u_score = UserScore.objects.get(user=userObject)
