@@ -4,9 +4,9 @@ from search import views
 urlpatterns = patterns('',
     
     # new user registration
-    url(r'^register/$', views.RegistrationView.as_view(), 
+    url(r'^create/$', views.RegistrationView.as_view(), 
         name='registration_register'), # form
-    url(r'^register/complete/$', views.RegistrationCompleteView.as_view(),
+    url(r'^create/complete/$', views.RegistrationCompleteView.as_view(),
         name='registration_complete'),
 
     # new user activation

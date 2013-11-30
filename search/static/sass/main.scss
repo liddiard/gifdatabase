@@ -298,12 +298,36 @@ footer {
     }
 }
 
-form.search {
-    position: relative;
-    display: inline-block;
+form {
+    &.search {
+        position: relative;
+        display: inline-block;
 
-    &.main {
-        margin: 20px auto;
+        &.main {
+            margin: 20px auto;
+        }
+    }
+
+    &.account {
+        label {
+            display: inline-block;
+        }
+        
+        .error {
+            display: inline;
+        }
+
+        &.create {
+            label {
+                width: 125px;
+            }
+        }
+
+        &.password-change {
+            label {
+                width: 160px;
+            }
+        }
     }
 }
 
@@ -528,7 +552,7 @@ button {
 }
 
 .credits {
-    color: $neutral_gray;
+    color: $dark_gray;
 
     a {
         color: white;
@@ -539,7 +563,7 @@ button {
     color: yellow;
 }
 
-.error {
+.error, .errorlist {
     color: #f88;
 }
 

@@ -265,6 +265,14 @@ form.search {
   display: inline-block; }
   form.search.main {
     margin: 20px auto; }
+form.account label {
+  display: inline-block; }
+form.account .error {
+  display: inline; }
+form.account.create label {
+  width: 125px; }
+form.account.password-change label {
+  width: 160px; }
 
 ::-webkit-input-placeholder {
   color: rgba(255, 255, 255, 0.4);
@@ -466,14 +474,14 @@ button {
   color: #999999; }
 
 .credits {
-  color: #999999; }
+  color: #666666; }
   .credits a {
     color: white; }
 
 .alert {
   color: yellow; }
 
-.error {
+.error, .errorlist {
   color: #f88; }
 
 .score, .highlight {
