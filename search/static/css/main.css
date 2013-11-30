@@ -198,6 +198,11 @@ nav {
 
 #front-wrap {
   text-align: center; }
+  #front-wrap .cta {
+    margin: 40px auto; }
+  #front-wrap .create-account {
+    display: inline-block;
+    margin: 0 5px; }
 
 aside {
   position: absolute;
@@ -376,8 +381,13 @@ button {
   button#add-another {
     float: left;
     margin: 5px 0 0 5px; }
+  button.small {
+    padding: 2px; }
   button.medium {
     padding: 5px; }
+  button.large {
+    padding: 10px;
+    font-size: 1.3em; }
   button.add-gif {
     padding: 3px 6px 0 4px; }
     button.add-gif img {

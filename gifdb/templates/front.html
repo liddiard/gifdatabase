@@ -28,6 +28,10 @@
             <input class="large" type="text" name="q" placeholder="Search GIFs"/>
             <button type="submit"><img src="{{ STATIC_URL }}img/magnifier.png"/></button>
         </form>
+        <div class="cta">
+            <span>Join the community.</span>
+            <a href="{% url 'registration_register' %}"><button class="large create-account">Create an account</button></a>
+        </div>
     </div>
 {% endblock %}
 

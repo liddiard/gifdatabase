@@ -211,6 +211,15 @@ nav {
 
 #front-wrap {
     text-align: center;
+
+    .cta {
+        margin: 40px auto;
+    }
+
+    .create-account {
+        display: inline-block;
+        margin: 0 5px;
+    }
 }
 
 $sidebar_width: 300px;
@@ -421,8 +430,17 @@ button {
         margin: 5px 0 0 5px;
     }
 
+    &.small {
+        padding: 2px;
+    }
+
     &.medium {
         padding: 5px;
+    }
+
+    &.large {
+        padding: 10px;
+        font-size: 1.3em;
     }
 
     &.add-gif {
