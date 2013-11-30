@@ -85,12 +85,6 @@ a, .link {
             }
         }
     }
-
-    #lbBottomContainer & {
-        display: inline-block;
-        font-size: 0.8em;
-        margin-top: 1px;
-    }
 }
 
 nav {
@@ -678,6 +672,10 @@ section {
     }
 }
 
+.preload {
+    display: none !important;
+}
+
 /* lightbox */
 #lbTopContainer {
     .btn {
@@ -726,6 +724,11 @@ section {
     }
 }
 
-.preload {
-    display: none !important;
+#lbBottomContainer {
+
+    .user {
+        display: inline-block;
+        font-size: 0.8em;
+        margin-top: 1px;
+    }
 }

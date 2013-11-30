@@ -17,6 +17,10 @@
         <input class="tag-add" placeholder="+ add tag" data-gif="{{ gif.pk }}" maxlength="{{ TAG_MAX_LEN }}"/>
     </div>
     <div class="bottom-data">
-        <span class="user link" onclick="document.location.href='{% url 'profile' gif.user_added %}'"><span class="username">{{ gif.user_added }}</span> <span class="score">{{ gif.user_added.getUserScore }}</span></span>
+        {% if gif.user_added.is_active %}
+            <span class="user link" onclick="document.location.href='{% url 'profile' gif.user_added %}'"><span class="username">{{ gif.user_added }}</span> <span class="score">{{ gif.user_added.getUserScore }}</span></span>
+        {% else %}
+            <span class="user"><span class="username">[deleted]</span></span>
+        {% endif %}
     </div>
 </a>

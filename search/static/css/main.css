@@ -103,10 +103,6 @@ a, .link {
       text-decoration: none; }
       a:hover.user > .username, .link:hover.user > .username {
         text-decoration: underline; }
-  #lbBottomContainer a, #lbBottomContainer .link {
-    display: inline-block;
-    font-size: 0.8em;
-    margin-top: 1px; }
 
 nav {
   position: fixed;
@@ -547,6 +543,9 @@ section.profile h2 {
 section .no-results {
   margin-left: 1.8em; }
 
+.preload {
+  display: none !important; }
+
 /* lightbox */
 #lbTopContainer .btn {
   cursor: pointer;
@@ -576,5 +575,7 @@ section .no-results {
 #lbTopContainer .dropdown {
   display: none; }
 
-.preload {
-  display: none !important; }
+#lbBottomContainer .user {
+  display: inline-block;
+  font-size: 0.8em;
+  margin-top: 1px; }

@@ -123,6 +123,8 @@ class ProfileView(BasePageView):
         context = super(ProfileView, self).get_context_data(**kwargs)
         user_profile = get_object_or_404(User, username=self.kwargs\
                                                             .get('username'))
+        if not user_profile.is_active:
+            raise Http404
         context['username'] = user_profile
         context['score'] = UserScore.objects.get(user=user_profile).score
         starred = UserFavorite.objects.filter(user=user_profile)
@@ -145,6 +147,8 @@ class ProfileStarredView(BasePageView):
         context = super(ProfileStarredView, self).get_context_data(**kwargs)
         user_profile = get_object_or_404(User, username=self.kwargs\
                                                    .get('username'))
+        if not user_profile.is_active:
+            raise Http404
         context['username'] = user_profile
         starred = group(UserFavorite.objects.filter(user=user_profile)\
                             .order_by('-date_favorited'), "starred", True)
@@ -161,6 +165,8 @@ class ProfileAddedView(BasePageView):
         context = super(ProfileAddedView, self).get_context_data(**kwargs)
         user_profile = get_object_or_404(User, username=self.kwargs\
                                                    .get('username'))
+        if not user_profile.is_active:
+            raise Http404
         context['username'] = user_profile
         added = group(Gif.objects.filter(user_added=user_profile)\
                                     .order_by('-date_added'), "added")
