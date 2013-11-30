@@ -29,9 +29,6 @@
             <button type="submit"><img src="{{ STATIC_URL }}img/magnifier.png"/></button>
         </form>
     </div>
-    <form class="register" method="post" action="register">{% csrf_token %}
-        {{ register }}
-    </form>
 {% endblock %}
 
 {% block wrap %}{% endblock %}

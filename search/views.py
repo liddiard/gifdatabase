@@ -13,7 +13,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 
 from taggit.models import Tag
-from registration.forms import RegistrationFormUniqueEmail
 from registration.backends.default.views import (ActivationView as
                                                  BaseActivationView,
                                                  RegistrationView as
@@ -91,7 +90,6 @@ class FrontPageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(FrontPageView, self).get_context_data(**kwargs)
         context['TAG_MAX_LEN'] = TAG_MAX_LEN
-        context['register'] = RegistrationFormUniqueEmail()
         return context
 
 
