@@ -13,7 +13,6 @@
   .tag.unverified {
     color: rgba(255, 255, 255, 0.6); }
   .tag.user-added {
-    color: white;
     border: 1px solid rgba(0, 204, 255, 0.5);
     background: rgba(0, 204, 255, 0.1);
     padding-right: 28px; }
