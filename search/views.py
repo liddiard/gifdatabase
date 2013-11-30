@@ -198,6 +198,11 @@ class RegistrationCompleteView(BasePageView):
     template_name = "registration/registration_complete.html"
 
 
+class RegistrationClosedView(BasePageView):
+    
+    template_name = "registration/registration_closed.html"
+
+
 class ActivationView(BaseActivationView, BasePageView):
 
     pass

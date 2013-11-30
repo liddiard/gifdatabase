@@ -30,4 +30,8 @@ urlpatterns = patterns('',
         views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
     url(r'^password/reset/complete/$', views.PasswordResetCompleteView.as_view(), 
         name="password_reset_complete"),
+
+    # registration closed
+    url(r'^create/closed/$', views.RegistrationClosedView.as_view(), 
+        name="registration_disallowed"),
 )

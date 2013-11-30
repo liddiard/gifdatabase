@@ -50,10 +50,11 @@
                     <a class="star" title="Your starred GIFs" href="{% url 'profile_starred' user %}"><img src="{{ STATIC_URL }}img/star_selected.png"/></a>
                     <a class="logout" href="/logout/">Logout</a>
                 {% else %}
+                    <a href="{% url 'registration_register' %}"><button class="medium create-account">Create an account</button></a>
                     <form method="post" action="{% url 'login' %}" id="login">{% csrf_token %}
-                        <input type="text" name="username" placeholder="username"/>
-                        <input type="password" name="password" placeholder="password"/>
-                        <input type="submit" value="Login"/>
+                        <input class="field" type="text" name="username" placeholder="username"/>
+                        <input class="field" type="password" name="password" placeholder="password"/>
+                        <input type="submit" value="Log in"/>
                     </form>
                 {% endif %}
             </div>

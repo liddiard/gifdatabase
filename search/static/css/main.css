@@ -150,6 +150,12 @@ nav {
   nav .user-actions {
     float: right;
     margin-top: 5px; }
+    nav .user-actions input.field {
+      width: 125px; }
+    nav .user-actions .create-account {
+      margin-right: 4px; }
+    nav .user-actions #login {
+      display: inline-block; }
   nav .banner {
     margin-right: 0.5em; }
   nav .search {
@@ -265,13 +271,15 @@ form.search {
   display: inline-block; }
   form.search.main {
     margin: 20px auto; }
+form.account div {
+  margin-bottom: 4px; }
 form.account label {
   display: inline-block; }
 form.account .error {
   display: inline; }
 form.account.create label {
   width: 125px; }
-form.account.password-change label {
+form.account.password-change label, form.account.password-reset label {
   width: 160px; }
 
 ::-webkit-input-placeholder {

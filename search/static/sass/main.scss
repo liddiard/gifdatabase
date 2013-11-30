@@ -129,6 +129,18 @@ nav {
     .user-actions {
         float: right;
         margin-top: 5px;
+
+        input.field {
+            width: 125px;
+        }
+
+        .create-account {
+            margin-right: 4px;
+        }
+
+        #login {
+            display: inline-block;
+        }
     }
 
     .banner {
@@ -309,6 +321,10 @@ form {
     }
 
     &.account {
+        div {
+            margin-bottom: 4px;
+        }
+
         label {
             display: inline-block;
         }
@@ -323,7 +339,7 @@ form {
             }
         }
 
-        &.password-change {
+        &.password-change, &.password-reset {
             label {
                 width: 160px;
             }

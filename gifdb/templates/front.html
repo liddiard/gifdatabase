@@ -10,9 +10,9 @@
             <a class="logout" href="/logout/">Logout</a>
         {% else %}
             <form method="post" action="{% url 'login' %}" id="login">{% csrf_token %}
-                <input type="text" name="username" placeholder="username"/>
-                <input type="password" name="password" placeholder="password"/>
-                <input type="submit" value="Login"/>
+                <input class="field" type="text" name="username" placeholder="username"/>
+                <input class="field" type="password" name="password" placeholder="password"/>
+                <input type="submit" value="Log in"/>
             </form>
         {% endif %}
     </div>

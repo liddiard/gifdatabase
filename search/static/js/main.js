@@ -18,7 +18,7 @@ $(document).ready(function(){
         if (context.login_result === 1)
             bannerNotification("error", "Your account is not active. Have you clicked the link in the verification email?");
         else
-            bannerNotification("error", "Invalid username or password. Forgot your password? <a class='highlight' href='http://"+document.domain+":"+location.port+"/account/password/reset/'>Reset it</a>."); // this absolute link is really bad, but I don't see an easy way around it
+            bannerNotification("error", "Invalid username or password. Forgot your password? You can <a class='highlight' href='http://"+document.domain+":"+location.port+"/account/password/reset/'>reset it</a>.");
     }
 });
 
