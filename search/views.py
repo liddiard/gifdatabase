@@ -204,7 +204,7 @@ class ActivationView(BaseActivationView, BasePageView):
 
 
 class ActivationCompleteView(BasePageView):
-    
+
     template_name = "registration/activation_complete.html"
 
 

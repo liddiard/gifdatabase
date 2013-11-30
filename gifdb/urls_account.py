@@ -10,10 +10,10 @@ urlpatterns = patterns('',
         name='registration_complete'),
 
     # new user activation
-    url(r'^activate/(?P<activation_key>\w+)/$', views.ActivationView.as_view(),
-        name='registration_activate'),
     url(r'^activate/complete/$', views.ActivationCompleteView.as_view(), 
         name='registration_activation_complete'),
+    url(r'^activate/(?P<activation_key>\w+)/$', views.ActivationView.as_view(),
+        name='registration_activate'),
 
     # password change
     url(r'^password/change/$', views.PasswordChangeView.as_view(), 
