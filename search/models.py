@@ -23,7 +23,9 @@ def createUserScore(sender, **kwargs):
         us.save()
     else:
         print "user_activated signal caught, but UserScore not created"
-user_activated.connect(createUserScore)
+user_activated.connect(createUserScore) # catch django_registration's
+                                        # user_activated signal and create
+                                        # necessary additional objects
 
 def modifyUserScore(userObject, delta):
     u_score = UserScore.objects.get(user=userObject)

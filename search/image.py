@@ -18,9 +18,10 @@ def imgFromUrl(url):
     try:
         file = cStringIO.StringIO(urllib.urlopen(url).read())
         img = Image.open(file)
-        return img
     except IOError:
         return None
+    else:
+        return img
 
 def isAnimated(img):
     try:
@@ -43,7 +44,8 @@ def saveThumb(img, filename, size=THUMB_SIZE):
     conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
     b = conn.get_bucket(AWS_STORAGE_BUCKET_NAME)
     k = b.new_key('%s/%s.jpg' % (THUMB_DIR, filename))
-    k.set_contents_from_string(img_data.getvalue(), {'Content-Type': 'image/jpeg'})
+    k.set_contents_from_string(img_data.getvalue(), 
+                               {'Content-Type': 'image/jpeg'})
     k.set_acl('public-read')
     return filename+'.jpg'
 
@@ -60,7 +62,8 @@ def imgurDoesNotExist(img):
     error_img = imgFromUrl("http://i.imgur.com/removed.png")
     try: # if the images are the same dimensions, we'll compare them
         diff = ImageChops.difference(img, error_img).getbbox()
-        return diff is None
     except ValueError: # otherwise we get an error because the dimensions are
                        # different, so we know the input is NOT the DNE image
         return False
+    else:
+        return diff is None
