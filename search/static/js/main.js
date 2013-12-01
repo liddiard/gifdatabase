@@ -12,7 +12,7 @@ $(document).ready(function(){
 
     $('.user-actions .user, .user-actions .star').tipsy({gravity: 'n'});
     $('#imgur-link').tipsy({gravity:'w'}).click(function(){ $('#add-gif input').focus() });
-    $('.list-next').tipsy({gravity:'w'});
+    $('.list-next, .account-preferences').tipsy({gravity:'w'});
 
     if (context.login_result) {
         if (context.login_result === 1)

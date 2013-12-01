@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Account preferences{% endblock %}
+
+{% block content %}
+
+<h1>Account preferences</h1>
+<ul class="account-actions">
+    <li><a href="{% url 'password_change' %}">Change password</a></li>
+</ul>
+
+<div id="delete-account"><a href="{% url 'account_delete' %}">Delete account</a></div>
+
+{% endblock %}

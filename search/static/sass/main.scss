@@ -295,6 +295,7 @@ footer {
     max-width: 800px;
     float: left;
     margin-right: $sidebar_space;
+    position: relative;
 }
 
 @media (max-width: 520px) {
@@ -304,8 +305,7 @@ footer {
         clear: both;
         margin: 0 auto;
         width: 100%;
-        padding-top: 20px;
-        border-top: 10px solid black; // bit of a hack; should really be 'margin' but clearfix screws things up
+        border-top: 20px solid black; // bit of a hack; should really be 'margin' but clearfix screws things up
     }
 
     #main {
@@ -330,6 +330,11 @@ form {
 
         label {
             display: inline-block;
+            color: $light_gray;
+        }
+
+        button {
+            margin-top: 4px;
         }
         
         .error {
@@ -339,6 +344,12 @@ form {
         &.create {
             label {
                 width: 125px;
+            }
+        }
+
+        &.delete {
+            label {
+                width: 75px;
             }
         }
 
@@ -396,6 +407,7 @@ button {
     margin: 0;
     outline: none;
     font-weight: bold;
+    box-shadow: 1px 1px rgba(255,255,255, 0.25) inset, -1px -1px rgba(0,0,0, 0.25) inset;
 
     &:hover {
         background-color: $primary_color + #222;
@@ -451,6 +463,19 @@ button {
         float: left;
         clear: both;
         margin-top: 5px;
+    }
+
+    &.destructive-action {
+        background-color: #c00;
+        color: white;
+
+        &:hover {
+            background-color: red;
+        }
+
+        &:active {
+            background-color: #a00;
+        }
     }
 
     img {
@@ -568,6 +593,13 @@ button {
         margin: 7px auto;
         text-align: center;
     }
+}
+
+#delete-account {
+    text-transform: uppercase;
+    font-size: 0.7em;
+    color: rgba(255,0,0, 0.8);
+    margin-top: 4.5em;
 }
 
 .external-link {

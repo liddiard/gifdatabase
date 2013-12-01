@@ -252,7 +252,8 @@ footer {
 #main {
   max-width: 800px;
   float: left;
-  margin-right: 310px; }
+  margin-right: 310px;
+  position: relative; }
 
 @media (max-width: 520px) {
   aside {
@@ -261,8 +262,7 @@ footer {
     clear: both;
     margin: 0 auto;
     width: 100%;
-    padding-top: 20px;
-    border-top: 10px solid black; }
+    border-top: 20px solid black; }
 
   #main {
     margin-right: 0; } }
@@ -274,11 +274,16 @@ form.search {
 form.account div {
   margin-bottom: 4px; }
 form.account label {
-  display: inline-block; }
+  display: inline-block;
+  color: #cccccc; }
+form.account button {
+  margin-top: 4px; }
 form.account .error {
   display: inline; }
 form.account.create label {
   width: 125px; }
+form.account.delete label {
+  width: 75px; }
 form.account.password-change label, form.account.password-reset label {
   width: 160px; }
 
@@ -359,7 +364,8 @@ button {
   padding: 0;
   margin: 0;
   outline: none;
-  font-weight: bold; }
+  font-weight: bold;
+  box-shadow: 1px 1px rgba(255, 255, 255, 0.25) inset, -1px -1px rgba(0, 0, 0, 0.25) inset; }
   button:hover {
     background-color: #22eeff; }
   button:active {
@@ -394,6 +400,13 @@ button {
     float: left;
     clear: both;
     margin-top: 5px; }
+  button.destructive-action {
+    background-color: #c00;
+    color: white; }
+    button.destructive-action:hover {
+      background-color: red; }
+    button.destructive-action:active {
+      background-color: #a00; }
   .search button {
     position: absolute;
     top: 0;
@@ -478,6 +491,12 @@ button {
   .tagline.main {
     margin: 7px auto;
     text-align: center; }
+
+#delete-account {
+  text-transform: uppercase;
+  font-size: 0.7em;
+  color: rgba(255, 0, 0, 0.8);
+  margin-top: 4.5em; }
 
 .external-link {
   padding-left: 5px;

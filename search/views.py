@@ -192,6 +192,18 @@ class LegalPageView(BasePageView):
     template_name = "legal.html"
 
 
+class AccountPreferencesView(BasePageView):
+
+    template_name = "account_preferences.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return redirect('front')
+        return super(AccountPreferencesView, self)\
+                                            .dispatch(request, *args, **kwargs)
+
+
+
 ## accounts
 
 class RegistrationView(BaseRegistrationView, BasePageView):
@@ -269,6 +281,47 @@ class PasswordResetCompleteView(BasePageView):
     def get(self, request):
         return auth_views.password_reset_complete(request, 
                                          extra_context=self.get_context_data())
+
+
+class AccountDeleteView(BasePageView):
+
+    template_name = "registration/account_delete_form.html" 
+
+    def __init__(self, *args, **kwargs):
+        self.form_error = None
+        super(AccountDeleteView, self).__init__(*args, **kwargs)
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return redirect('front')
+        return super(AccountDeleteView, self).dispatch(request, *args, **kwargs)
+    
+    def post(self, request):
+        try:
+            username = request.POST['username']
+            password = request.POST['password']
+        except MultiValueDictKeyError:
+            return redirect('front')
+        user = authenticate(username=username, password=password)
+        if user is not None and user == request.user:
+            django_logout(request)
+            user.is_active = False
+            user.save()
+            return redirect('account_delete_complete')
+        else:
+            self.form_error = '''That username and password are incorrect
+                                 for the currently logged-in user.'''
+            return redirect('account_delete')
+
+    def get_context_data(self, **kwargs):
+        context = super(AccountDeleteView, self).get_context_data(**kwargs)
+        context['form_error'] = self.form_error
+        return context
+
+
+class AccountDeleteCompleteView(BasePageView):
+    
+    template_name = "registration/account_delete_complete.html"
 
 
 # state management

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Delete account{% endblock %}
+
+{% block content %}
+
+<h1>Delete account</h1>
+
+<p>Are you sure you want to delete your GIFdatabase account? <strong>WARNING: this is a destructive action and cannot be undone.</strong></p>
+<p>If you're sure you wish to proceed, re-enter this account's username and password to confirm deletion.</p>
+
+{% if form_error %}
+    <span class="error">{{ form_error }}</span>
+{% endif %}
+
+<form class="account delete" method="post" action="">{% csrf_token %}
+    <div>
+        <label for="username">Username</label>
+        <input name="username" type="text" />
+    </div>
+    <div>
+        <label for="username">Password</label>
+        <input name="password" type="password" />
+    </div>
+    <button type="submit" class="medium destructive-action">I understand this action is irrevocable. Delete my account.</button>
+</form>
+
+{% endblock %}
