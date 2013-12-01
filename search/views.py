@@ -7,10 +7,10 @@ from django.contrib.auth import (authenticate, login as django_login,
                                  logout as django_logout)
 from django.contrib.auth import views as auth_views
 from django.utils.datastructures import MultiValueDictKeyError
-from django.views.generic import View
 from django.views.generic.base import TemplateView
+from django.views.generic.edit import FormView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 
 from taggit.models import Tag
 from registration.backends.default.views import (ActivationView as
@@ -21,6 +21,7 @@ from registration.backends.default.views import (ActivationView as
 from search import engine
 from search.models import (TAG_MAX_LEN, User, UserFavorite, Gif, TagInstance, 
                            UserScore, TagVote)
+from search.forms import ConfirmCurrentUserForm
 from search.image import imgFromUrl, isAnimated
 
 
@@ -283,40 +284,30 @@ class PasswordResetCompleteView(BasePageView):
                                          extra_context=self.get_context_data())
 
 
-class AccountDeleteView(BasePageView):
+class AccountDeleteView(FormView):
 
     template_name = "registration/account_delete_form.html" 
+    form_class = ConfirmCurrentUserForm
+    success_url = reverse_lazy('account_delete_complete')
 
-    def __init__(self, *args, **kwargs):
-        self.form_error = None
-        super(AccountDeleteView, self).__init__(*args, **kwargs)
+    def get_form_kwargs(self):
+        kwargs = super(AccountDeleteView, self).get_form_kwargs()
+        kwargs.update({
+            'request' : self.request
+        })
+        return kwargs
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated():
             return redirect('front')
         return super(AccountDeleteView, self).dispatch(request, *args, **kwargs)
     
-    def post(self, request):
-        try:
-            username = request.POST['username']
-            password = request.POST['password']
-        except MultiValueDictKeyError:
-            return redirect('front')
-        user = authenticate(username=username, password=password)
-        if user is not None and user == request.user:
-            django_logout(request)
-            user.is_active = False
-            user.save()
-            return redirect('account_delete_complete')
-        else:
-            self.form_error = '''That username and password are incorrect
-                                 for the currently logged-in user.'''
-            return redirect('account_delete')
-
-    def get_context_data(self, **kwargs):
-        context = super(AccountDeleteView, self).get_context_data(**kwargs)
-        context['form_error'] = self.form_error
-        return context
+    def form_valid(self, form):
+        user = form.cleaned_data.get('user')
+        user.is_active = False
+        user.save()
+        django_logout(self.request)
+        return redirect('account_delete_complete')
 
 
 class AccountDeleteCompleteView(BasePageView):
