@@ -309,18 +309,18 @@ votes = {};
         function toggleParentOnHover(elem, cls) {
             elem.hover(
                 function(){
-                    $(this).parent().addClass(cls);},
+                    $(this).parent().addClass(cls); },
                 function(){
-                    $(this).parent().removeClass(cls);}
+                    $(this).parent().removeClass(cls); }
             );
         }
 
         function toggleClassOnHover(elem, cls) {
             elem.hover(
                 function(){
-                    $(this).addClass(cls);},
+                    $(this).addClass(cls); },
                 function(){
-                    $(this).removeClass(cls);}
+                    $(this).removeClass(cls); }
             );
         }
 
@@ -330,7 +330,15 @@ votes = {};
         toggleParentOnHover($('#lbCaption .tag > .erase').not('.disabled, .disabled-tmp'), 'deny');
         toggleClassOnHover($('#lbTopContainer .star'), 'hover');
         toggleClassOnHover($('#lbTopContainer .copy'), 'hover');
-        toggleClassOnHover($('#lbTopContainer .dropdown'), 'hover');
+        $('#lbTopContainer .dropdown, #lbTopContainer .menu').hover(
+            function() {
+                if (typeof lb_menu_timeout !== 'undefined') clearTimeout(lb_menu_timeout);
+                $('#lbTopContainer .btn.dropdown').addClass('hover');
+                $('#lbTopContainer .menu').show(); },
+            function() { lb_menu_timeout = setTimeout(function () {
+                $('#lbTopContainer .btn.dropdown').removeClass('hover');
+                $('#lbTopContainer .menu').hide(); }, 200) }
+        );
 
         function ajaxTagVote(tag, set) {
             ajaxPost({

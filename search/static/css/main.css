@@ -421,16 +421,22 @@ button {
     padding: 7px 4px; }
 
 .menu {
+  display: none;
   position: absolute;
   list-style-type: none;
   background-color: rgba(0, 0, 0, 0.8);
   margin: 0;
-  padding: 0.25em 0.5em;
+  padding: 0.25em 0;
   right: 0;
   top: 22px;
   line-height: 1.5;
-  box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.5);
   font-size: 0.8em; }
+  .menu li {
+    cursor: pointer;
+    padding: 0 0.5em; }
+    .menu li:hover {
+      background-color: rgba(0, 204, 255, 0.5); }
 
 .modal {
   display: none;
