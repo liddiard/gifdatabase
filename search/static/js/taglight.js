@@ -330,6 +330,7 @@ votes = {};
         toggleParentOnHover($('#lbCaption .tag > .erase').not('.disabled, .disabled-tmp'), 'deny');
         toggleClassOnHover($('#lbTopContainer .star'), 'hover');
         toggleClassOnHover($('#lbTopContainer .copy'), 'hover');
+        toggleClassOnHover($('#lbTopContainer .dropdown'), 'hover');
 
         function ajaxTagVote(tag, set) {
             ajaxPost({

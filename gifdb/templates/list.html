@@ -2,6 +2,12 @@
     <img class="thumb" src="{{ gif.getThumbUrl }}" />
     <div class="top-data">
         <img class="btn dropdown"/>
+        <ul class="menu">
+            <li>Flag as broken/missing image</li>
+            <li>Flag as duplicate</li>
+            <li>Flag as inappropriate</li>
+            <li>I have a better version of this GIF</li>
+        </ul>
         <img title="Add to starred" class="btn star" data-gif="{{ gif.pk }}"/>
         <img title="Copy link" class="btn copy"/>
         <input class="copy-text" value="{{ gif.getUrl }}" readonly/>
