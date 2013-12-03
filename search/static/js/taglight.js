@@ -421,7 +421,7 @@ votes = {};
                 elem.val('');
                 var new_tag = $('<span/>', {
                     text: content,
-                    class: 'user-added tag'
+                    class: 'user-added tag unverified'
                 });
                 $('<img/>', {
                     class: 'btn erase'
