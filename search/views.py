@@ -7,7 +7,7 @@ from django.contrib.auth import (authenticate, login as django_login,
                                  logout as django_logout)
 from django.contrib.auth import views as auth_views
 from django.utils.datastructures import MultiValueDictKeyError
-from django.views.generic.base import TemplateView
+from django.views.generic.base import View, TemplateView
 from django.views.generic.edit import FormView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -343,307 +343,297 @@ def logout(request):
         return redirect('front')
 
 
-# ajax api convenience functions
+# ajax api
 
-def jsonResponse(**kwargs):
-    return HttpResponse(json.dumps(kwargs), content_type="application/json")
+class AuthenticatedAjaxView(View):
 
-def error(error_type, message):
-    return jsonResponse(result=1, error=error_type, message=message)
+    def dispatch(self, request, *args, **kwargs):
+        if request.is_ajax():
+            if request.user.is_authenticated():
+                return super(AuthenticatedAjaxView, self).dispatch(request, 
+                                                              *args, **kwargs)
+            else: 
+                return self.authenticationError()
+        else:
+            raise Http404
 
-def authenticationError():
-    return error("AuthenticationError", "User is not authenticated.")
+    def jsonResponse(self, **kwargs):
+        return HttpResponse(json.dumps(kwargs), content_type="application/json")
 
-def accessError(message):
-    return error("AccessError", message)
+    def error(self, error_type, message):
+        return jsonResponse(result=1, error=error_type, message=message)
 
-def keyError(message):
-    return error("KeyError", message)
+    def authenticationError(self):
+        return error("AuthenticationError", "User is not authenticated.")
 
-def doesNotExist(message):
-    return error("DoesNotExist", message)
+    def accessError(self, message):
+        return error("AccessError", message)
 
-def validationError(message):
-    return error("ValidationError", message)
+    def keyError(self, message):
+        return error("KeyError", message)
+
+    def doesNotExist(self, message):
+        return error("DoesNotExist", message)
+
+    def validationError(self, message):
+        return error("ValidationError", message)
 
 
 # ajax api
 
-def ajaxTagVote(request):
-    def safeVote(user, tag, up):
-        try: # TODO: enforce m2m uniqueness on model validation as well
-            tv = TagVote.objects.filter(user=user).get(tag=tag)
-            tv.up = up
-        except TagVote.DoesNotExist:
-            tv = TagVote(user=user, tag=tag, up=up)
-        finally:
-            tv.save()
-    if request.is_ajax():
-        if request.user.is_authenticated():
-            user = request.user
-            if not user.canTag():
-                return accessError("This user doesn't have the permission to "
-                                   "vote on tags.")
-            try:
-                tag_id = request.POST['tag']
-                set = request.POST['set']
-            except KeyError:
-                return keyError("Required keys (tag, set) not found in request.")
-            try:
-                tag = TagInstance.objects.get(pk=tag_id)
-            except TagInstance.DoesNotExist:
-                return doesNotExist("Tag with id %s was not found." % tag_id)
-            if user == tag.user_added:
-                return accessError("User cannot vote on a tag they created "
-                                   "themself.")
-            set = int(set)
-            if set > 0:
-                safeVote(user, tag, True)
-            elif set < 0:
-                safeVote(user, tag, False)
-            else:
-                try:
-                    tv = TagVote.objects.filter(user=user).get(tag=tag)
-                    tv.delete()
-                except TagVote.DoesNotExist:
-                    return doesNotExist("Could not unset TagVote because "
-                                        "TagVote doesn't exist.")
-            return jsonResponse(result=0, tag_id=tag.pk, tag_name=tag.tag.name,
-                                set=set)
-        else:
-            return authenticationError()
-    else:
-        raise Http404
-
-def ajaxGetTagVote(request):
-    if request.is_ajax():
-        if request.user.is_authenticated():
-            user = request.user
-            try:
-                tag_id = request.POST['tag']
-            except KeyError:
-                return keyError("Required key (tag) not found in request.")
-            try:
-                tv = TagVote.objects.filter(user=user).get(tag=tag_id)
+class AjaxTagVote(AuthenticatedAjaxView):
+    
+    def post(self, request):  
+        def safeVote(user, tag, up):
+            try: # TODO: enforce m2m uniqueness on model validation as well
+                tv = TagVote.objects.filter(user=user).get(tag=tag)
+                tv.up = up
             except TagVote.DoesNotExist:
-                return jsonResponse(result=0, tag=tag_id, vote=0)
-            if tv.up:
-                return jsonResponse(result=0, tag=tag_id, vote=1)
-            else:
-                return jsonResponse(result=0, tag=tag_id, vote=-1)
+                tv = TagVote(user=user, tag=tag, up=up)
+            finally:
+                tv.save()
+        user = request.user
+        if not user.canTag():
+            return self.accessError("This user doesn't have the permission to "
+                               "vote on tags.")
+        try:
+            tag_id = request.POST['tag']
+            set = request.POST['set']
+        except KeyError:
+            return self.keyError("Required keys (tag, set) not found in "
+                                 "request.")
+        try:
+            tag = TagInstance.objects.get(pk=tag_id)
+        except TagInstance.DoesNotExist:
+            return self.doesNotExist("Tag with id %s was not found." % tag_id)
+        if user == tag.user_added:
+            return self.accessError("User cannot vote on a tag they created "
+                                    "themself.")
+        set = int(set)
+        if set > 0:
+            safeVote(user, tag, True)
+        elif set < 0:
+            safeVote(user, tag, False)
         else:
-            return authenticationError()
-    else:
-        raise Http404
-
-def ajaxAddTag(request):
-    if request.is_ajax():
-        if request.user.is_authenticated():
-            user = request.user
-            if not user.canTag():
-                return accessError("This user doesn't have the permission to "
-                                   "add tags.")
             try:
-                gif_id = request.POST['gif']
-                tag_name = request.POST['tag']
-            except KeyError:
-                return keyError("Required keys (gif, tag) not found in request.")
+                tv = TagVote.objects.filter(user=user).get(tag=tag)
+                tv.delete()
+            except TagVote.DoesNotExist:
+                return self.doesNotExist("Could not unset TagVote because "
+                                         "TagVote doesn't exist.")
+        return jsonResponse(result=0, tag_id=tag.pk, tag_name=tag.tag.name,
+                            set=set)
+
+
+class AjaxGetTagVote(AuthenticatedAjaxView):
+
+    def post(self, request):
+        user = request.user
+        try:
+            tag_id = request.POST['tag']
+        except KeyError:
+            return self.keyError("Required key (tag) not found in request.")
+        try:
+            tv = TagVote.objects.filter(user=user).get(tag=tag_id)
+        except TagVote.DoesNotExist:
+            return self.jsonResponse(result=0, tag=tag_id, vote=0)
+        if tv.up:
+            return self.jsonResponse(result=0, tag=tag_id, vote=1)
+        else:
+            return self.jsonResponse(result=0, tag=tag_id, vote=-1)
+
+
+class AjaxAddTag(AuthenticatedAjaxView):
+
+    def post(self, request):
+        user = request.user
+        if not user.canTag():
+            return self.accessError("This user doesn't have the permission to "
+                               "add tags.")
+        try:
+            gif_id = request.POST['gif']
+            tag_name = request.POST['tag']
+        except KeyError:
+            return self.keyError("Required keys (gif, tag) not found in "
+                                 "request.")
+        pattern = re.compile("^[a-zA-Z0-9\. '-]+$")
+        if not pattern.match(tag_name):
+            return self.validationError("Tag contains invalid characters.")
+        if len(tag_name) > TAG_MAX_LEN:
+            return self.validationError("Tag length is greater than max "
+                                   "allowed length of %s chars." % TAG_MAX_LEN)
+        try:
+            gif = Gif.objects.get(pk=gif_id)
+        except Gif.DoesNotExist:
+            return self.doesNotExist("Could not add tag to gif because gif "
+                                "matching id %s doesn't exist." % gif_id)
+        if gif.tags.count() > 11:
+            return self.accessError("The gif associated with this tag already "
+                               "has the maximum number of tags.")
+        t = Tag.objects.get_or_create(name=tag_name)[0]
+        ti, created = TagInstance.objects.get_or_create(tag=t,
+                                                     content_object=gif)
+        if created:
+            ti.user_added = user
+            ti.save()
+        else:
+            pass # tag already exists on this GIF, do nothing
+        return self.jsonResponse(result=0, taginstance=ti.pk)
+
+
+class AjaxEraseTag(AuthenticatedAjaxView):
+
+    def post(self, request):
+        user = request.user
+        try:
+            tag_id = request.POST['tag']
+        except KeyError:
+            return self.keyError("Required key (tag) not found in request.")
+        try:
+            ti = TagInstance.objects.get(pk=tag_id)
+        except TagInstance.DoesNotExist:
+            return self.doesNotExist("Could not delete tag because tag "
+                                     "matching id %s doesn't exist." % tag_id)
+        if ti.hasBeenVotedOn():
+            return self.accessError("This tag has already been voted on and "
+                                    "thus cannot be user-erased.")
+        if ti.content_object.tags.count() < 5:
+            return self.accessError("The gif you are trying to tag already "
+                                    "has the minimum number of tags.")
+        else:
+            if ti.user_added == user:
+                ti.delete()
+                return self.jsonResponse(result=0, message="Deleted tag.")
+            else:
+                return self.accessError("The requesting user does not have "
+                                        "permission to delete this tag.")
+
+
+class AjaxGetStar(AuthenticatedAjaxView):
+    
+    def post(self, request):
+        user = request.user
+        try:
+            gif_id = request.POST['gif']
+        except KeyError:
+            return self.keyError("Required key (gif) not found in request.")
+        try:
+            gif = Gif.objects.get(pk=gif_id)
+        except Gif.DoesNotExist:
+            return self.doesNotExist("Could not get UserFavorite because Gif "
+                                     "matching id %s does not exist." % gif_id)
+        try:
+            UserFavorite.objects.get(user=user, gif=gif)
+            return self.jsonResponse(result=0, star=1)
+        except UserFavorite.DoesNotExist:
+            return self.jsonResponse(result=0, star=0)    
+
+
+class AjaxAddStar(AuthenticatedAjaxView):
+
+    def post(self, request):
+        user = request.user
+        try:
+            gif_id = request.POST['gif']
+        except KeyError:
+            return self.keyError("Required key (gif) not found in request.")
+        try:
+            gif = Gif.objects.get(pk=gif_id)
+        except Gif.DoesNotExist:
+            return self.doesNotExist("Could not create UserFavorite because "
+                                "Gif matching id %s does not exist." % gif_id)
+        uf = UserFavorite.objects.get_or_create(user=user, gif=gif)[0]
+        return self.jsonResponse(result=0, userfavorite=uf.pk)
+
+
+class AjaxRemoveStar(AuthenticatedAjaxView):
+
+    def post(self, request):
+        user = request.user
+        try:
+            gif_id = request.POST['gif']
+        except KeyError:
+            return self.keyError("Required key (gif) not found in request.")
+        try:
+            uf = UserFavorite.objects.get(user=user, gif=gif_id)
+        except Gif.DoesNotExist:
+            return self.doesNotExist("Could not create UserFavorite because "
+                                 "Gif matching id %s does not exist." % gif_id)
+        if uf.user == user:
+            uf.delete()
+            return self.jsonResponse(result=0, message="Deleted UserFavorite.")
+        else:
+            return self.accessError("The requesting user does not match the "
+                                    "user who created the UserFavorite.")
+
+
+class AjaxCheckValidGif(AuthenticatedAjaxView):
+
+    def post(self, request):
+        user = request.user
+        try:
+            filename = request.POST['filename']
+        except KeyError:
+            return self.keyError("Required key (filename) not found in "
+                                 "request.")
+        try:
+            gif = Gif.objects.get(filename=filename)
+            return self.error("AlreadyExistsError", "Gif %s already exists" %\
+                         filename)
+        except Gif.DoesNotExist:
+            url = "http://i.imgur.com/%s.gif" % filename
+            if isAnimated(imgFromUrl(url)):
+                return self.jsonResponse(result=0, url=url)
+            else:
+                return self.error("InvalidFileError", "Image %s is not an "
+                                  "animated gif." % filename)
+
+
+class AjaxAddGif(AuthenticatedAjaxView):
+
+    def post(self, request):
+        user = request.user
+        if not user.canAddGif():
+            return self.accessError("This user doesn't have the permission to "
+                                    "add GIFs.")
+        try:
+            filename = request.POST['filename']
+            tags = request.POST.getlist('tags[]')
+        except KeyError:
+            return self.keyError("Required keys (filename, tags) not found in "
+                                 "request.")
+        try:
+            gif = Gif.objects.get(filename=filename)
+            return self.error("AlreadyExistsError", "Gif %s already exists" %\
+                              filename)
+        except Gif.DoesNotExist:
             pattern = re.compile("^[a-zA-Z0-9\. '-]+$")
-            if not pattern.match(tag_name):
-                return validationError("Tag contains invalid characters.")
-            if len(tag_name) > TAG_MAX_LEN:
-                return validationError("Tag length is greater than max allowed "
-                                       "length of %s chars." % TAG_MAX_LEN)
-            try:
-                gif = Gif.objects.get(pk=gif_id)
-            except Gif.DoesNotExist:
-                return doesNotExist("Could not add tag to gif because gif "
-                                    "matching id %s doesn't exist." % gif_id)
-            if gif.tags.count() > 11:
-                return accessError("The gif associated with this tag already "
-                                   "has the maximum number of tags.")
-            t = Tag.objects.get_or_create(name=tag_name)[0]
-            ti, created = TagInstance.objects.get_or_create(tag=t,
-                                                         content_object=gif)
-            if created:
-                ti.user_added = user
-                ti.save()
-            else:
-                pass
-            return jsonResponse(result=0, taginstance=ti.pk)
-        else:
-            return authenticationError()
-    else:
-        raise Http404
-
-def ajaxEraseTag(request):
-    if request.is_ajax():
-        if request.user.is_authenticated():
-            user = request.user
-            try:
-                tag_id = request.POST['tag']
-            except KeyError:
-                return keyError("Required key (tag) not found in request.")
-            try:
-                ti = TagInstance.objects.get(pk=tag_id)
-            except TagInstance.DoesNotExist:
-                return doesNotExist("Could not delete tag because tag matching "
-                                    "id %s doesn't exist." % tag_id)
-            if ti.hasBeenVotedOn():
-                return accessError("This tag has already been voted on and "
-                                   "thus cannot be user-erased.")
-            if ti.content_object.tags.count() < 5:
-                return accessError("The gif associated with this tag has the "
-                                   "already has the minimum number of tags.")
-            else:
-                if ti.user_added == user:
-                    ti.delete()
-                    return jsonResponse(result=0, message="Deleted tag.")
-                else:
-                    return accessError("The requesting user does not have "
-                                       "permission to delete this tag.")
-        else:
-            return authenticationError()
-    else:
-        raise Http404
-
-def ajaxGetStar(request):
-    if request.is_ajax():
-        if request.user.is_authenticated():
-            user = request.user
-            try:
-                gif_id = request.POST['gif']
-            except KeyError:
-                return keyError("Required key (gif) not found in request.")
-            try:
-                gif = Gif.objects.get(pk=gif_id)
-            except Gif.DoesNotExist:
-                return doesNotExist("Could not get UserFavorite because Gif "
-                                    "matching id %s does not exist." % gif_id)
-            try:
-                UserFavorite.objects.get(user=user, gif=gif)
-                return jsonResponse(result=0, star=1)
-            except UserFavorite.DoesNotExist:
-                return jsonResponse(result=0, star=0)    
-        else:
-            return authenticationError()
-    else:
-        return Http404
-
-def ajaxAddStar(request):
-    if request.is_ajax():
-        if request.user.is_authenticated():
-            user = request.user
-            try:
-                gif_id = request.POST['gif']
-            except KeyError:
-                return keyError("Required key (gif) not found in request.")
-            try:
-                gif = Gif.objects.get(pk=gif_id)
-            except Gif.DoesNotExist:
-                return doesNotExist("Could not create UserFavorite because "
-                                    "Gif matching id %s does not exist." % gif_id)
-            uf = UserFavorite.objects.get_or_create(user=user, gif=gif)[0]
-            return jsonResponse(result=0, userfavorite=uf.pk)
-        else:
-            return authenticationError()
-    else:
-        return Http404
-
-def ajaxRemoveStar(request):
-    if request.is_ajax():
-        if request.user.is_authenticated():
-            user = request.user
-            try:
-                gif_id = request.POST['gif']
-            except KeyError:
-                return keyError("Required key (gif) not found in request.")
-            try:
-                uf = UserFavorite.objects.get(user=user, gif=gif_id)
-            except Gif.DoesNotExist:
-                return doesNotExist("Could not create UserFavorite because "
-                                    "Gif matching id %s does not exist." % gif_id)
-            if uf.user == user:
-                uf.delete()
-                return jsonResponse(result=0, message="Deleted UserFavorite.")
-            else:
-                return accessError("The requesting user does not match the "
-                                   "user who created the UserFavorite.")
-        else:
-            return authenticationError()
-    else:
-        return Http404
-
-def ajaxCheckValidGif(request):
-    if request.is_ajax():
-        if request.user.is_authenticated():
-            user = request.user
-            try:
-                filename = request.POST['filename']
-            except KeyError:
-                return keyError("Required key (filename) not found in request.")
-            try:
-                gif = Gif.objects.get(filename=filename)
-                return error("AlreadyExistsError", "Gif %s already exists" %\
-                             filename)
-            except Gif.DoesNotExist:
-                url = "http://i.imgur.com/%s.gif" % filename
-                if isAnimated(imgFromUrl(url)):
-                    return jsonResponse(result=0, url=url)
-                else:
-                    return error("InvalidFileError", "Image %s is not an "
-                                 "animated gif." % filename)
-        else:
-            return authenticationError()
-    else:
-        return Http404
-
-def ajaxAddGif(request):
-    if request.is_ajax():
-        if request.user.is_authenticated():
-            user = request.user
-            if not user.canAddGif():
-                return accessError("This user doesn't have the permission to "
-                                   "add GIFs.")
-            try:
-                filename = request.POST['filename']
-                tags = request.POST.getlist('tags[]')
-            except KeyError:
-                return keyError("Required keys (filename, tags) not found in "
-                                "request.")
-            try:
-                gif = Gif.objects.get(filename=filename)
-                return error("AlreadyExistsError", "Gif %s already exists" %\
-                             filename)
-            except Gif.DoesNotExist:
-                pattern = re.compile("^[a-zA-Z0-9\. '-]+$")
-                valid_tags = [tag_name for tag_name in tags if 
-                              pattern.match(tag_name) and
-                              len(tag_name) < TAG_MAX_LEN]
-                if len(valid_tags) < 4:
-                    return validationError("Only %s of the tags were valid. "
+            valid_tags = [tag_name for tag_name in tags if 
+                          pattern.match(tag_name) and
+                          len(tag_name) < TAG_MAX_LEN]
+            if len(valid_tags) < 4:
+                return self.validationError("Only %s of the tags were valid. "
                                            "4 are required." % len(valid_tags))
-                url = "http://i.imgur.com/%s.gif" % filename
-                if isAnimated(imgFromUrl(url)):
-                    gif = Gif(filename=filename, user_added=user)
-                    gif.save()
-                    for tag_name in valid_tags:
-                        t = Tag.objects.get_or_create(name=tag_name)[0]
-                        ti, created = TagInstance.objects.get_or_create(tag=t,
-                                                                     content_object=gif)
-                        if created:
-                            ti.user_added = user
-                            ti.save()
-                        else:
-                            pass
-                    return jsonResponse(result=0, gif=gif.pk)
-                else:
-                    return error("InvalidFileError", "Image %s is not an "
-                                 "animated gif." % filename)
-        else:
-            return authenticationError()
-    else:
-        return Http404
+            url = "http://i.imgur.com/%s.gif" % filename
+            if isAnimated(imgFromUrl(url)):
+                gif = Gif(filename=filename, user_added=user)
+                gif.save()
+                for tag_name in valid_tags:
+                    t = Tag.objects.get_or_create(name=tag_name)[0]
+                    ti, created = TagInstance.objects.get_or_create(tag=t,
+                                                            content_object=gif)
+                    if created:
+                        ti.user_added = user
+                        ti.save()
+                    else:
+                        pass
+                return self.jsonResponse(result=0, gif=gif.pk)
+            else:
+                return self.error("InvalidFileError", "Image %s is not an "
+                                  "animated gif." % filename)
+
+
+
 
 # TODO: currently unused
 def authenticatedAjax(func, request):
