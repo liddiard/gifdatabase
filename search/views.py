@@ -361,22 +361,22 @@ class AuthenticatedAjaxView(View):
         return HttpResponse(json.dumps(kwargs), content_type="application/json")
 
     def error(self, error_type, message):
-        return jsonResponse(result=1, error=error_type, message=message)
+        return self.jsonResponse(result=1, error=error_type, message=message)
 
     def authenticationError(self):
-        return error("AuthenticationError", "User is not authenticated.")
+        return self.error("AuthenticationError", "User is not authenticated.")
 
     def accessError(self, message):
-        return error("AccessError", message)
+        return self.error("AccessError", message)
 
     def keyError(self, message):
-        return error("KeyError", message)
+        return self.error("KeyError", message)
 
     def doesNotExist(self, message):
-        return error("DoesNotExist", message)
+        return self.error("DoesNotExist", message)
 
     def validationError(self, message):
-        return error("ValidationError", message)
+        return self.error("ValidationError", message)
 
 
 # ajax api
@@ -466,13 +466,14 @@ class AjaxAddTag(AuthenticatedAjaxView):
             gif = Gif.objects.get(pk=gif_id)
         except Gif.DoesNotExist:
             return self.doesNotExist("Could not add tag to gif because gif "
-                                "matching id %s doesn't exist." % gif_id)
+                                     "matching id %s doesn't exist." % gif_id)
         if gif.tags.count() > 11:
             return self.accessError("The gif associated with this tag already "
-                               "has the maximum number of tags.")
+                                    "has the maximum number of tags.")
         t = Tag.objects.get_or_create(name=tag_name)[0]
         ti, created = TagInstance.objects.get_or_create(tag=t,
-                                                     content_object=gif)
+                                                        content_object=gif)
+        print ti
         if created:
             ti.user_added = user
             ti.save()
@@ -631,20 +632,3 @@ class AjaxAddGif(AuthenticatedAjaxView):
             else:
                 return self.error("InvalidFileError", "Image %s is not an "
                                   "animated gif." % filename)
-
-
-
-
-# TODO: currently unused
-def authenticatedAjax(func, request):
-    if request.is_ajax():
-        if request.user.is_authenticated():
-            return func(request)
-        else:
-            return authenticationError()
-    else:
-        return Http404
-
-# TODO: currently unused
-def ajaxGetStarView(request):
-    return authenticatedAjax(ajaxGetStar, request)

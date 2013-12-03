@@ -213,18 +213,30 @@ class TagInstance(TaggedItemBase):
         is_new = self.pk is None
         
         if is_new:
-            pass 
+            super(TagInstance, self).save(force_insert, force_update, *args, 
+                                          **kwargs)
         else:
             if not isVerified_before and isVerified_after:
+                print "CASE 1"
                 modifyUserScore(self.user_added, 1)
+                super(TagInstance, self).save(force_insert, force_update, 
+                                              *args, **kwargs)
             elif isVerified_before and not isVerified_after:
+                print "CASE 2"
                 modifyUserScore(self.user_added, -1)
+                super(TagInstance, self).save(force_insert, force_update, 
+                                              *args, **kwargs)
+            # this should never get called in normal use because a bad tag
+            # should be automatically deleted
             if isBad_before and not isBad_after:
+                print "CASE 3"
                 modifyUserScore(self.user_added, 1)
+                super(TagInstance, self).save(force_insert, force_update, 
+                                              *args, **kwargs)
             elif not isBad_before and isBad_after:
+                print "CASE 4"
                 modifyUserScore(self.user_added, -1)
-        super(TagInstance, self).save(force_insert, force_update, *args,
-                                      **kwargs)
+                super(TagInstance, self).delete()
 
 class TagInstanceAdmin(admin.ModelAdmin):
     list_display = ('isVerified', 'tag', 'ups', 'downs', 'content_object',
@@ -238,24 +250,25 @@ admin.site.register(TagInstance, TagInstanceAdmin)
 
 class Flag(models.Model):
     gif = models.ForeignKey('Gif')
-    #FLAGGED_CHOICES = (('nf', '404 not found'),
-    #                   ('ic', 'inappropriate content'), ('ot', 'other'))
-    #reason = models.CharField(choices=FLAGGED_CHOICES, max_length=2)
-    message = models.CharField(max_length=500)
+    FLAGGED_CHOICES = (('mi', '404 not found'),
+                       ('in', 'inappropriate content'), ('du', 'duplicate'))
+    reason = models.CharField(choices=FLAGGED_CHOICES, max_length=2)
+    filename = models.CharField(max_length=32, blank=True)
+    user_flagged = models.ForeignKey(User)
     date_flagged = models.DateTimeField(auto_now_add=True)
     
     def __unicode__(self):
         return unicode(self.gif)
 
 class FlagAdmin(admin.ModelAdmin):
-    list_display = ('gif', 'message', 'date_flagged')
+    list_display = ('gif', 'reason', 'user_flagged', 'date_flagged')
     readonly_fields = ('date_flagged',)
 admin.site.register(Flag, FlagAdmin)
 
 class SubstitutionProposal(models.Model):
     current_gif = models.ForeignKey('Gif')
     proposed_gif = models.CharField(max_length=32)
-    host = models.CharField(max_length=2, choices=HOST_CHOICES)
+    host = models.CharField(max_length=2, choices=HOST_CHOICES, default='ig')
     date_proposed = models.DateTimeField(auto_now_add=True)
     user_proposed = models.ForeignKey(User)
     accepted = models.BooleanField(default=False)
