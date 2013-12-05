@@ -244,7 +244,6 @@ votes = {};
 
         tagAdd(tag_add);
         tagAdd(tag_add_new, true);
-        focusTagInput();
 
         /* have we already voted on this tag? color tags accordingly. */
         function colorTags() {
@@ -613,7 +612,7 @@ votes = {};
         function ajaxFlagOneStep(gif_id, flag_type) {
             ajaxPost({gif: gif_id, type: flag_type}, '/api/flag-add/', function(){
                 $('#action-confirmation').show();
-                setTimeout(function(){ $('#action-confirmation').fadeOut('slow') }, 5000);
+                setTimeout(function(){ $('#action-confirmation').fadeOut(2000) }, 4000);
             });
             $('#lbTopContainer .menu').hide();
         }
@@ -631,6 +630,8 @@ votes = {};
         $('#lbTopContainer .star').tipsy({gravity: 's'});
         $('#lbTopContainer .copy').tipsy({gravity: 'e'});
         $('#lbCaption .disabled').tipsy({gravity: 's'});
+
+        focusTagInput();
 	}
 
 	function stop(interval_id) {
