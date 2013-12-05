@@ -233,7 +233,19 @@ votes = {};
 	}
 
 	function animateCaption() {
- 
+
+        var tag_add = $('#lbCaption .tag-add');
+        var tag_add_new = $('#lbCaption .tag-add-new');
+
+        function focusTagInput() {
+            tag_add.focus();
+            tag_add_new.focus();
+        }
+
+        tagAdd(tag_add);
+        tagAdd(tag_add_new, true);
+        focusTagInput();
+
         /* have we already voted on this tag? color tags accordingly. */
         function colorTags() {
             $('#lbCaption .tag').each(function(){
@@ -501,18 +513,6 @@ votes = {};
             } else alert(response);
         }
 
-        var tag_add = $('#lbCaption .tag-add');
-        var tag_add_new = $('#lbCaption .tag-add-new');
-
-        function focusTagInput() {
-            tag_add.focus();
-            tag_add_new.focus();
-        }
-
-        tagAdd(tag_add);
-        tagAdd(tag_add_new, true);
-        focusTagInput();
-
         function ajaxTagAdd(gif_id, tag) {
             ajaxPost({gif: gif_id,
                       tag: tag
@@ -565,16 +565,16 @@ votes = {};
             );
         }
 
-        function ajaxAddStar(elem) {
-            gif_id = elem.attr('data-gif');
+        function ajaxAddStar() {
+            gif_id = tag_add.attr('data-gif');
             ajaxPost({gif: gif_id},
                      "/api/star-add/",
                      function(response) { console.log(response) }
             );
         }
 
-        function ajaxRemoveStar(elem) {
-            gif_id = elem.attr('data-gif');
+        function ajaxRemoveStar() {
+            gif_id = tag_add.attr('data-gif');
             ajaxPost({gif: gif_id},
                      "/api/star-remove/",
                      function(response) { console.log(response) }
@@ -585,11 +585,11 @@ votes = {};
             if (loginRequired('star'))
                 return;
             if (elem.hasClass('selected')) {
-                ajaxRemoveStar(elem);
+                ajaxRemoveStar();
                 elem.removeClass('selected');
                 elem.prop('title', "Add to starred");
             } else {
-                ajaxAddStar(elem);
+                ajaxAddStar();
                 elem.addClass('selected');
                 elem.prop('title', "Remove from starred");
             }
@@ -610,6 +610,14 @@ votes = {};
             }
         }
 
+        function ajaxFlagOneStep(gif_id, flag_type) {
+            ajaxPost({gif: gif_id, type: flag_type}, '/api/flag-add/', function(){
+                $('#action-confirmation').show();
+                setTimeout(function(){ $('#action-confirmation').fadeOut('slow') }, 5000);
+            });
+            $('#lbTopContainer .menu').hide();
+        }
+
         /* Bind click events */
         $('#lbCaption .tag > .confirm').click(function(){ vote($(this), true); });
         $('#lbCaption .tag > .deny').click(function(){ vote($(this), false); });
@@ -617,6 +625,8 @@ votes = {};
         constrainNumTags(false);
         $('#lbTopContainer .star').click(function(){ toggleStar($(this)); });
         $('#lbTopContainer .copy').click(function(){ toggleCopyText($(this)); });
+        $('#lbTopContainer #flag-broken').click(function(){ ajaxFlagOneStep(tag_add.attr('data-gif'), 'mi'); });
+        $('#lbTopContainer #flag-inappropriate').click(function(){ ajaxFlagOneStep(tag_add.attr('data-gif'), 'in'); });
 
         $('#lbTopContainer .star').tipsy({gravity: 's'});
         $('#lbTopContainer .copy').tipsy({gravity: 'e'});

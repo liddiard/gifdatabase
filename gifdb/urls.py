@@ -5,12 +5,6 @@ from search import views
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'gifdb.views.home', name='home'),
-    # url(r'^gifdb/', include('gifdb.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # front page
     url(r'^$', views.FrontPageView.as_view(), name="front"),
@@ -29,6 +23,7 @@ urlpatterns = patterns('',
     url(r'^api/star-remove/$', views.AjaxRemoveStar.as_view(), name="star_remove"),
     url(r'^api/gif-check/$', views.AjaxCheckValidGif.as_view(), name="check_gif"),
     url(r'^api/gif-add/$', views.AjaxAddGif.as_view(), name="add_gif"),
+    url(r'^api/flag-add/$', views.AjaxAddFlag.as_view(), name="add_flag"),
     
     # pages
     url(r'^search/$', views.SearchResultsView.as_view(), name="search_results"),

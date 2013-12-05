@@ -146,7 +146,7 @@ nav {
     float: right;
     margin-top: 5px; }
     nav .user-actions input.field {
-      width: 125px; }
+      width: 120px; }
     nav .user-actions .create-account {
       margin-right: 4px; }
     nav .user-actions #login {
@@ -497,6 +497,22 @@ button {
   z-index: 1000;
   background-color: rgba(0, 0, 0, 0.8);
   cursor: pointer; }
+
+#action-confirmation {
+  display: none;
+  position: fixed;
+  width: 200px;
+  height: 123.60939px;
+  top: 50%;
+  left: 50%;
+  margin-top: -61.8047px;
+  margin-left: -100px;
+  background-color: rgba(0, 255, 0, 0.8);
+  z-index: 10000;
+  color: black;
+  text-align: center; }
+  #action-confirmation .info {
+    font-size: 0.8em; }
 
 #banner-main {
   display: block;

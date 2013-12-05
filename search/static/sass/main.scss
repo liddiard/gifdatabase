@@ -125,7 +125,7 @@ nav {
         margin-top: 5px;
 
         input.field {
-            width: 125px;
+            width: 120px;
         }
 
         .create-account {
@@ -600,6 +600,26 @@ button {
     z-index: 1000;
     background-color: rgba(0,0,0, 0.8);
     cursor: pointer;
+}
+
+#action-confirmation {
+    display: none;
+    $width: 200px;
+    $height: $width / $GOLDEN_RATIO;
+    position: fixed;
+    width: $width;
+    height: $height;
+    top: 50%; left: 50%;
+    margin-top: -$height / 2;
+    margin-left: -$width / 2;
+    background-color: rgba(0,255,0, 0.8);
+    z-index: 10000;
+    color: black;
+    text-align: center;
+
+    .info {
+        font-size: 0.8em;
+    }
 }
 
 #banner-main {

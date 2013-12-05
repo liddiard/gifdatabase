@@ -20,7 +20,7 @@ from registration.backends.default.views import (ActivationView as
 
 from search import engine
 from search.models import (TAG_MAX_LEN, User, UserFavorite, Gif, TagInstance, 
-                           UserScore, TagVote)
+                           UserScore, TagVote, Flag)
 from search.forms import ConfirmCurrentUserForm
 from search.image import imgFromUrl, isAnimated
 
@@ -632,3 +632,40 @@ class AjaxAddGif(AuthenticatedAjaxView):
             else:
                 return self.error("InvalidFileError", "Image %s is not an "
                                   "animated gif." % filename)
+
+
+class AjaxAddFlag(AuthenticatedAjaxView):
+
+    def post(self, request):
+        user = request.user
+        if not user.canAddGif():
+            return self.accessError("This user doesn't have the permission to "
+                                    "flag GIFs.")
+        try:
+            gif_id = request.POST['gif']
+            flag_type = request.POST['type']
+        except KeyError:
+            return self.keyError("Required keys (gif, type) not found in "
+                                 "request.")
+        filename = request.POST.get('filename') # this one won't throw an error
+                                                # b/c it's optional, depending
+                                                # on flag type
+        try:
+            gif = Gif.objects.get(pk=gif_id)
+        except Gif.DoesNotExist:
+            return self.doesNotExist("Couldn't flag GIF because GIF matching "
+                                     "given id doesn't exist.")
+        if flag_type == 'du': # duplicate
+            if filename is not None:
+                flag = Flag.objects.get_or_create(user_flagged=user, gif=gif,
+                                                  reason=flag_type, 
+                                                  filename=filename)[0]
+                return self.jsonResponse(result=0, flag=flag.pk)
+            else:
+                return keyError("Required key (filename) not found in request.")
+        elif flag_type == 'mi' or flag_type == 'in': # missing/inappropriate
+            flag = Flag.objects.get_or_create(user_flagged=user, gif=gif, 
+                                              reason=flag_type)[0]
+            return self.jsonResponse(result=0, flag=flag.pk)
+        else:
+            return validationError("'%s' is not a valid flag type." % flag_type)

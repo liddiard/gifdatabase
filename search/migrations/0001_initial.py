@@ -8,6 +8,24 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Adding model 'UserScore'
+        db.create_table(u'search_userscore', (
+            ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True, primary_key=True)),
+            ('score', self.gf('django.db.models.fields.IntegerField')(default=0)),
+        ))
+        db.send_create_signal(u'search', ['UserScore'])
+
+        # Adding model 'Gif'
+        db.create_table(u'search_gif', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('filename', self.gf('django.db.models.fields.CharField')(unique=True, max_length=32)),
+            ('host', self.gf('django.db.models.fields.CharField')(default='ig', max_length=2)),
+            ('date_added', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('user_added', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('stars', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
+        ))
+        db.send_create_signal(u'search', ['Gif'])
+
         # Adding model 'TagInstance'
         db.create_table(u'search_taginstance', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -20,21 +38,14 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'search', ['TagInstance'])
 
-        # Adding model 'Gif'
-        db.create_table(u'search_gif', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('filename', self.gf('django.db.models.fields.CharField')(max_length=32)),
-            ('host', self.gf('django.db.models.fields.CharField')(max_length=2)),
-            ('date_added', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('user_added', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-        ))
-        db.send_create_signal(u'search', ['Gif'])
-
         # Adding model 'Flag'
         db.create_table(u'search_flag', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('gif', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['search.Gif'])),
-            ('message', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('reason', self.gf('django.db.models.fields.CharField')(max_length=2)),
+            ('filename', self.gf('django.db.models.fields.CharField')(max_length=32, blank=True)),
+            ('user_flagged', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('date_flagged', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
         db.send_create_signal(u'search', ['Flag'])
 
@@ -43,9 +54,10 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('current_gif', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['search.Gif'])),
             ('proposed_gif', self.gf('django.db.models.fields.CharField')(max_length=32)),
-            ('host', self.gf('django.db.models.fields.CharField')(max_length=2)),
+            ('host', self.gf('django.db.models.fields.CharField')(default='ig', max_length=2)),
             ('date_proposed', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('user_proposed', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('accepted', self.gf('django.db.models.fields.BooleanField')(default=False)),
         ))
         db.send_create_signal(u'search', ['SubstitutionProposal'])
 
@@ -69,11 +81,14 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
-        # Deleting model 'TagInstance'
-        db.delete_table(u'search_taginstance')
+        # Deleting model 'UserScore'
+        db.delete_table(u'search_userscore')
 
         # Deleting model 'Gif'
         db.delete_table(u'search_gif')
+
+        # Deleting model 'TagInstance'
+        db.delete_table(u'search_taginstance')
 
         # Deleting model 'Flag'
         db.delete_table(u'search_flag')
@@ -127,23 +142,28 @@ class Migration(SchemaMigration):
         },
         u'search.flag': {
             'Meta': {'object_name': 'Flag'},
+            'date_flagged': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'filename': ('django.db.models.fields.CharField', [], {'max_length': '32', 'blank': 'True'}),
             'gif': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['search.Gif']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'message': ('django.db.models.fields.CharField', [], {'max_length': '500'})
+            'reason': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
+            'user_flagged': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
         u'search.gif': {
             'Meta': {'ordering': "['-date_added']", 'object_name': 'Gif'},
             'date_added': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'filename': ('django.db.models.fields.CharField', [], {'max_length': '32'}),
-            'host': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
+            'filename': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '32'}),
+            'host': ('django.db.models.fields.CharField', [], {'default': "'ig'", 'max_length': '2'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'stars': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'user_added': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
         u'search.substitutionproposal': {
             'Meta': {'object_name': 'SubstitutionProposal'},
+            'accepted': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'current_gif': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['search.Gif']"}),
             'date_proposed': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'host': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
+            'host': ('django.db.models.fields.CharField', [], {'default': "'ig'", 'max_length': '2'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'proposed_gif': ('django.db.models.fields.CharField', [], {'max_length': '32'}),
             'user_proposed': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
@@ -166,11 +186,16 @@ class Migration(SchemaMigration):
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
         u'search.userfavorite': {
-            'Meta': {'object_name': 'UserFavorite'},
+            'Meta': {'ordering': "['-date_favorited']", 'object_name': 'UserFavorite'},
             'date_favorited': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'gif': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['search.Gif']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
+        },
+        u'search.userscore': {
+            'Meta': {'object_name': 'UserScore'},
+            'score': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'user': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True', 'primary_key': 'True'})
         },
         u'taggit.tag': {
             'Meta': {'object_name': 'Tag'},
