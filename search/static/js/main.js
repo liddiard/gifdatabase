@@ -8,7 +8,7 @@ $(document).ready(function(){
     colorScore();
     $('.search input').focus();
 
-    $('.add-gif').click(addGifModal);
+    $('button.add-gif').click(addGifModal);
 
     $('.user-actions .user, .user-actions .star').tipsy({gravity: 'n'});
     $('#imgur-link').tipsy({gravity:'w'}).click(function(){ $('#add-gif input').focus() });
@@ -40,6 +40,7 @@ function addGifModal() {
     });
     $('.modal-mask').click(function() {
         $('.modal-mask, #add-gif').hide();
+        $(this).unbind('click');
         $('.search input').focus();
     });
 }

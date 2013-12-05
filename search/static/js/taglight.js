@@ -617,6 +617,22 @@ votes = {};
             $('#lbTopContainer .menu').hide();
         }
 
+        function lbModal(modal_id) {
+            var modal = $('.modal#'+modal_id);
+            var mask = $('.modal-mask');
+            var add_gif = $('button.add-gif').addClass('disabled').unbind('click'); // disable the add GIF modal so it doesn't conflict
+            modal.show();
+            mask.show();
+            modal.find('input').focus();
+            mask.click(function(){
+                modal.hide();
+                $(this).unbind('click');
+                mask.hide();
+                add_gif.removeClass('disabled').click(addGifModal);
+                console.log("rebound addGifModal");
+            });
+        }
+
         /* Bind click events */
         $('#lbCaption .tag > .confirm').click(function(){ vote($(this), true); });
         $('#lbCaption .tag > .deny').click(function(){ vote($(this), false); });
@@ -626,6 +642,8 @@ votes = {};
         $('#lbTopContainer .copy').click(function(){ toggleCopyText($(this)); });
         $('#lbTopContainer #flag-broken').click(function(){ ajaxFlagOneStep(tag_add.attr('data-gif'), 'mi'); });
         $('#lbTopContainer #flag-inappropriate').click(function(){ ajaxFlagOneStep(tag_add.attr('data-gif'), 'in'); });
+        $('#lbTopContainer #flag-duplicate').click(function(){ lbModal('flag-duplicate'); });
+        $('#lbTopContainer #propose-substitute').click(function(){ lbModal('propose-substitute'); });
 
         $('#lbTopContainer .star').tipsy({gravity: 's'});
         $('#lbTopContainer .copy').tipsy({gravity: 'e'});
