@@ -577,17 +577,27 @@ class AjaxCheckValidGif(AuthenticatedAjaxView):
         except KeyError:
             return self.keyError("Required key (filename) not found in "
                                  "request.")
-        try:
-            gif = Gif.objects.get(filename=filename)
-            return self.error("AlreadyExistsError", "Gif %s already exists" %\
-                         filename)
-        except Gif.DoesNotExist:
-            url = "http://i.imgur.com/%s.gif" % filename
-            if isAnimated(imgFromUrl(url)):
-                return self.jsonResponse(result=0, url=url)
+        preexisting = request.POST.get('preexisting', False)
+        if preexisting:
+            try:
+                gif = Gif.objects.get(filename=filename)
+            except Gif.DoesNotExist:
+                return self.doesNotExist("GIF matching filename does not exist.")
             else:
-                return self.error("InvalidFileError", "Image %s is not an "
-                                  "animated gif." % filename)
+                return self.jsonResponse(result=0, url=url)
+        else:
+            try:
+                gif = Gif.objects.get(filename=filename)
+            except Gif.DoesNotExist:
+                url = "http://i.imgur.com/%s.gif" % filename
+                if isAnimated(imgFromUrl(url)):
+                    return self.jsonResponse(result=0, url=url)
+                else:
+                    return self.error("InvalidFileError", "Image %s is not an "
+                                      "animated gif." % filename)
+            else:
+                return self.error("AlreadyExistsError", "Gif %s already exists" %\
+                             filename)
 
 
 class AjaxAddGif(AuthenticatedAjaxView):
