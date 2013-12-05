@@ -3,12 +3,12 @@
     <div class="top-data">
         <img class="btn dropdown"/>
         <ul class="menu">
-            <li>Flag as broken/missing image</li>
-            <li>Flag as duplicate</li>
-            <li>Flag as inappropriate</li>
-            <li>I have a better version of this GIF</li>
+            <li id="flag-broken">Flag as broken/missing image</li>
+            <li id="flag-duplicate">Flag as duplicate</li>
+            <li id="flag-inappropriate">Flag as inappropriate</li>
+            <li id="substitution-proposal">I have a better version of this GIF</li>
         </ul>
-        <img title="Add to starred" class="btn star" data-gif="{{ gif.pk }}"/>
+        <img title="Add to starred" class="btn star"/>
         <img title="Copy link" class="btn copy"/>
         <input class="copy-text" value="{{ gif.getUrl }}" readonly/>
     </div>
