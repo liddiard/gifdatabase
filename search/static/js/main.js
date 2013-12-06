@@ -27,13 +27,7 @@ function addGifModal() {
         if ($('#add-gif').is(':visible')) { 
             var add_gif = $('#add-gif input');
             add_gif.focus();
-            add_gif.on('input', function(){
-                if ($(this).val().length > 0) {
-                    console.log("detected a non-zero input change");
-                    add_gif.prop('disabled', true);
-                    showGifFromUrl(add_gif.val());
-                } else add_gif.prop('disabled', false);
-            });
+            add_gif.on('input', gifInputChange);
         } else {
             $('.search input').focus();
         }
@@ -43,6 +37,14 @@ function addGifModal() {
         $(this).unbind('click');
         $('.search input').focus();
     });
+}
+
+function gifInputChange() {
+    if ($(this).val().length > 0) {
+        console.log("detected a non-zero input change");
+        $(this).prop('disabled', true);
+        showGifFromUrl($(this).val());
+    } else $(this).prop('disabled', false);
 }
 
 function showGifFromUrl(string) {
@@ -84,8 +86,8 @@ function goodUrl(filename) {
 
 function goodGif(response) {
     $('.lbLoading.check-gif').hide();
-    var add_gif_input = $('#add-gif input');
-    add_gif_input.prop('disabled', false);
+    var input = $('.modal input:visible');
+    input.prop('disabled', false);
     if (response.result) {
         if (response.error === "AlreadyExistsError")
             badGif("Sorry, that GIF is already in GIFdatabase. Try another!");
@@ -94,9 +96,9 @@ function goodGif(response) {
         else
             alert("Oh no! Something went wrong. Please report this error: \n" + response.error + ": " + response.message);
     } else {
-        add_gif_input.val('');
-        $('#add-gif .error').text('');
-        $('#add-gif, .modal-mask').hide();
+        input.val('');
+        $('.modal:visible .error').text('');
+        $('.modal, .modal-mask').hide();
         var aside_content = "<input class='tag-add-new' placeholder='+ add tags' maxlength='"+context.TAG_MAX_LEN+"'/><button class='disabled medium save'>Save</button><div class='lbLoading small save'></div>"
         $.slimbox(response.url, aside_content, {is_unsaved: true});
     }
