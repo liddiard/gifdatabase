@@ -422,6 +422,7 @@ button {
         background-color: $neutral_gray;
         opacity: 0.5;
         cursor: default;
+        box-shadow: none; 
     }
 
     &.success {

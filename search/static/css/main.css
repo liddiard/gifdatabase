@@ -374,7 +374,8 @@ button {
   button.disabled {
     background-color: #999999;
     opacity: 0.5;
-    cursor: default; }
+    cursor: default;
+    box-shadow: none; }
   button.success {
     color: white;
     background-color: rgba(0, 255, 0, 0.2);
