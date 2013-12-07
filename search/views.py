@@ -666,13 +666,17 @@ class AjaxAddFlag(AuthenticatedAjaxView):
             return self.doesNotExist("Couldn't flag GIF because GIF matching "
                                      "given id doesn't exist.")
         if flag_type == 'du': # duplicate
-            if filename is not None:
-                flag = Flag.objects.get_or_create(user_flagged=user, gif=gif,
-                                                  reason=flag_type, 
-                                                  filename=filename)[0]
-                return self.jsonResponse(result=0, flag=flag.pk)
-            else:
+            if filename is None:
                 return keyError("Required key (filename) not found in request.")
+            try:
+                duplicate = Gif.objects.get(filename=filename)
+            except Gif.DoesNotExist:
+                return self.doesNotExist("Couldn't flag GIF because duplicate "
+                                         "GIF matching filename doesn't exist")
+            flag = Flag.objects.get_or_create(user_flagged=user, gif=gif,
+                                              reason=flag_type, 
+                                              duplicate=duplicate)[0]
+            return self.jsonResponse(result=0, flag=flag.pk)
         elif flag_type == 'mi' or flag_type == 'in': # missing/inappropriate
             flag = Flag.objects.get_or_create(user_flagged=user, gif=gif, 
                                               reason=flag_type)[0]

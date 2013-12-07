@@ -586,11 +586,16 @@ button {
         margin-top: 1em;
     }
 
+    .error {
+        display: block;
+        font-size: 0.8em;
+        text-align: right;
+    }
+
     &#add-gif .error {
         position: absolute;
         bottom: 58px;
         right: 10px;
-        font-size: 0.8em;
     }
 }
 

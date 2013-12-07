@@ -24,11 +24,13 @@ $(document).ready(function(){
 
 function addGifModal() {
     $('.modal-mask, #add-gif').toggle(0, function(){
+        var add_gif = $('#add-gif input');
         if ($('#add-gif').is(':visible')) { 
-            var add_gif = $('#add-gif input');
+            add_gif.on('input', function(){ gifInputChange(add_gif, ajaxCheckGif) });
             add_gif.focus();
-            add_gif.on('input', gifInputChange);
         } else {
+            add_gif.unbind('input');
+            $('.modal-mask').unbind('click');
             $('.search input').focus();
         }
     });
@@ -39,15 +41,16 @@ function addGifModal() {
     });
 }
 
-function gifInputChange() {
-    if ($(this).val().length > 0) {
+function gifInputChange(elem, callback_action) {
+    console.log(arguments);
+    if (elem.val().length > 0) {
         console.log("detected a non-zero input change");
-        $(this).prop('disabled', true);
-        showGifFromUrl($(this).val());
-    } else $(this).prop('disabled', false);
+        elem.prop('disabled', true);
+        showGifFromUrl(elem.val(), callback_action);
+    } else elem.prop('disabled', false);
 }
 
-function showGifFromUrl(string) {
+function showGifFromUrl(string, callback_action) {
     var re = /\s*\/?(?:fig\.)?([a-zA-Z0-9]+)(?:\/|$)/;
     var match = reverse(string).match(re);
     /* traverse the string backwards, return the result forwards.
@@ -57,37 +60,35 @@ function showGifFromUrl(string) {
     if (match) {
         add_gif_filename = reverse(match[1]);
         console.log("Found match: " + add_gif_filename);
-        goodUrl(add_gif_filename);
-    } else badUrl("Whoops! That's not a vaild imgur image URL.");
+        goodUrl(add_gif_filename, callback_action);
+    } else badGif("Whoops! That's not a vaild imgur image URL.");
 }
 
-/* currently bypassed */
-function addGifCallback(filename, url, message) {
-    if (message === "error" || message === "timeout") {
-        badGif("Whoops! That's not a vaild imgur image URL.");
-    } else { goodUrl(filename) }
-}
-
-function badGif(message) {
-    $('#add-gif .error').text(message);
-    $('#add-gif input').select();
-}
-
-function goodUrl(filename) {
+function goodUrl(filename, callback_action) {
     console.log("ajax posting with filename: " + filename);
     var check_spinner = $('.lbLoading.check-gif');
     check_spinner_id = typeof check_spinner_id === 'undefined' ? animateSpinner(check_spinner, 22, 8) : check_spinner_id;
     check_spinner.show();
+    callback_action(filename);
+}
+
+function ajaxCheckGif(filename) {
     ajaxPost(
         {'filename': filename},
         "/api/gif-check/",
         goodGif);
 }
 
+function badGif(message) {
+    var input = $('.modal input:visible');
+    $('.modal:visible .error').text(message);
+    input.prop('disabled', false);
+    input.select();
+}
+
 function goodGif(response) {
     $('.lbLoading.check-gif').hide();
     var input = $('.modal input:visible');
-    input.prop('disabled', false);
     if (response.result) {
         if (response.error === "AlreadyExistsError")
             badGif("Sorry, that GIF is already in GIFdatabase. Try another!");
@@ -102,31 +103,6 @@ function goodGif(response) {
         var aside_content = "<input class='tag-add-new' placeholder='+ add tags' maxlength='"+context.TAG_MAX_LEN+"'/><button class='disabled medium save'>Save</button><div class='lbLoading small save'></div>"
         $.slimbox(response.url, aside_content, {is_unsaved: true});
     }
-}
-
-/* currently bypassed */
-function testImage(filename, callback, timeout) {
-    var url = "http://i.imgur.com/" + filename + ".gif";
-    timeout = timeout || 5000;
-    var timedOut = false, timer;
-    var img = new Image();
-    img.onerror = img.onabort = function() {
-        if (!timedOut) {
-            clearTimeout(timer);
-            callback(filename, "error");
-        }
-    };
-    img.onload = function() {
-        if (!timedOut) {
-            clearTimeout(timer);
-            callback(filename, "success");
-        }
-    };
-    img.src = url;
-    timer = setTimeout(function() {
-        timedOut = true;
-        callback(filename, "timeout");
-    }, timeout); 
 }
 
 function colorScore(score_elem) {

@@ -483,11 +483,14 @@ button {
     font-size: 0.9em;
     text-transform: uppercase;
     margin-top: 1em; }
+  .modal .error {
+    display: block;
+    font-size: 0.8em;
+    text-align: right; }
   .modal#add-gif .error {
     position: absolute;
     bottom: 58px;
-    right: 10px;
-    font-size: 0.8em; }
+    right: 10px; }
 
 .modal-mask {
   display: none;

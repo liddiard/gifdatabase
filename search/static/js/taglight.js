@@ -610,20 +610,23 @@ votes = {};
         }
 
         function ajaxFlagOneStep(gif_id, flag_type) {
-            ajaxPost({gif: gif_id, type: flag_type}, '/api/flag-add/', function(){
-                $('#action-confirmation').show();
-                setTimeout(function(){ $('#action-confirmation').fadeOut(2000) }, 4000);
-            });
+            ajaxPost({gif: gif_id, type: flag_type}, '/api/flag-add/', flagConfirmation);
             $('#lbTopContainer .menu').hide();
+        }
+
+        function flagConfirmation() {
+            $('#action-confirmation').show();
+            setTimeout(function(){ $('#action-confirmation').fadeOut(2000) }, 4000);
         }
 
         function lbModal(modal_id) {
             var modal = $('.modal#'+modal_id);
             var mask = $('.modal-mask');
             var add_gif = $('button.add-gif').addClass('disabled').unbind('click'); // disable the add GIF modal so it doesn't conflict
+            var input = modal.find('input');
             modal.show();
             mask.show();
-            modal.find('input').focus();
+            input.focus();
             mask.click(function(){
                 modal.hide();
                 $(this).unbind('click');
@@ -631,6 +634,34 @@ votes = {};
                 add_gif.removeClass('disabled').click(addGifModal);
                 console.log("rebound addGifModal");
             });
+            return modal;
+        }
+
+        function ajaxFlagDuplicate(filename) {
+            ajaxPost(
+                {'gif': tag_add.attr('data-gif'),
+                 'type': 'du',
+                 'filename': filename},
+                "/api/flag-add/",
+                flagDuplicateCallback);
+        }
+
+        function flagDuplicateCallback(response) {
+            $('.lbLoading.check-gif').hide();
+            var input = $('.modal input:visible');
+            if (response.result) {
+                if (response.error === "DoesNotExist")
+                    badGif("That isn't a link to a GIF in GIFdatabase.");
+                else
+                    alert("Oh no! Something went wrong. Please report this error: \n" + response.error + ": " + response.message);
+            } else {
+                input.val('');
+                $('.modal:visible .error').text('');
+                $('.modal, .modal-mask').unbind('click').hide();
+                flagConfirmation();
+                $('button.add-gif').removeClass('disabled').click(addGifModal);
+            }
+            input.prop('disabled', false);
         }
 
         /* Bind click events */
@@ -642,7 +673,11 @@ votes = {};
         $('#lbTopContainer .copy').click(function(){ toggleCopyText($(this)); });
         $('#lbTopContainer #flag-broken').click(function(){ ajaxFlagOneStep(tag_add.attr('data-gif'), 'mi'); });
         $('#lbTopContainer #flag-inappropriate').click(function(){ ajaxFlagOneStep(tag_add.attr('data-gif'), 'in'); });
-        $('#lbTopContainer #flag-duplicate').click(function(){ lbModal('flag-duplicate'); });
+        $('#lbTopContainer #flag-duplicate').click(function(){
+            lbModal('flag-duplicate');
+            var flag_duplicate = $('#flag-duplicate input');
+            flag_duplicate.on('input', function(){ gifInputChange(flag_duplicate, ajaxFlagDuplicate) });
+        });
         $('#lbTopContainer #propose-substitute').click(function(){ lbModal('propose-substitute'); });
 
         $('#lbTopContainer .star').tipsy({gravity: 's'});
