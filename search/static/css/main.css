@@ -358,6 +358,7 @@ input {
 
 button {
   color: black;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: #00ccff;
   border: 0;
   cursor: pointer;
