@@ -428,7 +428,7 @@ votes = {};
                 var content = elem.val().toLowerCase();
                 if (!validateTag(content) || content.length > context.TAG_MAX_LEN) {
                     elem.select();
-                    $('#lbCaption .error').text("Tags may only contain letters, numbers, spaces, and the following characters: period (.), apostrophe ('), dash (-).").stop().css("opacity", "1").fadeTo(12000, 0.6);
+                    $('#lbCaption .error').text("Tags may only contain letters, numbers, spaces, and the following characters: period (.), apostrophe ('), hyphen (-).").stop().css("opacity", "1").fadeTo(12000, 0.6);
                     return;
                 }
                 elem.val('');
