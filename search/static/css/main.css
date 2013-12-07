@@ -602,6 +602,9 @@ section.profile h2 {
 section .no-results {
   margin-left: 1.8em; }
 
+.email-support {
+  display: block; }
+
 .preload {
   display: none !important; }
 
