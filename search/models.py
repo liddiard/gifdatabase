@@ -257,12 +257,14 @@ class Flag(models.Model):
                                   blank=True)
     user_flagged = models.ForeignKey(User)
     date_flagged = models.DateTimeField(auto_now_add=True)
+    addressed = models.BooleanField(default=False)
+    addressed.verbose_name = 'A'
     
     def __unicode__(self):
         return unicode(self.gif)
 
 class FlagAdmin(admin.ModelAdmin):
-    list_display = ('gif', 'reason', 'user_flagged', 'date_flagged')
+    list_display = ('addressed', 'gif', 'reason', 'user_flagged', 'date_flagged')
     readonly_fields = ('date_flagged',)
 admin.site.register(Flag, FlagAdmin)
 
