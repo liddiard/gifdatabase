@@ -249,8 +249,10 @@ votes = {};
         function colorTags() {
             $('#lbCaption .tag').each(function(){
                 colorSpecialTags($(this));
-                var tag_id = $(this).attr('data-tag');
-                ajaxPost({tag: tag_id}, "/api/tagvote-get/", ajaxInterpretTagVote);
+                if (context.user_is_authenticated) {
+                    var tag_id = $(this).attr('data-tag');
+                    ajaxPost({tag: tag_id}, "/api/tagvote-get/", ajaxInterpretTagVote);
+                }
             });
         }
 
@@ -261,7 +263,6 @@ votes = {};
 
         function constrainNumTags(is_new) {
             var num_tags = $('#lbCaption .tag').length;
-            console.log(num_tags);
             var input = $('#lbCaption input');
             if (num_tags > 11) {
                 input.prop('disabled', true);
