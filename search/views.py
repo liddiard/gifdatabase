@@ -183,14 +183,14 @@ class AboutPageView(BasePageView):
     template_name = "about.html"
 
 
+class FaqPageView(BasePageView):
+
+    template_name = "faq.html"
+
+
 class TermsPageView(BasePageView):
 
     template_name = "terms.html"
-
-
-class LegalPageView(BasePageView):
-
-    template_name = "legal.html"
 
 
 class AccountPreferencesView(BasePageView):
