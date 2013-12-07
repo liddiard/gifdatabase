@@ -652,7 +652,7 @@ votes = {};
             var input = $('.modal input:visible');
             if (response.result) {
                 if (response.error === "DoesNotExist")
-                    badGif("Whoops, that isn't a link to a GIF in GIFdatabase.");
+                    badGif("Whoops, that's not a link to a GIF in GIFdatabase.");
                 else
                     alert("Oh no! Something went wrong. Please report this error: \n" + response.error + ": " + response.message);
             } else {

@@ -73,7 +73,7 @@
                     {% if user.canAddGif %}<button class="add-gif"><img src="{{ STATIC_URL }}img/plus_black.png"/>Add GIF</button>{% endif %}
                     <a class="user" title="Your profile" href="{% url 'profile' user %}"><span class="username">{{ user.username }}</span> <span class="score">{{ user.getUserScore }}</span></a>
                     <a class="star" title="Your starred GIFs" href="{% url 'profile_starred' user %}"><img src="{{ STATIC_URL }}img/star_selected.png"/></a>
-                    <a class="logout" href="/logout/">Logout</a>
+                    <a class="logout" href="/logout/">Log out</a>
                 {% else %}
                     <a href="{% url 'registration_register' %}"><button class="medium create-account">Create an account</button></a>
                     <form method="post" action="{% url 'login' %}" id="login">{% csrf_token %}
