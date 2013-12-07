@@ -253,7 +253,7 @@ class Flag(models.Model):
     FLAGGED_CHOICES = (('mi', '404 not found'),
                        ('in', 'inappropriate content'), ('du', 'duplicate'))
     reason = models.CharField(choices=FLAGGED_CHOICES, max_length=2)
-    duplicate = models.ForeignKey('Gif', related_name='duplicate' null=True, 
+    duplicate = models.ForeignKey('Gif', related_name='duplicate', null=True, 
                                   blank=True)
     user_flagged = models.ForeignKey(User)
     date_flagged = models.DateTimeField(auto_now_add=True)
