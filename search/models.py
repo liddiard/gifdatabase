@@ -25,7 +25,7 @@ def createUserScore(sender, **kwargs):
         print "user_activated signal caught, but UserScore not created"
 user_activated.connect(createUserScore) # catch django_registration's
                                         # user_activated signal and create
-                                        # necessary additional objects
+                                        # necessary objects for user
 
 def modifyUserScore(userObject, delta):
     u_score = UserScore.objects.get(user=userObject)
@@ -249,11 +249,12 @@ class TagInstanceAdmin(admin.ModelAdmin):
 admin.site.register(TagInstance, TagInstanceAdmin)
 
 class Flag(models.Model):
-    gif = models.ForeignKey('Gif')
+    gif = models.ForeignKey('Gif', related_name='current')
     FLAGGED_CHOICES = (('mi', '404 not found'),
                        ('in', 'inappropriate content'), ('du', 'duplicate'))
     reason = models.CharField(choices=FLAGGED_CHOICES, max_length=2)
-    filename = models.CharField(max_length=32, blank=True)
+    duplicate = models.ForeignKey('Gif', related_name='duplicate' null=True, 
+                                  blank=True)
     user_flagged = models.ForeignKey(User)
     date_flagged = models.DateTimeField(auto_now_add=True)
     
