@@ -1,16 +1,15 @@
 <a class="thumb-container" href="{{ gif.getUrl }}" rel="lightbox-{{ gif.group }}">
     <img class="thumb" src="{{ gif.getThumbUrl }}" />
     <div class="top-data">
+        <img title="Add to starred" class="btn star"/>
         {% if user.is_authenticated %}
-        <img class="btn dropdown"/>
+        <img title="Flag as&hellip;" class="btn dropdown"/>
         <ul class="menu">
-            <li id="flag-broken">Flag as broken/missing image</li>
-            <li id="flag-duplicate">Flag as duplicate</li>
-            <li id="flag-inappropriate">Flag as inappropriate</li>
-            <li id="propose-substitute">I have a better version of this GIF</li>
+            <li id="flag-broken">Broken/missing image</li>
+            <li id="flag-inappropriate">Inappropriate content</li>
+            <li id="flag-duplicate">Duplicate GIF&hellip;</li>
         </ul>
         {% endif %}
-        <img title="Add to starred" class="btn star"/>
         <img title="Copy link" class="btn copy"/>
         <input class="copy-text" value="{{ gif.getUrl }}" readonly/>
     </div>

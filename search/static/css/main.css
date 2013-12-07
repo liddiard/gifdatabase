@@ -438,7 +438,7 @@ button {
     cursor: pointer;
     padding: 0 0.5em; }
     .menu li:hover {
-      background-color: rgba(255, 255, 255, 0.5); }
+      background-color: rgba(255, 255, 255, 0.4); }
 
 .modal {
   display: none;
@@ -506,12 +506,12 @@ button {
 #action-confirmation {
   display: none;
   position: fixed;
-  width: 200px;
-  height: 123.60939px;
+  width: 192px;
+  height: 118.66502px;
   top: 50%;
   left: 50%;
-  margin-top: -61.8047px;
-  margin-left: -100px;
+  margin-top: -59.33251px;
+  margin-left: -96px;
   background-color: rgba(0, 255, 0, 0.8);
   z-index: 10000;
   color: black;
@@ -632,10 +632,10 @@ section .no-results {
   #lbTopContainer .star.selected {
     content: url("../img/star_selected.png"); }
 #lbTopContainer .dropdown {
-  content: url("../img/arrow_down.png");
-  margin-left: 1px; }
+  content: url("../img/flag.png");
+  margin-left: 2px; }
   #lbTopContainer .dropdown.hover {
-    content: url("../img/arrow_down_hover.png"); }
+    content: url("../img/flag_hover.png"); }
 
 #lbBottomContainer .user {
   display: inline-block;

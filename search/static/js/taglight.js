@@ -348,7 +348,7 @@ votes = {};
                 $('#lbTopContainer .menu').show(); },
             function() { lb_menu_timeout = setTimeout(function () {
                 $('#lbTopContainer .btn.dropdown').removeClass('hover');
-                $('#lbTopContainer .menu').hide(); }, 200) }
+                $('#lbTopContainer .menu').hide(); }, 150) }
         );
 
         function ajaxTagVote(tag, set) {
@@ -616,7 +616,7 @@ votes = {};
 
         function flagConfirmation() {
             $('#action-confirmation').show();
-            setTimeout(function(){ $('#action-confirmation').fadeOut(2000) }, 4000);
+            setTimeout(function(){ $('#action-confirmation').fadeOut(1000) }, 4000);
         }
 
         function lbModal(modal_id) {
@@ -651,7 +651,7 @@ votes = {};
             var input = $('.modal input:visible');
             if (response.result) {
                 if (response.error === "DoesNotExist")
-                    badGif("That isn't a link to a GIF in GIFdatabase.");
+                    badGif("Whoops, that isn't a link to a GIF in GIFdatabase.");
                 else
                     alert("Oh no! Something went wrong. Please report this error: \n" + response.error + ": " + response.message);
             } else {
@@ -680,7 +680,7 @@ votes = {};
         });
         $('#lbTopContainer #propose-substitute').click(function(){ lbModal('propose-substitute'); });
 
-        $('#lbTopContainer .star').tipsy({gravity: 's'});
+        $('#lbTopContainer .star, #lbTopContainer .dropdown').tipsy({gravity: 's'});
         $('#lbTopContainer .copy').tipsy({gravity: 'e'});
         $('#lbCaption .disabled').tipsy({gravity: 's'});
 

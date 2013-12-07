@@ -520,7 +520,7 @@ button {
         padding: 0 0.5em;
 
         &:hover {
-            background-color: rgba(255,255,255, 0.5);
+            background-color: rgba(255,255,255, 0.4);
         }
     }
 }
@@ -611,7 +611,7 @@ button {
 
 #action-confirmation {
     display: none;
-    $width: 200px;
+    $width: 192px;
     $height: $width / $GOLDEN_RATIO;
     position: fixed;
     width: $width;
@@ -803,11 +803,11 @@ section {
     }
 
     .dropdown {
-        content: url('../img/arrow_down.png');
-        margin-left: 1px;
+        content: url('../img/flag.png');
+        margin-left: 2px;
 
         &.hover {
-            content: url('../img/arrow_down_hover.png');
+            content: url('../img/flag_hover.png');
         }
     }
 }
