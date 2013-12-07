@@ -456,7 +456,8 @@ class AjaxAddTag(AuthenticatedAjaxView):
         except KeyError:
             return self.keyError("Required keys (gif, tag) not found in "
                                  "request.")
-        pattern = re.compile("^[a-zA-Z0-9\. '-]+$")
+        tag_name = tag_name.lower()
+        pattern = re.compile("^[a-z0-9\. '-]+$")
         if not pattern.match(tag_name):
             return self.validationError("Tag contains invalid characters.")
         if len(tag_name) > TAG_MAX_LEN:
@@ -618,8 +619,8 @@ class AjaxAddGif(AuthenticatedAjaxView):
             return self.error("AlreadyExistsError", "Gif %s already exists" %\
                               filename)
         except Gif.DoesNotExist:
-            pattern = re.compile("^[a-zA-Z0-9\. '-]+$")
-            valid_tags = [tag_name for tag_name in tags if 
+            pattern = re.compile("^[a-z0-9\. '-]+$")
+            valid_tags = [tag_name.lower() for tag_name in tags if 
                           pattern.match(tag_name) and
                           len(tag_name) < TAG_MAX_LEN]
             if len(valid_tags) < 4:

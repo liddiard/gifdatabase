@@ -425,7 +425,7 @@ votes = {};
                 if (loginRequired('tag_add'))
                     return;
                 event.preventDefault();
-                var content = elem.val();
+                var content = elem.val().toLowerCase();
                 if (!validateTag(content) || content.length > context.TAG_MAX_LEN) {
                     elem.select();
                     return;
@@ -452,7 +452,7 @@ votes = {};
             }
 
             function validateTag(input) {
-                return /^[a-zA-Z0-9\. '-]+$/.test(input);
+                return /^[a-z0-9\. '-]+$/.test(input);
             }
         }
 
