@@ -637,6 +637,11 @@ section .no-results {
   #lbTopContainer .dropdown.hover {
     content: url("../img/flag_hover.png"); }
 
+#lbCaption .error {
+  display: inline-block;
+  margin-top: 0.2em;
+  font-size: 1.2em; }
+
 #lbBottomContainer .user {
   display: inline-block;
   font-size: 0.8em;

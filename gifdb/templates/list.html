@@ -22,6 +22,7 @@
             {% endif %}
         {% endfor %}
         <input class="tag-add" placeholder="+ add tag" data-gif="{{ gif.pk }}" maxlength="{{ TAG_MAX_LEN }}"/>
+        <span class="error"></span>
     </div>
     <div class="bottom-data">
         {% if gif.user_added.is_active %}

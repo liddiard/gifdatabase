@@ -81,7 +81,7 @@ function ajaxCheckGif(filename) {
 
 function badGif(message) {
     var input = $('.modal input:visible');
-    $('.modal:visible .error').text(message);
+    $('.modal:visible .error').text(message).stop().css("opacity", "1").fadeTo(12000, 0.6);
     input.prop('disabled', false);
     input.select();
 }
