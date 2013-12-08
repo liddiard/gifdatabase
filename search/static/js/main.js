@@ -130,13 +130,13 @@ function loginRequired(action) {
                    'tag_vote': "vote on tags",
                    'star': "star your favorite GIFs"};
     var nut = actions[action] || "do that";
-    if (context.user_is_authenticated) {
-        if (context.user_can_add)
+    if (context.user.is_authenticated) {
+        if (context.user.can_add)
             var message = "You can't currently "+nut+" because your score is low. Add some GIFs to improve your score!";
         else
             var message = "You can't "+nut+" because your score is low."
         if (action === 'tag_add' || action === 'tag_vote') {
-            if (context.user_can_tag)
+            if (context.user.can_tag)
                 return false;
             else {
                 bannerNotification("error", message);

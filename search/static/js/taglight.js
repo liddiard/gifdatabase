@@ -249,7 +249,7 @@ votes = {};
         function colorTags() {
             $('#lbCaption .tag').each(function(){
                 colorSpecialTags($(this));
-                if (context.user_is_authenticated) {
+                if (context.user.is_authenticated) {
                     var tag_id = $(this).attr('data-tag');
                     ajaxPost({tag: tag_id}, "/api/tagvote-get/", ajaxInterpretTagVote);
                 }

@@ -8,10 +8,10 @@
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/taglight.css">
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/tipsy.css">
     <script>
-        var context = {
-            user_is_authenticated: "{{ user.is_authenticated }}" === "True" ? true : false,
-            user_can_tag: {% if user.canTag %}true{% else %}false{% endif %},
-            user_can_add: {% if user.canAddGif %}true{% else %}false{% endif %},
+        window.context = {
+            user: {is_authenticated: {{ user.is_authenticated|lower }},
+                   can_tag: {% if user.canTag %}true{% else %}false{% endif %},
+                   can_add: {% if user.canAddGif %}true{% else %}false{% endif %}},
             TAG_MAX_LEN: {{ TAG_MAX_LEN }},
             login_result: {% if messages %}{% for message in messages %}{{ message }}{% endfor %}{% else %}0{% endif %}
         }
