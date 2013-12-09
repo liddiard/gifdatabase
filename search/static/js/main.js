@@ -8,7 +8,7 @@ $(document).ready(function(){
     colorScore();
     $('.search input').focus();
 
-    $('button.add-gif').click(addGifModal);
+    $('.add-gif').click(addGifModal);
 
     $('.user-actions .user, .user-actions .star').tipsy({gravity: 'n'});
     $('#imgur-link').tipsy({gravity:'w'}).click(function(){ $('#add-gif input').focus() });
