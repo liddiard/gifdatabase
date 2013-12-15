@@ -2,7 +2,7 @@
 
 import django
 import os
-import dj_database_url
+from django.core.exceptions import ImproperlyConfigured 
 
 # here() gives us file paths from the root of the system to the directory
 # holding the current file.
@@ -12,6 +12,15 @@ PROJECT_ROOT = here("..")
 # root() gives us file paths from the root of the system to whatever
 # folder(s) we pass it starting at the parent directory of the current file.
 root = lambda * x: os.path.join(os.path.abspath(PROJECT_ROOT), *x)
+
+     
+msg ="Set the %s environment variable" 
+def get_env_variable(var_name): 
+    try: 
+        return os.environ[var_name] 
+    except KeyError: 
+        error_msg = msg % var_name 
+        raise ImproperlyConfigured(error_msg)
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -30,10 +39,6 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-
-DATABASES = {
-    'default': dj_database_url.config()
-}
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
