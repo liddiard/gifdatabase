@@ -1,20 +1,25 @@
+from datetime import datetime, timedelta
 from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from search import image
-from gifdb.settings.base import S3_URL
+from django.core.cache import cache
 
 from registration.signals import user_activated
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
 from taggit.forms import TagWidget
 
+from gifdb.settings.base import S3_URL
+from search import image
+
 DEFAULT_USER_ID = 1
 TAG_MAX_LEN = 32
 HOST_CHOICES = (('ig', 'imgur'),) # keys are ideally 2 letters,
                                   # cannot start with a number
 
+
+# signals
 
 def createUserScore(sender, **kwargs):
     u = kwargs.get('user')
@@ -27,10 +32,25 @@ user_activated.connect(createUserScore) # catch django_registration's
                                         # user_activated signal and create
                                         # necessary objects for user
 
+
+# utility functions
+
+def group(queryset, group, intermediate=False):
+    if intermediate:
+        for obj in queryset:
+            obj.gif.group = group
+    else:
+        for obj in queryset:
+            obj.group = group
+    return queryset
+
 def modifyUserScore(userObject, delta):
     u_score = UserScore.objects.get(user=userObject)
     u_score.score += delta
     u_score.save()
+
+
+# models
 
 class UserScore(models.Model): 
     user = models.OneToOneField(User, primary_key=True)
@@ -127,6 +147,8 @@ class Gif(models.Model):
             modifyUserScore(self.user_added, 1) # only increase user's score 
                                                 # if gif is created, not updated
         super(Gif, self).save(force_insert, force_update, *args, **kwargs)
+        queryset = group(Gif.objects.order_by('-date_added')[:9], 'recent')
+        cache.set('recent_gifs', queryset)
     
     def delete(self):
         image.deleteThumb(self.getThumbFilename())
@@ -363,6 +385,10 @@ class UserFavorite(models.Model):
             g_favorite.save()
         super(UserFavorite, self).save(force_insert, force_update, *args,
                                        **kwargs)
+        queryset = group(Gif.objects.filter(date_added__gt=datetime.now()-
+                         timedelta(days=7)).order_by('-stars')[:9], 
+                         "recommended")
+        cache.set('recommended_gifs', queryset)
     
     def delete(self):
         g_favorite = self.gif

@@ -1,6 +1,8 @@
 import json, re
-from datetime import datetime, timedelta
 from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.core.cache import cache
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import (authenticate, login as django_login,
@@ -9,8 +11,6 @@ from django.contrib.auth import views as auth_views
 from django.utils.datastructures import MultiValueDictKeyError
 from django.views.generic.base import View, TemplateView
 from django.views.generic.edit import FormView
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.core.urlresolvers import reverse, reverse_lazy
 
 from taggit.models import Tag
 from registration.backends.default.views import (ActivationView as
@@ -19,22 +19,13 @@ from registration.backends.default.views import (ActivationView as
                                                  BaseRegistrationView)
 
 from search import engine
-from search.models import (TAG_MAX_LEN, User, UserFavorite, Gif, TagInstance, 
-                           UserScore, TagVote, Flag)
+from search.models import (TAG_MAX_LEN, group, User, UserFavorite, Gif, 
+                           TagInstance, UserScore, TagVote, Flag)
 from search.forms import ConfirmCurrentUserForm
 from search.image import imgFromUrl, isAnimated
 
 
 # page utility functions
-
-def group(queryset, group, intermediate=False):
-    if intermediate:
-        for obj in queryset:
-            obj.gif.group = group
-    else:
-        for obj in queryset:
-            obj.group = group
-    return queryset
 
 def paginate(request, queryset):
     paginator = Paginator(queryset, 19)
@@ -58,8 +49,7 @@ class BasePageView(TemplateView):
         context = super(BasePageView, self).get_context_data(**kwargs)
         user = self.request.user
         context['TAG_MAX_LEN'] = TAG_MAX_LEN
-        context['recent_gifs'] = group(Gif.objects\
-                                       .order_by('-date_added')[:9], "recent")
+        context['recent_gifs'] = cache.get('recent_gifs')
         if user.is_authenticated(): # get gifs similar to the ones on which
                                     # user has added tags
             spots = 9
@@ -74,10 +64,7 @@ class BasePageView(TemplateView):
                 if len(recommended_gifs) == spots:
                     break # stop looping if all spots are filled
         else: # get the most starred gifs added within the last week
-            recommended_gifs = group(Gif.objects\
-                                     .filter(date_added__gt=datetime.now()-
-                                     timedelta(days=7)).order_by('-stars')[:9],
-                                     "recommended")
+            recommended_gifs = cache.get('recommended_gifs')
         context['recommended_gifs'] = recommended_gifs 
         return context
 
