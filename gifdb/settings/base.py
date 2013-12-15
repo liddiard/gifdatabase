@@ -163,13 +163,6 @@ INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + LOCAL_APPS
 REGISTRATION_OPEN = False
 ACCOUNT_ACTIVATION_DAYS = 7
 
-# email settings
-EMAIL_HOST = 'smtp.mandrill.com'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = os.environ['MANDRILL_USERNAME']
-EMAIL_HOST_PASSWORD = os.environ['MANDRILL_APIKEY']
-EMAIL_USE_SSL = True
-
 DJANGO_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.debug",

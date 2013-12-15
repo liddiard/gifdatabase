@@ -18,7 +18,7 @@ from registration.backends.default.views import (ActivationView as
                                                  RegistrationView as
                                                  BaseRegistrationView)
 
-from gifdb.settings import OBFUSCATION_KEY
+from gifdb.settings.base import OBFUSCATION_KEY
 from search import engine
 from search.models import (TAG_MAX_LEN, group, queryRecentGifs, 
                            queryRecommendedGifs, User, UserFavorite, Gif, 

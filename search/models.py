@@ -10,7 +10,7 @@ from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
 from taggit.forms import TagWidget
 
-from gifdb.settings import S3_URL, OBFUSCATION_KEY
+from gifdb.settings.base import S3_URL, OBFUSCATION_KEY
 from search import image
 
 DEFAULT_USER_ID = 1
