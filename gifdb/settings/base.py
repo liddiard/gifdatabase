@@ -100,6 +100,9 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = os.environ['SECRET_KEY']
 
+# NOT cryptographically secure
+OBFUSCATION_KEY = int(os.environ['OBFUSCATION_KEY'], 16)
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -174,6 +177,7 @@ DJANGO_CONTEXT_PROCESSORS = (
 USER_CONTEXT_PROCESSORS = ()
 
 TEMPLATE_CONTEXT_PROCESSORS = (DJANGO_CONTEXT_PROCESSORS + 
+
                                USER_CONTEXT_PROCESSORS)
 
 # A sample logging configuration. The only tangible logging

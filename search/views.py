@@ -18,6 +18,7 @@ from registration.backends.default.views import (ActivationView as
                                                  RegistrationView as
                                                  BaseRegistrationView)
 
+from gifdb.settings import OBFUSCATION_KEY
 from search import engine
 from search.models import (TAG_MAX_LEN, group, queryRecentGifs, 
                            queryRecommendedGifs, User, UserFavorite, Gif, 
@@ -26,10 +27,10 @@ from search.forms import ConfirmCurrentUserForm
 from search.image import imgFromUrl, isAnimated
 
 
-# page utility functions
+# utility functions
 
 def paginate(request, queryset):
-    paginator = Paginator(queryset, 19)
+    paginator = Paginator(queryset, 19) # num results per page
     page = request.GET.get('page')
     try:
         qp = paginator.page(page)
@@ -38,6 +39,13 @@ def paginate(request, queryset):
     except EmptyPage:
         qp = paginator.page(paginator.num_pages)
     return qp
+
+def unmask_uid(uid):
+    try:
+        return int(uid) ^ OBFUSCATION_KEY
+    except ValueError:
+        return None 
+        # fails silently, but error will be caught when lookup by pk fails
 
 
 # pages
@@ -386,7 +394,7 @@ class AjaxTagVote(AuthenticatedAjaxView):
             return self.accessError("This user doesn't have the permission to "
                                "vote on tags.")
         try:
-            tag_id = request.POST['tag']
+            tag_id = unmask_uid(request.POST['tag'])
             set = request.POST['set']
         except KeyError:
             return self.keyError("Required keys (tag, set) not found in "
@@ -419,7 +427,7 @@ class AjaxGetTagVote(AuthenticatedAjaxView):
     def post(self, request):
         user = request.user
         try:
-            tag_id = request.POST['tag']
+            tag_id = unmask_uid(request.POST['tag'])
         except KeyError:
             return self.keyError("Required key (tag) not found in request.")
         try:
@@ -440,7 +448,7 @@ class AjaxAddTag(AuthenticatedAjaxView):
             return self.accessError("This user doesn't have the permission to "
                                "add tags.")
         try:
-            gif_id = request.POST['gif']
+            gif_id = unmask_uid(request.POST['gif'])
             tag_name = request.POST['tag']
         except KeyError:
             return self.keyError("Required keys (gif, tag) not found in "
@@ -477,7 +485,7 @@ class AjaxEraseTag(AuthenticatedAjaxView):
     def post(self, request):
         user = request.user
         try:
-            tag_id = request.POST['tag']
+            tag_id = unmask_uid(request.POST['tag'])
         except KeyError:
             return self.keyError("Required key (tag) not found in request.")
         try:
@@ -505,7 +513,7 @@ class AjaxGetStar(AuthenticatedAjaxView):
     def post(self, request):
         user = request.user
         try:
-            gif_id = request.POST['gif']
+            gif_id = unmask_uid(request.POST['gif'])
         except KeyError:
             return self.keyError("Required key (gif) not found in request.")
         try:
@@ -525,7 +533,7 @@ class AjaxAddStar(AuthenticatedAjaxView):
     def post(self, request):
         user = request.user
         try:
-            gif_id = request.POST['gif']
+            gif_id = unmask_uid(request.POST['gif'])
         except KeyError:
             return self.keyError("Required key (gif) not found in request.")
         try:
@@ -542,7 +550,7 @@ class AjaxRemoveStar(AuthenticatedAjaxView):
     def post(self, request):
         user = request.user
         try:
-            gif_id = request.POST['gif']
+            gif_id = unmask_uid(request.POST['gif'])
         except KeyError:
             return self.keyError("Required key (gif) not found in request.")
         try:
@@ -642,7 +650,7 @@ class AjaxAddFlag(AuthenticatedAjaxView):
             return self.accessError("This user doesn't have the permission to "
                                     "flag GIFs.")
         try:
-            gif_id = request.POST['gif']
+            gif_id = unmask_uid(request.POST['gif'])
             flag_type = request.POST['type']
         except KeyError:
             return self.keyError("Required keys (gif, type) not found in "

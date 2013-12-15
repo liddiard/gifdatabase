@@ -10,7 +10,7 @@ from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
 from taggit.forms import TagWidget
 
-from gifdb.settings.base import S3_URL
+from gifdb.settings import S3_URL, OBFUSCATION_KEY
 from search import image
 
 DEFAULT_USER_ID = 1
@@ -104,6 +104,9 @@ class Gif(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     user_added = models.ForeignKey(User)
     stars = models.PositiveIntegerField(default=0)
+
+    def uid(self):
+        return self.pk ^ OBFUSCATION_KEY
     
     def tagNames(self):
         return ', '.join(self.tags.names())
@@ -196,6 +199,9 @@ class TagInstance(TaggedItemBase):
     downs = models.PositiveIntegerField(default=0)
     date_added = models.DateTimeField(auto_now_add=True)
     user_added = models.ForeignKey(User, default=DEFAULT_USER_ID)
+
+    def uid(self):
+        return self.pk ^ OBFUSCATION_KEY
     
     def totalVotes(self):
         return self.ups + self.downs
@@ -299,6 +305,7 @@ class Flag(models.Model):
 
 class FlagAdmin(admin.ModelAdmin):
     list_display = ('addressed', 'gif', 'reason', 'user_flagged', 'date_flagged')
+    list_display_links = ('addressed', 'gif')
     readonly_fields = ('date_flagged',)
 admin.site.register(Flag, FlagAdmin)
 
