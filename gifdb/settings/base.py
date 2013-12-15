@@ -22,6 +22,7 @@ def get_env_variable(var_name):
         error_msg = msg % var_name 
         raise ImproperlyConfigured(error_msg)
 
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 AWS_STORAGE_BUCKET_NAME = 'project-menagerie'
