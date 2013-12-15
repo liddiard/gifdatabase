@@ -49,6 +49,19 @@ def modifyUserScore(userObject, delta):
     u_score.score += delta
     u_score.save()
 
+def queryRecentGifs():
+    print "running query for recent gifs"
+    queryset = group(Gif.objects.order_by('-date_added')[:9], 'recent')
+    cache.set('recent_gifs', queryset)
+    return queryset
+
+def queryRecommendedGifs():
+    print "running query for recommended gifs"
+    queryset = group(Gif.objects.filter(date_added__gt=datetime.now()-\
+                     timedelta(days=7)).order_by('-stars')[:9], "recommended")
+    cache.set('recommended_gifs', queryset)
+    return queryset
+
 
 # models
 
@@ -147,8 +160,7 @@ class Gif(models.Model):
             modifyUserScore(self.user_added, 1) # only increase user's score 
                                                 # if gif is created, not updated
         super(Gif, self).save(force_insert, force_update, *args, **kwargs)
-        queryset = group(Gif.objects.order_by('-date_added')[:9], 'recent')
-        cache.set('recent_gifs', queryset)
+        cache.set('recent_gifs', queryRecentGifs)
     
     def delete(self):
         image.deleteThumb(self.getThumbFilename())
@@ -385,10 +397,7 @@ class UserFavorite(models.Model):
             g_favorite.save()
         super(UserFavorite, self).save(force_insert, force_update, *args,
                                        **kwargs)
-        queryset = group(Gif.objects.filter(date_added__gt=datetime.now()-
-                         timedelta(days=7)).order_by('-stars')[:9], 
-                         "recommended")
-        cache.set('recommended_gifs', queryset)
+        cache.set('recommended_gifs', queryRecommendedGifs)
     
     def delete(self):
         g_favorite = self.gif

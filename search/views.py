@@ -19,7 +19,8 @@ from registration.backends.default.views import (ActivationView as
                                                  BaseRegistrationView)
 
 from search import engine
-from search.models import (TAG_MAX_LEN, group, User, UserFavorite, Gif, 
+from search.models import (TAG_MAX_LEN, group, queryRecentGifs, 
+                           queryRecommendedGifs, User, UserFavorite, Gif, 
                            TagInstance, UserScore, TagVote, Flag)
 from search.forms import ConfirmCurrentUserForm
 from search.image import imgFromUrl, isAnimated
@@ -49,7 +50,7 @@ class BasePageView(TemplateView):
         context = super(BasePageView, self).get_context_data(**kwargs)
         user = self.request.user
         context['TAG_MAX_LEN'] = TAG_MAX_LEN
-        context['recent_gifs'] = cache.get('recent_gifs')
+        context['recent_gifs'] = cache.get('recent_gifs', queryRecentGifs)
         if user.is_authenticated(): # get gifs similar to the ones on which
                                     # user has added tags
             spots = 9
@@ -64,7 +65,8 @@ class BasePageView(TemplateView):
                 if len(recommended_gifs) == spots:
                     break # stop looping if all spots are filled
         else: # get the most starred gifs added within the last week
-            recommended_gifs = cache.get('recommended_gifs')
+            recommended_gifs = cache.get('recommended_gifs', 
+                                         queryRecommendedGifs)
         context['recommended_gifs'] = recommended_gifs 
         return context
 
