@@ -1,9 +1,16 @@
 from .base import *
 import dj_database_url
 
+DEBUG = False
+
+THUMB_DIR = "thumb"
+
 DATABASES = {
     'default': dj_database_url.config()
 }
+
+
+REGISTRATION_OPEN = True
 
 # email settings
 EMAIL_HOST = 'smtp.mandrill.com'

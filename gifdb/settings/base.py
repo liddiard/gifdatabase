@@ -22,7 +22,6 @@ def get_env_variable(var_name):
         error_msg = msg % var_name 
         raise ImproperlyConfigured(error_msg)
 
-DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 AWS_STORAGE_BUCKET_NAME = 'project-menagerie'
@@ -32,7 +31,6 @@ AWS_PRELOAD_METADATA = True
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
-THUMB_DIR = "thumb"
 
 ADMINS = (
     ('omniaura', 'omniaura5@gmail.com'),
@@ -165,7 +163,6 @@ LOCAL_APPS = (
 INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + LOCAL_APPS
 
 # 'registration' settings
-REGISTRATION_OPEN = False
 ACCOUNT_ACTIVATION_DAYS = 7
 
 DJANGO_CONTEXT_PROCESSORS = (
