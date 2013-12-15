@@ -311,7 +311,7 @@ votes = {};
                 $('#lbTopContainer .star').addClass('selected').prop('title', "Remove from starred");
         }
 
-        ajaxGetStar($('#lbTopContainer .star'));
+        ajaxGetStar();
 
 		if (prevImage >= 0) $(prevLink).show();
 		if (nextImage >= 0) $(nextLink).show();
@@ -558,8 +558,8 @@ votes = {};
             );
         }
 
-        function ajaxGetStar(elem) {
-            gif_id = elem.attr('data-gif');
+        function ajaxGetStar() {
+            gif_id = tag_add.attr('data-gif');
             ajaxPost({gif: gif_id},
                      "/api/star-get/",
                      ajaxInterpretStar
