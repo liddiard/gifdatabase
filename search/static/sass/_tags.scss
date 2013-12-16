@@ -65,17 +65,21 @@ $unverified_color: rgba(255,255,255, 0.6);
     }
 
 	.confirm {
+        width: 22px; height: 22px;
 		content: url('../img/tag-confirm.png');
 		padding: 2px 0 2px 1px;
 	}
 
 	.deny {
+        width: 22px; height: 22px;
 		content: url('../img/tag-deny.png');
 		margin-left: 20px;
 		padding: 2px 2px 2px 0;
 	}
 
     .erase {
+        width: 20px;
+        height: 13px;
         content: url('../img/tag-erase.png');
         padding: 2px 2px 2px 4px;
     }
