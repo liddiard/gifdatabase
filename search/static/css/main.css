@@ -949,6 +949,20 @@ section .no-results {
 .email-support {
   display: block; }
 
+.error404 {
+  text-align: center; }
+  .error404 span {
+    display: inline-block;
+    position: relative; }
+    .error404 span h2 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-weight: bold;
+      font-size: 7em;
+      opacity: 0.5;
+      margin: 0 0 0 0.2em; }
+
 .preload {
   display: none !important; }
 

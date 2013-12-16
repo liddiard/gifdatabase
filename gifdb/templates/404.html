@@ -1,1 +1,12 @@
-<h1>404 not found</h1>
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Not found</h1>
+<div class="error404">
+    <span>
+    <h2>404</h2>
+    <img src="{{ STATIC_URL }}img/404_01.gif"/>
+    </span>
+</div>
+<p>Sorry, there's nothing to see here! David Tennant's not happy about it either. You can try searching for GIFs above.</p>
+{% endblock %}

@@ -43,3 +43,5 @@ urlpatterns = patterns('',
     # accounts
     (r'^account/', include('gifdb.urls_account')),
 )
+
+handler404 = "search.views.Error404View.as_view()"

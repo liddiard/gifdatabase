@@ -340,6 +340,13 @@ def logout(request):
         return redirect('front')
 
 
+# error handling
+
+class Error404View(BasePageView):
+    
+    template_name = "404.html"
+
+
 # ajax api
 
 class AuthenticatedAjaxView(View):

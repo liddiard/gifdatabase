@@ -768,6 +768,24 @@ section {
     display: block;
 }
 
+.error404 {
+    text-align: center;
+
+    span {
+        display: inline-block;
+        position: relative;
+
+        h2 {
+            position: absolute;
+            top: 0; left: 0;
+            font-weight: bold;
+            font-size: 7em;
+            opacity: 0.5;
+            margin: 0 0 0 0.2em;
+        }
+    }
+}
+
 .preload {
     display: none !important;
 }
