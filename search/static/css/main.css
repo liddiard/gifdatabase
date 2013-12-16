@@ -692,7 +692,7 @@ input {
     border-width: 2px;
     font-size: 1.1em;
     padding: 0.2em; }
-  input.add-gif, input.flag-duplicate {
+  input.gif-add, input.flag-duplicate {
     display: block;
     margin: 0 auto;
     width: 320px; }
