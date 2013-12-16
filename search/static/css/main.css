@@ -342,14 +342,14 @@ table {
   position: relative;
   display: block;
   float: left;
+  font-size: 1em;
   margin: 0 0.25em 0.25em 0;
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
-  padding: 0.25em;
+  padding: 0.1em 0.25em;
   padding-right: 42px;
   white-space: pre;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  font-size: 1.6em; }
+  border: 1px solid rgba(255, 255, 255, 0.25); }
   .tag.unverified {
     color: rgba(255, 255, 255, 0.6); }
   .tag.user-added {
@@ -402,7 +402,7 @@ table {
   clear: both;
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.25);
-  font-size: 1.6em;
+  font-size: 1em;
   padding: 0.1em 0.25em;
   margin: 0;
   width: 120px; }
@@ -988,8 +988,8 @@ section .no-results {
 
 #lbCaption .error {
   display: inline-block;
-  margin-top: 0.2em;
-  font-size: 1.2em; }
+  margin-top: 0.25em;
+  font-size: 0.75em; }
 
 #lbBottomContainer .user {
   display: inline-block;

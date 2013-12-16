@@ -5,14 +5,14 @@ $unverified_color: rgba(255,255,255, 0.6);
 	position: relative;
 	display: block;
     float: left;
+    font-size: 1em;
     margin: 0 0.25em 0.25em 0;
 	color: white;
 	background-color: rgba(0,0,0, 0.5);
-	padding: 0.25em;
+	padding: 0.1em 0.25em;
 	padding-right: 42px;
 	white-space: pre;
 	border: 1px solid rgba(255,255,255, 0.25);
-	font-size: 1.6em;
 
     &.unverified {
         color: $unverified_color;
@@ -91,7 +91,7 @@ $unverified_color: rgba(255,255,255, 0.6);
     clear: both;
     color: white;
     border: 1px solid rgba(255,255,255, 0.25);
-    font-size: 1.6em;
+    font-size: 1em;
     padding: 0.1em 0.25em;
     margin: 0;
     width: 120px;

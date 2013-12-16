@@ -411,17 +411,17 @@ votes = {};
             var is_new = typeof is_new !== 'undefined' ? is_new : false;
             elem.keydown(function(event) {
                 if (event.which == 9) { // tab
-                    createTag();
+                    createTag(event);
                 }
             });
 
             elem.keypress(function(event) {
                 if (event.which == 13 || event.which == 44) { // enter and comma, respectively
-                    createTag();
+                    createTag(event);
                 }
             });
 
-            function createTag() {
+            function createTag(event) {
                 if (loginRequired('tag_add'))
                     return;
                 event.preventDefault();

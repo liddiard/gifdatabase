@@ -84,14 +84,6 @@
 	background: transparent url(../img/arrow_right.png) no-repeat 100% 0;
 }
 
-#lbBottom {
-	font-size: 10px;
-	color: #666;
-	line-height: 1.4em;
-	text-align: left;
-	border-top-style: none;
-}
-
 #lbCloseLink {
 	display: none; /* TODO: remove from DOM */
 	float: right;
