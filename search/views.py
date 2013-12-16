@@ -418,7 +418,7 @@ class AjaxTagVote(AuthenticatedAjaxView):
             except TagVote.DoesNotExist:
                 return self.doesNotExist("Could not unset TagVote because "
                                          "TagVote doesn't exist.")
-        return jsonResponse(result=0, tag_id=tag.uid, tag_name=tag.tag.name,
+        return jsonResponse(result=0, tag_id=tag.uid(), tag_name=tag.tag.name,
                             set=set)
 
 
@@ -477,7 +477,7 @@ class AjaxAddTag(AuthenticatedAjaxView):
             ti.save()
         else:
             pass # tag already exists on this GIF, do nothing
-        return self.jsonResponse(result=0, taginstance=ti.uid)
+        return self.jsonResponse(result=0, taginstance=ti.uid())
 
 
 class AjaxEraseTag(AuthenticatedAjaxView):
@@ -636,7 +636,7 @@ class AjaxAddGif(AuthenticatedAjaxView):
                         ti.save()
                     else:
                         pass
-                return self.jsonResponse(result=0, gif=gif.uid)
+                return self.jsonResponse(result=0, gif=gif.uid())
             else:
                 return self.error("InvalidFileError", "Image %s is not an "
                                   "animated gif." % filename)
