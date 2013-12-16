@@ -17,3 +17,4 @@ EMAIL_HOST = 'smtp.mandrillapp.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = get_env_variable('MANDRILL_USERNAME')
 EMAIL_HOST_PASSWORD = get_env_variable('MANDRILL_APIKEY')
+DEFAULT_FROM_EMAIL = 'no-reply@gifdatabase.com'
