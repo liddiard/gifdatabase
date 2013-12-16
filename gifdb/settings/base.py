@@ -25,13 +25,13 @@ def get_env_variable(var_name):
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
-AWS_STORAGE_BUCKET_NAME = 'project-menagerie'
+AWS_STORAGE_BUCKET_NAME = "gifdatabase"
 AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 AWS_PRELOAD_METADATA = True
-STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
+STATICFILES_STORAGE = "storages.backends.s3boto.S3BotoStorage"
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
+S3_URL = "http://%s.s3.amazonaws.com/" % AWS_STORAGE_BUCKET_NAME
 
 ADMINS = (
     ('omniaura', 'omniaura5@gmail.com'),
