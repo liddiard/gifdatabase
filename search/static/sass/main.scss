@@ -1,3 +1,4 @@
+@import "normalize";
 @import "tags";
 
 $GOLDEN_RATIO: 1.618;
@@ -122,7 +123,7 @@ nav {
 
     .user-actions {
         float: right;
-        margin-top: 5px;
+        margin-top: 3px;
 
         input.field {
             width: 120px;
@@ -348,7 +349,7 @@ form {
             }
 
             button {
-                margin-left: 220px;
+                margin-left: 250px;
             }
         }
 
@@ -369,6 +370,7 @@ form {
 @include placeholder_color(rgba(255,255,255, 0.4));
 input {
     font-family: $helvetica;
+    font-size: 0.8em;
     color: white;
     border: 1px solid rgba(255,255,255, 0.2);
     padding: 0.25em;
@@ -406,6 +408,7 @@ input {
 button {
     color: black;
     font-family: $helvetica;
+    font-size: 0.8em;
     background-color: $primary_color;
     border: 0;
     cursor: pointer;
@@ -493,7 +496,7 @@ button {
     .search & {
         position: absolute;
         top: 0; right: 0;
-        padding: 7px 2px;
+        padding: 5px 2px;
         background: transparent;
         opacity: 0.4;
         box-shadow: none;
@@ -504,7 +507,7 @@ button {
     }
 
     .main.search & {
-        padding: 7px 4px;
+        padding: 5px 4px;
     }
 }
 
