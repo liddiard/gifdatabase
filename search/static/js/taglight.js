@@ -438,7 +438,7 @@ votes = {};
                 });
                 $('<img/>', {
                     class: 'btn erase',
-                    src: context.STATIC_URL+"img/tag-erase.png"
+                    src: context.STATIC_URL+'img/tag-erase.png'
                 }).appendTo(new_tag);
                 colorSpecialTags(new_tag); 
                 if (is_new) {
