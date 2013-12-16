@@ -252,7 +252,7 @@ footer {
 #main {
   max-width: 800px;
   float: left;
-  margin-right: 310px;
+  padding-right: 310px;
   position: relative; }
 
 @media (max-width: 520px) {
@@ -277,11 +277,14 @@ form.account label {
   display: inline-block;
   color: #cccccc; }
 form.account button {
-  margin-top: 4px; }
+  display: block;
+  margin: 10px auto; }
 form.account .error {
   display: inline; }
 form.account.create label {
   width: 125px; }
+form.account.create button {
+  margin-left: 209px; }
 form.account.delete label {
   width: 75px; }
 form.account.password-change label, form.account.password-reset label {

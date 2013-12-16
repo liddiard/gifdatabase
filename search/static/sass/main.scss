@@ -294,7 +294,7 @@ footer {
 #main {
     max-width: 800px;
     float: left;
-    margin-right: $sidebar_space;
+    padding-right: $sidebar_space;
     position: relative;
 }
 
@@ -334,7 +334,8 @@ form {
         }
 
         button {
-            margin-top: 4px;
+            display: block;
+            margin: 10px auto;
         }
         
         .error {
@@ -344,6 +345,10 @@ form {
         &.create {
             label {
                 width: 125px;
+            }
+
+            button {
+                margin-left: 209px;
             }
         }
 
