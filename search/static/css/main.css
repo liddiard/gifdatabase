@@ -379,25 +379,17 @@ table {
     bottom: 0;
     top: 0;
     margin: auto;
+    background-position: center;
     cursor: pointer;
     opacity: 0.8; }
     .tag .btn:hover {
       opacity: 1; }
   .tag .confirm {
-    width: 22px;
-    height: 22px;
-    content: url("../img/tag-confirm.png");
     padding: 2px 0 2px 1px; }
   .tag .deny {
-    width: 22px;
-    height: 22px;
-    content: url("../img/tag-deny.png");
     margin-left: 20px;
     padding: 2px 2px 2px 0; }
   .tag .erase {
-    width: 20px;
-    height: 13px;
-    content: url("../img/tag-erase.png");
     padding: 2px 2px 2px 4px; }
   .tag .disabled, .tag .disabled-tmp {
     opacity: 0.2 !important;
