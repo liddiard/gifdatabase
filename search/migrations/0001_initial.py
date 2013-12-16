@@ -41,11 +41,12 @@ class Migration(SchemaMigration):
         # Adding model 'Flag'
         db.create_table(u'search_flag', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('gif', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['search.Gif'])),
+            ('gif', self.gf('django.db.models.fields.related.ForeignKey')(related_name='current', to=orm['search.Gif'])),
             ('reason', self.gf('django.db.models.fields.CharField')(max_length=2)),
-            ('filename', self.gf('django.db.models.fields.CharField')(max_length=32, blank=True)),
+            ('duplicate', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='duplicate', null=True, to=orm['search.Gif'])),
             ('user_flagged', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('date_flagged', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('addressed', self.gf('django.db.models.fields.BooleanField')(default=False)),
         ))
         db.send_create_signal(u'search', ['Flag'])
 
@@ -142,9 +143,10 @@ class Migration(SchemaMigration):
         },
         u'search.flag': {
             'Meta': {'object_name': 'Flag'},
+            'addressed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'date_flagged': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'filename': ('django.db.models.fields.CharField', [], {'max_length': '32', 'blank': 'True'}),
-            'gif': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['search.Gif']"}),
+            'duplicate': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'duplicate'", 'null': 'True', 'to': u"orm['search.Gif']"}),
+            'gif': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'current'", 'to': u"orm['search.Gif']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'reason': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
             'user_flagged': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
