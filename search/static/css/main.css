@@ -963,6 +963,9 @@ section .no-results {
       opacity: 0.5;
       margin: 0 0 0 0.2em; }
 
+h1.error404 {
+  margin-top: 70px; }
+
 .preload {
   display: none !important; }
 

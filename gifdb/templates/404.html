@@ -3,14 +3,14 @@
 {% block title %}Not found | GIFdatabase{% endblock %}
 
 {% block extra_wrap %}
-<h1 style="text-align:center">Not found</h1>
+<h1 class="error404">Not found</h1>
 <div class="error404">
     <span>
     <h2>404</h2>
     <img src="{{ STATIC_URL }}img/404_01.gif"/>
     </span>
 </div>
-<p style="text-align:center">Sorry, there's nothing to see here! David Tennant's not happy about it either. Try searching for GIFs from our <a class="highlight" href="{% url 'front' %}">main page</a>.</p>
+<p style="error404">Sorry, there's nothing to see here! David Tennant's not happy about it either. You can try searching for GIFs above.</p>
 {% endblock %}
 
 {% block wrap %}{% endblock %}
