@@ -10,7 +10,7 @@ DATABASES = {
 }
 
 
-REGISTRATION_OPEN = True
+REGISTRATION_OPEN = os.environ.get('REGISTRATION_OPEN', False)
 
 # email settings
 EMAIL_HOST = "smtp.mandrillapp.com"
