@@ -636,13 +636,8 @@ class AjaxAddGif(AuthenticatedAjaxView):
                 gif.save()
                 for tag_name in valid_tags:
                     t = Tag.objects.get_or_create(name=tag_name)[0]
-                    ti, created = TagInstance.objects.get_or_create(tag=t,
-                                                            content_object=gif)
-                    if created:
-                        ti.user_added = user
-                        ti.save()
-                    else:
-                        pass
+                    ti = TagInstance(tag=t, user_added=user, content_object=gif)
+                    ti.save()
                 return self.jsonResponse(result=0, gif=gif.uid())
             else:
                 return self.error("InvalidFileError", "Image %s is not an "
