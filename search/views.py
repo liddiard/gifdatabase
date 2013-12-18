@@ -40,7 +40,7 @@ def paginate(request, queryset):
         qp = paginator.page(paginator.num_pages)
     return qp
 
-def unmask_uid(uid):
+def unmaskUid(uid):
     try:
         return int(uid) ^ OBFUSCATION_KEY
     except ValueError:
@@ -401,7 +401,7 @@ class AjaxTagVote(AuthenticatedAjaxView):
             return self.accessError("This user doesn't have the permission to "
                                "vote on tags.")
         try:
-            tag_id = unmask_uid(request.POST['tag'])
+            tag_id = unmaskUid(request.POST['tag'])
             set = request.POST['set']
         except KeyError:
             return self.keyError("Required keys (tag, set) not found in "
@@ -457,7 +457,7 @@ class AjaxAddTag(AuthenticatedAjaxView):
             return self.accessError("This user doesn't have the permission to "
                                "add tags.")
         try:
-            gif_id = unmask_uid(request.POST['gif'])
+            gif_id = unmaskUid(request.POST['gif'])
             tag_name = request.POST['tag']
         except KeyError:
             return self.keyError("Required keys (gif, tag) not found in "
@@ -494,7 +494,7 @@ class AjaxEraseTag(AuthenticatedAjaxView):
     def post(self, request):
         user = request.user
         try:
-            tag_id = unmask_uid(request.POST['tag'])
+            tag_id = unmaskUid(request.POST['tag'])
         except KeyError:
             return self.keyError("Required key (tag) not found in request.")
         try:
@@ -522,7 +522,7 @@ class AjaxGetStar(AuthenticatedAjaxView):
     def post(self, request):
         user = request.user
         try:
-            gif_id = unmask_uid(request.POST['gif'])
+            gif_id = unmaskUid(request.POST['gif'])
         except KeyError:
             return self.keyError("Required key (gif) not found in request.")
         try:
@@ -542,7 +542,7 @@ class AjaxAddStar(AuthenticatedAjaxView):
     def post(self, request):
         user = request.user
         try:
-            gif_id = unmask_uid(request.POST['gif'])
+            gif_id = unmaskUid(request.POST['gif'])
         except KeyError:
             return self.keyError("Required key (gif) not found in request.")
         try:
@@ -559,7 +559,7 @@ class AjaxRemoveStar(AuthenticatedAjaxView):
     def post(self, request):
         user = request.user
         try:
-            gif_id = unmask_uid(request.POST['gif'])
+            gif_id = unmaskUid(request.POST['gif'])
         except KeyError:
             return self.keyError("Required key (gif) not found in request.")
         try:
@@ -654,7 +654,7 @@ class AjaxAddFlag(AuthenticatedAjaxView):
             return self.accessError("This user doesn't have the permission to "
                                     "flag GIFs.")
         try:
-            gif_id = unmask_uid(request.POST['gif'])
+            gif_id = unmaskUid(request.POST['gif'])
             flag_type = request.POST['type']
         except KeyError:
             return self.keyError("Required keys (gif, type) not found in "
