@@ -1,7 +1,7 @@
 {% load humanize %}
 Thanks for creating an account with GIFdatabase! Just follow the link below to activate your account.
 
-{{ protocol }}://{{ domain }}/account/activate/{{ activation_key }}/
+http://www.gifdatabase.com/account/activate/{{ activation_key }}/
 
 
 If you didn't request this, you don't need to do anything; you won't receive any more email from us, and the account will expire automatically in {{ expiration_days|apnumber }} days.
