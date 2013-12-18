@@ -434,17 +434,19 @@ class AjaxGetTagVote(AuthenticatedAjaxView):
     def post(self, request):
         user = request.user
         try:
-            tag_id = unmask_uid(request.POST['tag'])
+            tag_uid = request.POST['tag']
         except KeyError:
             return self.keyError("Required key (tag) not found in request.")
+        else:
+            tag_id = unmaskUid(tag_uid)
         try:
             tv = TagVote.objects.filter(user=user).get(tag=tag_id)
         except TagVote.DoesNotExist:
-            return self.jsonResponse(result=0, tag=tag_id, vote=0)
+            return self.jsonResponse(result=0, tag=tag_uid, vote=0)
         if tv.up:
-            return self.jsonResponse(result=0, tag=tag_id, vote=1)
+            return self.jsonResponse(result=0, tag=tag_uid, vote=1)
         else:
-            return self.jsonResponse(result=0, tag=tag_id, vote=-1)
+            return self.jsonResponse(result=0, tag=tag_uid, vote=-1)
 
 
 class AjaxAddTag(AuthenticatedAjaxView):
