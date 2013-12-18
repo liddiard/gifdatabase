@@ -277,6 +277,9 @@ class TagInstance(TaggedItemBase):
                 print "CASE 4"
                 modifyUserScore(self.user_added, -1)
                 super(TagInstance, self).delete()
+            else: # should never be called in normal operation
+                super(TagInstance, self).save(force_insert, force_update, 
+                                              *args, **kwargs)
 
 class TagInstanceAdmin(admin.ModelAdmin):
     list_display = ('isVerified', 'tag', 'ups', 'downs', 'content_object',
