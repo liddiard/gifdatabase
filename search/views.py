@@ -425,8 +425,8 @@ class AjaxTagVote(AuthenticatedAjaxView):
             except TagVote.DoesNotExist:
                 return self.doesNotExist("Could not unset TagVote because "
                                          "TagVote doesn't exist.")
-        return jsonResponse(result=0, tag_id=tag.uid(), tag_name=tag.tag.name,
-                            set=set)
+        return self.jsonResponse(result=0, tag_id=tag.uid(), 
+                                 tag_name=tag.tag.name, set=set)
 
 
 class AjaxGetTagVote(AuthenticatedAjaxView):
