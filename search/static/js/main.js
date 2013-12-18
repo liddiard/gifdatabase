@@ -82,13 +82,13 @@ function ajaxCheckGif(filename) {
 function badGif(message) {
     var input = $('.modal input:visible');
     $('.modal:visible .error').text(message).stop().css("opacity", "1").fadeTo(12000, 0.6);
-    input.prop('disabled', false);
     input.select();
 }
 
 function goodGif(response) {
     $('.lbLoading.check-gif').hide();
     var input = $('.modal input:visible');
+    input.prop('disabled', false);
     if (response.result) {
         if (response.error === "AlreadyExistsError")
             badGif("Sorry, that GIF is already in GIFdatabase. Try another!");
