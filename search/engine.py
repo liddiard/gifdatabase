@@ -10,7 +10,8 @@ synonyms = (['anger', 'angry', 'mad', 'upset', 'unhappy'],
     ['fear', 'afraid', 'scared', 'worried'],
     ['clap', 'clapping', 'applause'], ['dance', 'dancing'],
     ['agreement', 'approval'],
-    ['disagreement', 'disapproval'])
+    ['disagreement', 'disapproval'],
+    ['boobs', 'breasts', 'tits'])
 
 class Result(object):
     def __init__(self, gif, rank):
