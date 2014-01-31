@@ -425,8 +425,11 @@ class AjaxTagVote(AuthenticatedAjaxView):
             except TagVote.DoesNotExist:
                 return self.doesNotExist("Could not unset TagVote because "
                                          "TagVote doesn't exist.")
-        return self.jsonResponse(result=0, tag_id=tag.uid(), 
-                                 tag_name=tag.tag.name, set=set)
+        if tag.pk: # TagInstance wasn't deleted as a result of vote
+            return self.jsonResponse(result=0, tag_id=tag.uid(), 
+                                     tag_name=tag.tag.name, set=set)
+        else: # TagInstance was deleted, no longer exists in db
+            return self.jsonResponse(result=0, message="Tag was deleted.")
 
 
 class AjaxGetTagVote(AuthenticatedAjaxView):
