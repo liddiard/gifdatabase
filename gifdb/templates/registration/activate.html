@@ -1,17 +1,19 @@
-{% extends "base.html" %}
+{% extends "registration/base.html" %}
 
 {% block title %}Account activated | GIFdatabase{% endblock %}
 
-{% block content %}
-    {% if account %}
-        <h1>Account activated!</h1>
-        <p>Thanks for creating an account! Start enjoying the full potential of GIFdatabase by logging in above.</p>
-    {% else %}
-        {% load humanize %}
-        <h1>Sorry, something went wrong.</h1>
-        <p>Your account was not activated. Either your activation link was incorrect, or
-        the activation key for your account has expired; activation keys are
-        only valid for {{ expiration_days|apnumber }} days after
-        registration.</p>
-    {% endif %}
+{% block primary_content %}
+
+{% if account %}
+    <h1>Account activated!</h1>
+    <p>Thanks for creating an account! Start enjoying the full potential of GIFdatabase by logging in above.</p>
+{% else %}
+    {% load humanize %}
+    <h1>Sorry, something went wrong.</h1>
+    <p>Your account was not activated. Either your activation link was incorrect, or
+    the activation key for your account has expired; activation keys are
+    only valid for {{ expiration_days|apnumber }} days after
+    registration.</p>
+{% endif %}
+
 {% endblock %}

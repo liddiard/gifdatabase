@@ -6,7 +6,9 @@ $(document).ready(function(){
     }
 
     colorScore();
-    $('.search input').focus();
+
+    if (typeof prevent_search_focus === 'undefined' || !prevent_search_focus)
+        $('.search input').focus();
 
     $('.add-gif').click(addGifModal);
 
