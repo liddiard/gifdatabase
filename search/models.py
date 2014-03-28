@@ -6,6 +6,7 @@ from django.core.cache import cache
 
 from registration.signals import user_activated
 from taggit.models import TaggedItemBase
+from taggit.managers import TaggableManager
 
 from gifdb.settings.base import S3_URL, OBFUSCATION_KEY
 from search import image
