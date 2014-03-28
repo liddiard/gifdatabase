@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="description" content="{% block meta_description %}A{% endblock %} community-driven GIF tagging and search engine for reaction GIFs, educational GIFs, and more.">
     <title>{% block title %}GIFdatabase: the internet's finest animated GIF search{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{{ STATIC_URL }}img/favicon.ico">
     <!-- css -->
@@ -31,7 +32,7 @@
 
     </script>
     <!-- included js -->
-    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery-1.9.1.min.js"></script>
     <script src="{{ STATIC_URL }}js/main.js"></script>
     <script src="{{ STATIC_URL }}js/taglight.js"></script>
     <!--<script src="{{ STATIC_URL }}js/fadeloader.js"></script>-->
