@@ -1,4 +1,7 @@
-from search.models import Gif
+from taggit.models import Tag
+
+from search.models import Gif, TagInstance
+
 
 common_words = ('the', 'and', 'a', 'that', 'i', 'it',
     'not', 'he', 'as', 'you', 'this', 'but', 'his', 'they',
@@ -21,7 +24,7 @@ class Result(object):
 def query(query_string):
     # create an empty match list
     match_list = []
-    query_string = query_string.lower()
+    query_string = query_string.lower() # TODO: do we need to keep this?
     # split the query into a list of individual words
     query_words = query_string.split(' ')[:10] # limit the query to 10 words
     query_words = removeSynonyms(query_words)
@@ -78,10 +81,11 @@ def tagSEO(gif):
 
 def check(word, match_list):
     '''checks for a match'''
-    for gif in Gif.objects.all():
-        tags = tagSEO(gif)
-        if word in tags:
-            match(gif, word, match_list)
+    matching_tags = Tag.objects.filter(name__contains=word)
+    for tag in matching_tags:
+        ti = TagInstance.objects.get(tag=tag)
+        gif = ti.content_object
+        match(gif, word, match_list)
 
 def match(gif, word, match_list):
     '''adds a match'''
