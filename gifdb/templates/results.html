@@ -6,7 +6,7 @@
 {% block title %}{{ query }} | GIFdatabase{% endblock %}
 
 {% block content %}
-    <h2><span class="highlight">Results for</span> {{ query }}</h2>
+    <h2>Results for <span class="highlight">{{ query }}</span></h2>
     {% if results %}
         {% for result in results %}
             {% with result.gif as gif %}
