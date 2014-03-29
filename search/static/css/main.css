@@ -915,20 +915,24 @@ button {
   .thumb:hover {
     -webkit-filter: brightness(1.15); }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .thumb {
-    width: 100px; }
-    .thumb.small {
-      width: initial; } }
 .list-next {
   display: block;
   float: left;
   width: 200px;
   height: 200px;
-  background: rgba(255, 255, 255, 0.0625) url(../img/arrow_right_black_huge.png) no-repeat; }
+  background: rgba(255, 255, 255, 0.125) url(../img/arrow_right_black_huge.png) no-repeat; }
   .list-next:hover {
-    background-color: rgba(255, 255, 255, 0.125); }
+    background-color: rgba(255, 255, 255, 0.25); }
 
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .thumb {
+    width: 100px; }
+    .thumb.small {
+      width: initial; }
+
+  .list-next {
+    width: 100px;
+    height: 100px; } }
 div.profile h1 {
   display: inline;
   font-size: 5em;
