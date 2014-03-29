@@ -920,7 +920,8 @@ button {
   float: left;
   width: 200px;
   height: 200px;
-  background: rgba(255, 255, 255, 0.125) url(../img/arrow_right_black_huge.png) no-repeat; }
+  background: rgba(255, 255, 255, 0.125) url(../img/arrow_right_black_huge.png) no-repeat;
+  background-size: contain; }
   .list-next:hover {
     background-color: rgba(255, 255, 255, 0.25); }
 
