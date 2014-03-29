@@ -65,20 +65,6 @@ def removeSynonyms(_list):
                 already_matched = True
     return _list
 
-def tagSEO(gif):
-    '''returns a sanitized list of individual words from a gif's tags'''
-    seo = []
-    tags = gif.tags.names()
-    for tag in tags:
-        tag = tag.lower()
-        words = tag.split(' ')
-        for word in words:
-            if commonWord(word):
-                continue # skip if common word
-            else:
-                seo.append(word)
-    return removeSynonyms(seo)
-
 def check(word, match_list):
     '''checks for a match'''
     matching_tags = Tag.objects.filter(name__contains=word)
