@@ -17,6 +17,7 @@ from registration.backends.default.views import (ActivationView as
                                                  BaseActivationView,
                                                  RegistrationView as
                                                  BaseRegistrationView)
+from registration.forms import RegistrationFormUniqueEmail
 
 from gifdb.settings.base import OBFUSCATION_KEY
 from search import engine
@@ -207,6 +208,7 @@ class AccountPreferencesView(BasePageView):
 class RegistrationView(BaseRegistrationView, BasePageView):
     
     template_name="registration/registration_form.html"
+    form_class = RegistrationFormUniqueEmail
     
 
 class RegistrationCompleteView(BasePageView):
