@@ -24,7 +24,7 @@ class Result(object):
 def query(query_string):
     # create an empty match list
     match_list = []
-    query_string = query_string.lower() # TODO: do we need to keep this?
+    query_string = query_string.lower()
     # split the query into a list of individual words
     query_words = query_string.split(' ')[:10] # limit the query to 10 words
     query_words = removeSynonyms(query_words)
@@ -83,9 +83,10 @@ def check(word, match_list):
     '''checks for a match'''
     matching_tags = Tag.objects.filter(name__contains=word)
     for tag in matching_tags:
-        ti = TagInstance.objects.get(tag=tag)
-        gif = ti.content_object
-        match(gif, word, match_list)
+        instances = TagInstance.objects.filter(tag=tag)
+        for instance in instances:
+            gif = instance.content_object
+            match(gif, word, match_list)
 
 def match(gif, word, match_list):
     '''adds a match'''
