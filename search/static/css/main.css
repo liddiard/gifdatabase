@@ -603,7 +603,7 @@ footer {
     border-top: 20px solid black; }
 
   #main {
-    margin-right: 0; } }
+    padding-right: 0; } }
 form.search {
   position: relative;
   display: inline-block; }
