@@ -83,7 +83,8 @@ def check(word, match_list):
     '''checks for a match'''
     matching_tags = Tag.objects.filter(name__contains=word)
     for tag in matching_tags:
-        instances = TagInstance.objects.filter(tag=tag)
+        instances = TagInstance.objects.filter(tag=tag)\
+                                       .select_related('content_object')
         for instance in instances:
             gif = instance.content_object
             match(gif, word, match_list)
