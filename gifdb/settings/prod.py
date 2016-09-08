@@ -13,8 +13,9 @@ DATABASES = {
 REGISTRATION_OPEN = os.environ.get('REGISTRATION_OPEN', False)
 
 # email settings
-EMAIL_HOST = "smtp.mandrillapp.com"
+EMAIL_HOST = "smtp.sendgrid.net"
+EMAIL_HOST_USER = get_env_variable('SENDGRID_USERNAME')
+EMAIL_HOST_PASSWORD = get_env_variable('SENDGRID_PASSWORD')
 EMAIL_PORT = 587
-EMAIL_HOST_USER = get_env_variable('MANDRILL_USERNAME')
-EMAIL_HOST_PASSWORD = get_env_variable('MANDRILL_APIKEY')
-DEFAULT_FROM_EMAIL = "GIFdatabase <no-reply@gifdatabase.com>"
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = "kikl.co <no-reply@kikl.co>"
