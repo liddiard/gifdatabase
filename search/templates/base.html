@@ -13,7 +13,7 @@
     <!-- js context variables from django -->
     <script>
         window.context = {
-            user: {is_authenticated: {{ user.is_authenticated|lower }},
+            user: {is_authenticated: {% if user.is_authenticated %}true{% else %}false{% endif %},
                    can_tag: {% if user.canTag %}true{% else %}false{% endif %},
                    can_add: {% if user.canAddGif %}true{% else %}false{% endif %}},
             TAG_MAX_LEN: {{ TAG_MAX_LEN }},
