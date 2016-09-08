@@ -1,10 +1,10 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.contrib import admin
 from search import views
 
 admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = [
 
     # front page
     url(r'^$', views.FrontPageView.as_view(), name="front"),
@@ -41,6 +41,6 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     # accounts
-    (r'^account/', include('gifdb.urls_account')),
-)
+    url(r'^account/', include('gifdb.urls_account')),
 
+]

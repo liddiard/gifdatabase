@@ -1,7 +1,7 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from search import views
 
-urlpatterns = patterns('',
+urlpatterns = [
 
     # user preferences
     url(r'^preferences/$', views.AccountPreferencesView.as_view(), 
@@ -43,4 +43,4 @@ urlpatterns = patterns('',
     url(r'^delete/$', views.AccountDeleteView.as_view(), name='account_delete'),
     url(r'^delete/complete/$', views.AccountDeleteCompleteView.as_view(), 
         name='account_delete_complete'),
-)
+]
